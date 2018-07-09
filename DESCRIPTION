@@ -1,0 +1,11 @@
+Package: dim.reduction
+Title: Wrapper exposing several Python dimensional reduction tools
+Version: 0.0.0.9000
+Authors@R: person("Miles", "Smith", email = "miles-smith@omrf.org", role = c("aut", "cre"))
+Description: R wrapper around the Python dimensional reduction tools, including Multicore-TSNE, UMAP, PHATE, Phenograph
+Depends: R (>= 3.5.1),
+  reticulate,
+  parallel
+License: BSD-3
+Encoding: UTF-8
+LazyData: true
