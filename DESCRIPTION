@@ -1,4 +1,4 @@
-Package: dim.reduction
+Package: dim.reduction.wrappers
 Title: Wrapper exposing several Python dimensional reduction tools
 Version: 0.0.0.9000
 Authors@R: person("Miles", "Smith", email = "miles-smith@omrf.org", role = c("aut", "cre"))
@@ -9,3 +9,4 @@ Depends: R (>= 3.5.1),
 License: BSD-3
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 6.0.1
