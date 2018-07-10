@@ -1,23 +1,71 @@
 #' multicoreTSNE
 #'
-#' An R wrapper for the Multicore-TSNE Python library found at https://github.com/DmitryUlyanov/Multicore-TSNE
+#' An R wrapper for the Multicore-TSNE Python module found at https://github.com/DmitryUlyanov/Multicore-TSNE
 #'
 #' @param r.data.frame
-#' @param n.components
-#' @param perplexity
-#' @param early_exaggeration
-#' @param learning_rate
-#' @param n.iter
-#' @param n_iter_without_progress
-#' @param min_grad_norm
-#' @param metric
-#' @param init
-#' @param verbose
-#' @param random_state
-#' @param method
-#' @param angle
-#' @param n.jobs
-#' @param cheat_metric
+#' @param n.components : int, optional (default: 3)
+#'      Dimension of the embedded space.
+#' @param perplexity : float, optional (default: 30)
+#'      The perplexity is related to the number of nearest neighbors
+#'      that is used in other manifold learning algorithms. Larger
+#'      datasets usually require a larger perplexity. Consider selecting
+#'      a value between 5 and 50. The choice is not extremely critical since
+#'      t-SNE is quite insensitive to this parameter.
+#' @param early.exaggeration : float, optional (default: 12.0)
+#'      Controls how tight natural clusters in the original space are in the
+#'      embedded space and how much space will be between them. For larger
+#'      values, the space between natural clusters will be larger in the
+#'      embedded space. Again, the choice of this parameter is not very
+#'      critical. If the cost function increases during initial optimization,
+#'      the early exaggeration factor or the learning rate might be too high.
+#' @param learning.rate : float, optional (default: 200.0)
+#'      The learning rate for t-SNE is usually in the range [10.0, 1000.0].
+#'      If the learning rate is too high, the data may look like a ‘ball’
+#'      with any point approximately equidistant from its nearest neighbours.
+#'      If the learning rate is too low, most points may look compressed in a
+#'      dense cloud with few outliers. If the cost function gets stuck in a
+#'      bad local minimum increasing the learning rate may help.
+#' @param n.iter : int, optional (default: 1000)
+#'      Maximum number of iterations for the optimization. Should be at least 250.
+#' @param n.iter.without.progress : int, optional (default: 300)
+#'      Maximum number of iterations without progress before we abort the optimization,
+#'      used after 250 initial iterations with early exaggeration. Note that progress
+#'      is only checked every 50 iterations so this value is rounded to the next multiple of 50.
+#' @param min.grad.norm : float, optional (default: 1e-7)
+#'      If the gradient norm is below this threshold, the optimization will be stopped.
+#' @param metric : string or callable, optional
+#'      The metric to use when calculating distance between instances in a feature
+#'      array. If metric is a string, it must be one of the options allowed by
+#'      scipy.spatial.distance.pdist for its metric parameter, or a metric listed
+#'      in pairwise.PAIRWISE.DISTANCE.FUNCTIONS. If metric is “precomputed”, X is
+#'      assumed to be a distance matrix. Alternatively, if metric is a callable function,
+#'      it is called on each pair of instances (rows) and the resulting value recorded.
+#'      The callable should take two arrays from X as input and return a value indicating
+#'      the distance between them. The default is “euclidean” which is interpreted as squared
+#'      euclidean distance.
+#' @param init : string or numpy array, optional (default: “random”)
+#'      Initialization of embedding. Possible options are ‘random’, ‘pca’, and a numpy array
+#'      of shape (n.samples, n.components). PCA initialization cannot be used with precomputed
+#'      distances and is usually more globally stable than random initialization.
+#' @param verbose : int, optional (default: 0)
+#'      Verbosity level.
+#' @param random.state : int, RandomState instance or None, optional (default: None)
+#'      If int, random.state is the seed used by the random number generator; If RandomState
+#'      instance, random.state is the random number generator; If None, the random number
+#'      generator is the RandomState instance used by np.random. Note that different
+#'      initializations might result in different local minima of the cost function.
+#' @param method : string (default: ‘barnes.hut’)
+#'      By default the gradient calculation algorithm uses Barnes-Hut approximation running in
+#'      O(NlogN) time. method=’exact’ will run on the slower, but exact, algorithm in O(N^2) time.
+#'      The exact algorithm should be used when nearest-neighbor errors need to be better than 3%.
+#'      However, the exact method cannot scale to millions of examples.
+#' @param angle : float (default: 0.5)
+#'      Only used if method=’barnes.hut’ This is the trade-off between speed and accuracy for
+#'      Barnes-Hut T-SNE. ‘angle’ is the angular size (referred to as theta in [3]) of a distant node
+#'      as measured from a point. If this size is below ‘angle’ then it is used as a summary node of
+#'      all points contained within it. This method is not very sensitive to changes in this parameter
+#'      in the range of 0.2 - 0.8. Angle less than 0.2 has quickly increasing computation time and angle
+#'      greater 0.8 has quickly increasing error.#' @param cheat_metric
 #'
 #' @importFrom reticulate import
 #' @importFrom parallel detectCores
@@ -29,10 +77,10 @@
 multicoreTSNE <- function(r.data.frame,
                           n.components = 3,
                           perplexity = 30,
-                          early.exaggeration = 12,
-                          learning.rate = 200,
-                          n.iter = 2000,
-                          n.iter.without.progress = 30,
+                          early.exaggeration = 12.0,
+                          learning.rate = 200.0,
+                          n.iter = 1000,
+                          n.iter.without.progress = 300,
                           min.grad.norm = 1e-07,
                           metric = 'euclidean',
                           init = 'random',
@@ -43,23 +91,27 @@ multicoreTSNE <- function(r.data.frame,
                           n.jobs = NULL,
                           cheat.metric = TRUE
                           ){
+  if(!py_module_available('MulticoreTSNE')){
+    stop("The MulticoreTSNE module is unavailable.  Please activate the appropriate environment or install the module.")
+  }
+
   mctsne.module <- import(module = 'MulticoreTSNE', delay_load = TRUE)
   if (is.null(n.jobs)){
     n.jobs <- detectCores()
   }
   mctsne <- mctsne.module$MulticoreTSNE(n_components = as.integer(n.components),
-                                        perplexity = as.double(perplexity),
-                                        early_exaggeration = as.integer(early.exaggeration),
-                                        learning_rate = as.integer(learning.rate),
+                                        perplexity = as.numeric(perplexity),
+                                        early_exaggeration = as.numeric(early.exaggeration),
+                                        learning_rate = as.numeric(learning.rate),
                                         n_iter = as.integer(n.iter),
                                         n_iter_without_progress = as.integer(n.iter.without.progress),
-                                        min_grad_norm = as.integer(min.grad.norm),
-                                        metric = metrix,
+                                        min_grad_norm = as.numeric(min.grad.norm),
+                                        metric = metric,
                                         init = init,
                                         verbose = as.integer(verbose),
-                                        random_state = rrandom.state,
+                                        random_state = random.state,
                                         method = method,
-                                        angle = as.double(angle),
+                                        angle = as.numeric(angle),
                                         n_jobs = n.jobs,
                                         cheat_metric = cheat.metric)
   mctsne.df <- mctsne$fit_transform(r.data.frame)
@@ -68,7 +120,7 @@ multicoreTSNE <- function(r.data.frame,
 
 #' umap
 #'
-#' An R wrapper around the UMAP Python library found at https://github.com/lmcinnes/umap
+#' An R wrapper around the UMAP Python module found at https://github.com/lmcinnes/umap
 #'
 #' Uniform Manifold Approximation and Projection
 #'
@@ -76,7 +128,7 @@ multicoreTSNE <- function(r.data.frame,
 #'  an underlying manifold.
 #'
 #' @param r.data.frame
-#' @param n.neighbors: double (optional, default 30)
+#' @param n.neighbors: numeric (optional, default 30)
 #'      The size of local neighborhood (in terms of number of neighboring
 #'      sample points) used for manifold approximation. Larger values
 #'      result in more global views of the manifold, while smaller
@@ -195,47 +247,163 @@ umap <- function(r.data.frame,
                  gamma = 1.0,
                  negative.sample.rate = 5,
                  verbose = TRUE){
+  if(!py_module_available('umap')){
+    stop("The umap module is unavailable.  Please activate the appropriate environment or install the module.")
+  }
   umap.module <- import(module = 'umap', delay_load = TRUE)
   umap.embed <- umap.module$UMAP(n_neighbors = as.integer(n.neighbors),
-                                 min_dist = as.double(min.dist),
+                                 min_dist = as.numeric(min.dist),
                                  n_components = as.integer(n.components),
                                  metric = metric,
                                  init = init,
-                                 alpha = as.double(alpha),
-                                 spread = as.double(spread),
-                                 bandwidth = as.double(bandwidth),
+                                 alpha = as.numeric(alpha),
+                                 spread = as.numeric(spread),
+                                 bandwidth = as.numeric(bandwidth),
                                  random_state = random.state,
                                  angular_rp_forest = angular.rp.forest,
                                  verbose = verbose,
-                                 set_op_mix_ratio = as.double(set.op.mix.ratio),
-                                 gamma = as.double(gamma),
+                                 set_op_mix_ratio = as.numeric(set.op.mix.ratio),
+                                 gamma = as.numeric(gamma),
                                  negative_sample_rate = negative.sample.rate)
   umap.df <- umap.embed$fit_transform(r.data.frame)
   return(umap.df)
 }
 
+#' phate
+#'
+#' An R wrapper around the PHATE Python module found at https://github.com/KrishnaswamyLab/PHATE
+#'
+#' Potential of Heat-diffusion for Affinity-based Trajectory Embedding
+#' (PHATE) embeds high dimensional single-cell data into two or three
+#' dimensions for visualization of biological progressions as described
+#' in Moon et al, 2017
+#'
+#' @param n_components : integer, optional, default: 2
+#'     number of dimensions in which the data will be embedded
+#' @param k : integer, optional, default: 5
+#'     number of nearest neighbors on which to build kernel
+#' @param a : integer, optional, default: 15
+#'     sets decay rate of kernel tails.
+#'     If None, alpha decaying kernel is not used
+#' @param n_landmark : integer, optional, default: 2000
+#'     number of landmarks to use in fast PHATE
+#' @param t : integer, optional, default: 'auto'
+#'     power to which the diffusion operator is powered.
+#'     This sets the level of diffusion. If 'auto', t is selected
+#'     according to the knee point in the Von Neumann Entropy of
+#'     the diffusion operator
+#' @param gamma : numeric, optional, default: 1
+#'     Informational distance constant between -1 and 1.
+#'     `gamma=1` gives the PHATE log potential, `gamma=0` gives
+#'     a square root potential.
+#' @param n_pca : integer, optional, default: 100
+#'     Number of principal components to use for calculating
+#'     neighborhoods. For extremely large datasets, using
+#'     n_pca < 20 allows neighborhoods to be calculated in
+#'     roughly log(n_samples) time.
+#' @param knn_dist : character, optional, default: 'euclidean'
+#'     recommended values: 'euclidean', 'cosine', 'precomputed'
+#'     Any metric from `scipy.spatial.distance` can be used
+#'     distance metric for building kNN graph. If 'precomputed',
+#'     `data` should be an n_samples x n_samples distance or
+#'     affinity matrix. Distance matrices are assumed to have zeros
+#'     down the diagonal, while affinity matrices are assumed to have
+#'     non-zero values down the diagonal. This is detected automatically using
+#'     `data[0,0]`. You can override this detection with
+#'     `knn_dist='precomputed_distance'` or `knn_dist='precomputed_affinity'`.
+#' @param mds_dist : character, optional, default: 'euclidean'
+#'     recommended values: 'euclidean' and 'cosine'
+#'     Any metric from `scipy.spatial.distance` can be used
+#'     distance metric for MDS
+#' @param mds : string, optional, default: 'metric'
+#'     choose from ['classic', 'metric', 'nonmetric'].
+#'     Selects which MDS algorithm is used for dimensionality reduction
+#' @param n_jobs : integer, optional, default: 1
+#'     The number of jobs to use for the computation.
+#'     If -1 all CPUs are used. If 1 is given, no parallel computing code is
+#'     used at all, which is useful for debugging.
+#'     For n_jobs below -1, (n_cpus + 1 + n_jobs) are used. Thus for
+#'     n_jobs = -2, all CPUs but one are used
+#' @param random_state : integer or numpy.RandomState, optional, default: None
+#'     The generator used to initialize SMACOF (metric, nonmetric) MDS
+#'     If an integer is given, it fixes the seed
+#'     Defaults to the global `numpy` random number generator
+#' @param verbose : `integer` or `boolean`, optional (default: 1)
+#'     If `True` or `> 0`, print status messages
+#'
+#' @importFrom reticulate import
+#' @importFrom parallel detectCores
+#'
+#' @return
+#' @export
+#'
+#' @examples
+phate <- function(n.components = 3,
+                  k = 5,
+                  a = 15,
+                  n.landmark = 2000,
+                  t = 'auto',
+                  gamma = 1,
+                  n.pca = 100,
+                  knn.dist = 'euclidean',
+                  mds.dist = 'euclidean',
+                  mds = 'metric',
+                  n.jobs = NULL,
+                  random.state = NULL,
+                  verbose = 1){
+  if(!py_module_available('phate')){
+    stop("The phate module is unavailable.  Please activate the appropriate environment or install the module.")
+  }
+  phate.module <- import(module = 'phate', delay_load = TRUE)
+  if (is.null(n.jobs)){
+    n.jobs <- detectCores()
+  }
+  phate.embed <- phate.module$PHATE(n_components = as.integer(n.components),
+                                    k = as.integer(k),
+                                    a = as.integer(a),
+                                    n_landmark = as.integer(n.landmark),
+                                    t = as.integer(t),
+                                    gamma = as.numeric(gamma),
+                                    n_pca = as.integer(n.pca),
+                                    knn_dist = knn.dist,
+                                    mds_dist = mds.dist,
+                                    mds = mds,
+                                    n_jobs = as.integer(n.jobs),
+                                    random_state = random.state,
+                                    verbose = as.integer(verbose)
+                                    )
+  phate.df <- phate.embed$fit_transform(r.data.frame)
+  return(phate.df)
+}
+
 #' Phenograph
 #'
 #' Used to cluster high dimensional data.
-#' An R wrapper around the Python Phenograph library found at https://github.com/jacoblevine/PhenoGraph
+#' An R wrapper around the Python Phenograph module found at https://github.com/jacoblevine/PhenoGraph
 #'
 #' @param r.data.frame data to cluster, or sparse matrix of k-nearest neighbor graph
-#' If ndarray, n-by-d array of n cells in d dimensions
-#' If sparse matrix, n-by-n adjacency matrix
-#' @param k Number of nearest neighbors to use in first step of graph construction
+#'      If ndarray, n-by-d array of n cells in d dimensions
+#'      If sparse matrix, n-by-n adjacency matrix
+#' @param k Number of nearest neighbors to use in first step of graph construction (default = 30)
 #' @param directed  Whether to use a symmetric (default) or asymmetric ("directed") graph.
-#' The graph construction process produces a directed graph, which is symmetrized by one of two methods (see below)
-#' @param prune Whether to symmetrize by taking the average (prune=False) or product (prune=True) between the graph
-# and its transpose
-#' @param min.cluster.size Cells that end up in a cluster smaller than min_cluster_size are considered outliers and are assigned to -1 in the cluster labels
-#' @param jaccard If True, use Jaccard metric between k-neighborhoods to build graph. If False, use a Gaussian kernel.
+#'      The graph construction process produces a directed graph, which is symmetrized by one of
+#'      two methods (see below)
+#' @param prune Whether to symmetrize by taking the average (prune=False) or product (prune=True)
+#'      between the graph and its transpose
+#' @param min.cluster.size Cells that end up in a cluster smaller than min_cluster_size are considered
+#'      outliers and are assigned to -1 in the cluster labels
+#' @param jaccard If True, use Jaccard metric between k-neighborhoods to build graph. If False, use a
+#'      Gaussian kernel.
 #' @param primary.metric Distance metric to define nearest neighbors.
-#' Options include: {'euclidean', 'manhattan', 'correlation', 'cosine'}
-#' Note that performance will be slower for correlation and cosine.
-#' @param n.jobs Nearest Neighbors and Jaccard coefficients will be computed in parallel using n_jobs. If n_jobs=NULL, the number of jobs is determined automatically
+#'      Options include: {'euclidean', 'manhattan', 'correlation', 'cosine'}
+#'      Note that performance will be slower for correlation and cosine.
+#' @param n.jobs Nearest Neighbors and Jaccard coefficients will be computed in parallel using n_jobs.
+#'      If n_jobs=NULL, the number of jobs is determined automatically
 #' @param q.tol Tolerance (i.e., precision) for monitoring modularity optimization
-#' @param louvain.time.limit Maximum number of seconds to run modularity optimization. If exceeded the best result so far is returned
-#' @param nn_method Whether to use brute force or kdtree for nearest neighbor search. For very large high-dimensional data sets, brute force (with parallel computation) performs faster than kdtree.
+#' @param louvain.time.limit Maximum number of seconds to run modularity optimization. If exceeded the
+#'      best result so far is returned
+#' @param nn_method Whether to use brute force or kdtree for nearest neighbor search. For very large
+#'      high-dimensional data sets, brute force (with parallel computation) performs faster than kdtree.
 #'
 #' @importFrom reticulate import
 #' @importFrom parallel detectCores
@@ -249,12 +417,15 @@ phenograph <- function(r.data.frame,
                        directed = FALSE,
                        prune = FALSE,
                        min.cluster.size = 10,
-                       jaccard = True,
+                       jaccard = TRUE,
                        primary.metric = 'euclidean',
                        n.jobs = NULL,
                        q.tol = 0.001,
                        louvain.time.limit = 2000,
                        nn_method = 'kdtree'){
+  if(!py_module_available('phenograph')){
+    stop("The MulticoreTSNE module is unavailable.  Please activate the appropriate environment or install the module.")
+  }
   if (is.null(n.jobs)){
     n.jobs <- detectCores()
   }
@@ -267,10 +438,10 @@ phenograph <- function(r.data.frame,
                                                 jaccard = jaccard,
                                                 primary_metric = primary.metric,
                                                 n_jobs = as.integer(n.jobs),
-                                                q_tol = as.double(q.tol),
+                                                q_tol = as.numeric(q.tol),
                                                 louvain_time_limit = as.integer(louvain.time.limit),
                                                 nn_method = 'kdtree')
-  communities <- phenograph.tuple[[3]]
+  communities <- phenograph.tuple[[1]]
   return(communities)
 }
 

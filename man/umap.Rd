@@ -11,7 +11,7 @@ umap(r.data.frame, n.neighbors = 30, min.dist = 0.1, n.components = 3,
   verbose = TRUE)
 }
 \arguments{
-\item{n.neighbors:}{double (optional, default 30)
+\item{n.neighbors:}{numeric (optional, default 30)
 The size of local neighborhood (in terms of number of neighboring
 sample points) used for manifold approximation. Larger values
 result in more global views of the manifold, while smaller
@@ -124,7 +124,7 @@ will be chosen automatically.}
 Controls verbosity of logging.}
 }
 \description{
-An R wrapper around the UMAP Python library found at https://github.com/lmcinnes/umap
+An R wrapper around the UMAP Python module found at https://github.com/lmcinnes/umap
 }
 \details{
 Uniform Manifold Approximation and Projection

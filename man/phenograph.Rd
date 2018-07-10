@@ -5,7 +5,7 @@
 \title{Phenograph}
 \usage{
 phenograph(r.data.frame, k = 30, directed = FALSE, prune = FALSE,
-  min.cluster.size = 10, jaccard = True, primary.metric = "euclidean",
+  min.cluster.size = 10, jaccard = TRUE, primary.metric = "euclidean",
   n.jobs = NULL, q.tol = 0.001, louvain.time.limit = 2000,
   nn_method = "kdtree")
 }
@@ -14,30 +14,37 @@ phenograph(r.data.frame, k = 30, directed = FALSE, prune = FALSE,
 If ndarray, n-by-d array of n cells in d dimensions
 If sparse matrix, n-by-n adjacency matrix}
 
-\item{k}{Number of nearest neighbors to use in first step of graph construction}
+\item{k}{Number of nearest neighbors to use in first step of graph construction (default = 30)}
 
 \item{directed}{Whether to use a symmetric (default) or asymmetric ("directed") graph.
-The graph construction process produces a directed graph, which is symmetrized by one of two methods (see below)}
+The graph construction process produces a directed graph, which is symmetrized by one of
+two methods (see below)}
 
-\item{prune}{Whether to symmetrize by taking the average (prune=False) or product (prune=True) between the graph}
+\item{prune}{Whether to symmetrize by taking the average (prune=False) or product (prune=True)
+between the graph and its transpose}
 
-\item{min.cluster.size}{Cells that end up in a cluster smaller than min_cluster_size are considered outliers and are assigned to -1 in the cluster labels}
+\item{min.cluster.size}{Cells that end up in a cluster smaller than min_cluster_size are considered
+outliers and are assigned to -1 in the cluster labels}
 
-\item{jaccard}{If True, use Jaccard metric between k-neighborhoods to build graph. If False, use a Gaussian kernel.}
+\item{jaccard}{If True, use Jaccard metric between k-neighborhoods to build graph. If False, use a
+Gaussian kernel.}
 
 \item{primary.metric}{Distance metric to define nearest neighbors.
 Options include: {'euclidean', 'manhattan', 'correlation', 'cosine'}
 Note that performance will be slower for correlation and cosine.}
 
-\item{n.jobs}{Nearest Neighbors and Jaccard coefficients will be computed in parallel using n_jobs. If n_jobs=NULL, the number of jobs is determined automatically}
+\item{n.jobs}{Nearest Neighbors and Jaccard coefficients will be computed in parallel using n_jobs.
+If n_jobs=NULL, the number of jobs is determined automatically}
 
 \item{q.tol}{Tolerance (i.e., precision) for monitoring modularity optimization}
 
-\item{louvain.time.limit}{Maximum number of seconds to run modularity optimization. If exceeded the best result so far is returned}
+\item{louvain.time.limit}{Maximum number of seconds to run modularity optimization. If exceeded the
+best result so far is returned}
 
-\item{nn_method}{Whether to use brute force or kdtree for nearest neighbor search. For very large high-dimensional data sets, brute force (with parallel computation) performs faster than kdtree.}
+\item{nn_method}{Whether to use brute force or kdtree for nearest neighbor search. For very large
+high-dimensional data sets, brute force (with parallel computation) performs faster than kdtree.}
 }
 \description{
 Used to cluster high dimensional data.
-An R wrapper around the Python Phenograph library found at https://github.com/jacoblevine/PhenoGraph
+An R wrapper around the Python Phenograph module found at https://github.com/jacoblevine/PhenoGraph
 }
