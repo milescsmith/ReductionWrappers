@@ -11,124 +11,97 @@ umap(r.data.frame, n.neighbors = 30, min.dist = 0.1,
   negative.sample.rate = 5, verbose = TRUE)
 }
 \arguments{
-\item{n.neighbors:}{numeric (optional, default 30)
-The size of local neighborhood (in terms of number of neighboring
-sample points) used for manifold approximation. Larger values
-result in more global views of the manifold, while smaller
-values result in more local data being preserved. In general
-values should be in the range 2 to 100.}
+\item{n.neighbors}{numeric (optional, default 30) The size of local
+neighborhood (in terms of number of neighboring sample points) used for
+manifold approximation. Larger values result in more global views of the
+manifold, while smaller values result in more local data being preserved.
+In general values should be in the range 2 to 100.}
 
-\item{n.components:}{int (optional, default 3)
-The dimension of the space to embed into. This defaults to 3 to
-provide easy visualization, but can reasonably be set to any
-integer value in the range 2 to 100.}
+\item{min.dist}{numeric (optional, default 0.1) The effective minimum
+distance between embedded points. Smaller values will result in a more
+clustered/clumped embedding where nearby points on the manifold are drawn
+closer together, while larger values will result on a more even dispersal
+of points. The value should be set elative to the "spread" value, which
+determines the scale at which embedded points will be spread out.}
 
-\item{metric:}{string or function (optional, default 'euclidean')
-The metric to use to compute distances in high dimensional space.
-If a string is passed it must match a valid predefined metric. If
-a general metric is required a function that takes two 1d arrays and
-returns a float can be provided. For performance purposes it is
-required that this be a numba jit'd function. Valid string metrics
-include:
-    * euclidean
-    * manhattan
-    * chebyshev
-    * minkowski
-    * canberra
-    * braycurtis
-    * mahalanobis
-    * wminkowski
-    * seuclidean
-    * cosine
-    * correlation
-    * haversine
-    * hamming
-    * jaccard
-    * dice
-    * russelrao
-    * kulsinski
-    * rogerstanimoto
-    * sokalmichener
-    * sokalsneath
-    * yule
-Metrics that take arguments (such as minkowski, mahalanobis etc.)
-can have arguments passed via the metric_kwds dictionary. At this
-time care must be taken and dictionary elements must be ordered
-appropriately; this will hopefully be fixed in the future.}
+\item{n.components}{integer (optional, default 3) The dimension of the space
+to embed into. This defaults to 3 to provide easy visualization, but can
+reasonably be set to any integer value in the range 2 to 100.}
 
-\item{negative.sample.rate:}{int (optional, default 5)
-The number of negative edge/1-simplex samples to use per positive
-edge/1-simplex sample in optimizing the low dimensional embedding.}
+\item{metric}{string or function (optional, default 'euclidean') The metric
+to use to compute distances in high dimensional space. If a string is
+passed it must match a valid predefined metric. If a general metric is
+required a function that takes two 1d arrays and returns a numeric can be
+provided. For performance purposes it is required that this be a numba
+jit'd function. Valid string metrics include: euclidean. manhattan,
+chebyshev, minkowski, canberra, braycurtis, mahalanobis, wminkowski,
+seuclidean, cosine, correlation, haversine, hamming, jaccard, dice,
+russelrao, kulsinski, rogerstanimoto, sokalmichener, sokalsneath, yule/
+Metrics that take arguments (such as minkowski, mahalanobis etc.) can have
+arguments passed via the metric_kwds dictionary. At this time care must be
+taken and dictionary elements must be ordered appropriately; this will
+hopefully be fixed in the future.}
 
-\item{alpha:}{float (optional, default 1.0)
-The initial learning rate for the embedding optimization.}
+\item{init}{string (optional, default 'spectral') How to initialize the low
+dimensional embedding. Options are: * 'spectral': use a spectral embedding
+of the fuzzy 1-skeleton * 'random': assign initial embedding positions at
+random. * A numpy array of initial embedding positions.}
 
-\item{init:}{string (optional, default 'spectral')
-How to initialize the low dimensional embedding. Options are:
-    * 'spectral': use a spectral embedding of the fuzzy 1-skeleton
-    * 'random': assign initial embedding positions at random.
-    * A numpy array of initial embedding positions.}
+\item{alpha}{numeric (optional, default 1.0) The initial learning rate for
+the embedding optimization.}
 
-\item{min.dist:}{float (optional, default 0.1)
-The effective minimum distance between embedded points. Smaller values
-will result in a more clustered/clumped embedding where nearby points
-on the manifold are drawn closer together, while larger values will
-result on a more even dispersal of points. The value should be set
-elative to the ``spread`` value, which determines the scale at which
-embedded points will be spread out.}
+\item{spread}{numeric (optional, default 1.0) The effective scale of embedded
+points. In combination with "min_dist" this determines how
+clustered/clumped the embedded points are.}
 
-\item{spread:}{float (optional, default 1.0)
-The effective scale of embedded points. In combination with ``min_dist``
-this determines how clustered/clumped the embedded points are.}
+\item{bandwidth}{numeric (optional, default 1.0) The effective bandwidth of
+the kernel if we view the algorithm as similar to Laplacian eigenmaps.
+Larger values induce more connectivity and a more global view of the data,
+smaller values concentrate more locally.}
 
-\item{set.op.mix.ratio:}{float (optional, default 1.0)
-Interpolate between (fuzzy) union and intersection as the set operation
-used to combine local fuzzy simplicial sets to obtain a global fuzzy
-simplicial sets. Both fuzzy set operations use the product t-norm.
-The value of this parameter should be between 0.0 and 1.0; a value of
-1.0 will use a pure fuzzy union, while 0.0 will use a pure fuzzy
-intersection.}
+\item{random.state}{int, RandomState instance or NULL (default: NULL) If int,
+random_state is the seed used by the random number generator; If
+RandomState instance, random_state is the random number generator; If NULL,
+the random number generator is the RandomState instance used by
+`np.random`.}
 
-\item{local.connectivity:}{int (optional, default 1)
-The local connectivity required -- i.e. the number of nearest
-neighbors that should be assumed to be connected at a local level.
-The higher this value the more connected the manifold becomes
-locally. In practice this should be not more than the local intrinsic
-dimension of the manifold.}
+\item{angular.rp.forest}{boolean (optional, default FALSE) Whether to use an
+angular random projection forest to initialise the approximate nearest
+neighbor search. This can be faster, but is mostly on useful for metric
+that use an angular style distance such as cosine, correlation etc. In the
+case of those metrics angular forests will be chosen automatically.}
 
-\item{gamma:}{float (optional, default 1.0)
-Weighting applied to negative samples in low dimensional embedding
-optimization. Values higher than one will result in greater weight
-being given to negative samples.}
+\item{set.op.mix.ratio}{numeric (optional, default 1.0) Interpolate between
+(fuzzy) union and intersection as the set operation used to combine local
+fuzzy simplicial sets to obtain a global fuzzy simplicial sets. Both fuzzy
+set operations use the product t-norm. The value of this parameter should
+be between 0.0 and 1.0; a value of 1.0 will use a pure fuzzy union, while
+0.0 will use a pure fuzzy intersection.}
 
-\item{bandwidth:}{float (optional, default 1.0)
-The effective bandwidth of the kernel if we view the algorithm as
-similar to Laplacian eigenmaps. Larger values induce more
-connectivity and a more global view of the data, smaller values
-concentrate more locally.}
+\item{gamma}{numeric (optional, default 1.0) Weighting applied to negative
+samples in low dimensional embedding optimization. Values higher than one
+will result in greater weight being given to negative samples.}
 
-\item{random.state:}{int, RandomState instance or None, optional (default: None)
-If int, random_state is the seed used by the random number generator;
-If RandomState instance, random_state is the random number generator;
-If None, the random number generator is the RandomState instance used
-by `np.random`.}
+\item{negative.sample.rate}{integer (optional, default 5) The number of
+negative edge/1-simplex samples to use per positive edge/1-simplex sample
+in optimizing the low dimensional embedding.}
 
-\item{angular.rp.forest:}{bool (optional, default False)
-Whether to use an angular random projection forest to initialise
-the approximate nearest neighbor search. This can be faster, but is
-mostly on useful for metric that use an angular style distance such
-as cosine, correlation etc. In the case of those metrics angular forests
-will be chosen automatically.}
+\item{local.connectivity}{integer (optional, default 1) The local
+connectivity required -- i.e. the number of nearest neighbors that should
+be assumed to be connected at a local level. The higher this value the more
+connected the manifold becomes locally. In practice this should be not more
+than the local intrinsic dimension of the manifold.}
 
-\item{verbose:}{bool (optional, default False)
-Controls verbosity of logging.}
+\item{verbose:}{boolean (optional, default FALSE) Controls verbosity of
+logging.}
 }
 \description{
-An R wrapper around the UMAP Python module found at https://github.com/lmcinnes/umap
+An R wrapper around the UMAP Python module found at
+https://github.com/lmcinnes/umap
 }
 \details{
 Uniform Manifold Approximation and Projection
 
-Finds a low dimensional embedding of the data that approximates
- an underlying manifold.
+Finds a low dimensional embedding of the data that approximates an underlying
+manifold.
 }

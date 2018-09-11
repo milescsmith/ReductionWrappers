@@ -9,11 +9,14 @@
 \arguments{
 \item{python.dataframe}{Dataframe returned by a Python function}
 
-\item{reduction.save}{Name to use for the reduction (i. e. tsne, umap, etc...)}
+\item{reduction.save}{Name to use for the reduction (i. e. tsne, umap,
+etc...)}
 }
 \value{
-A Seurat object with the dataframe stored in the seuratObj@dr$reduction.use slot
+A Seurat object with the dataframe stored in the
+  seuratObj@dr$reduction.use slot
 }
 \description{
-Helper function to assist entering dimensional reduction data from Python reduction methods
+Helper function to assist entering dimensional reduction data from Python
+reduction methods
 }

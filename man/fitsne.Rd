@@ -13,83 +13,82 @@ fitsne(r.data.frame, no_dims = 2, perplexity = 30, sigma = -30,
   intervals_per_integer = 1, min_num_intervals = 50, nthreads = 0)
 }
 \arguments{
-\item{X:}{np.ndarray, shape (samples x dimensions)
-Input data.}
+\item{X:}{np.ndarray, shape (samples x dimensions) Input data.}
 
-\item{no_dims:}{int, default=2
-Dimensionality of the embedding}
+\item{no_dims:}{integer (default = 2) Dimensionality of the embedding}
 
-\item{perplexity:}{float, default=30.0
-Perplexity is used to determine the bandwidth of the Gaussian kernel in the input space. Set to -1 if using fixed sigma/K (see below)}
+\item{perplexity:}{numeric (default = 30.0) Perplexity is used to determine
+the bandwidth of the Gaussian kernel in the input space. Set to -1 if using
+fixed sigma/K (see below)}
 
-\item{sigma:}{float, default=-30
-Fixed bandwidth of Gaussian kernel to use in lieu of the perplexity-based adaptive kernel width typically used in t-SNE}
+\item{sigma:}{numeric (default = -30) Fixed bandwidth of Gaussian kernel to
+use in lieu of the perplexity-based adaptive kernel width typically used in
+t-SNE}
 
-\item{K:}{int, default=-1
-Number of nearest neighbors to get when using fixed sigma in lieu of perplexity-based adaptive kernel width typically used in t-SNE}
+\item{K:}{integer (default = -1) Number of nearest neighbors to get when
+using fixed sigma in lieu of perplexity-based adaptive kernel width
+typically used in t-SNE}
 
-\item{initialization:}{np.ndarray, shape (samples x no_dims), default=None
-Initialization of the embedded points to use in lieu of the random initialization typically used in t-SNE}
+\item{initialization:}{np.ndarray, shape (samples x no_dims) (default = NULL)
+Initialization of the embedded points to use in lieu of the random
+initialization typically used in t-SNE}
 
-\item{theta:}{float, default=0.5
-Set to 0 for exact.  If non-zero, then will use either Barnes Hut or FIt-SNE based on `fft_not_bh`.
-If Barnes Hut, then this determines the accuracy of BH approximation.}
+\item{theta:}{numeric (default = 0.5) Set to 0 for exact.  If non-zero, then
+will use either Barnes Hut or FIt-SNE based on `fft_not_bh`. If Barnes Hut,
+then this determines the accuracy of BH approximation.}
 
-\item{rand_seed:}{int, default=-1
-Random seed to get deterministic output}
+\item{rand_seed:}{integer (default = -1) Random seed to get deterministic
+output}
 
-\item{max_iter:}{int, default=1000
-Number of iterations of t-SNE to run.}
+\item{max_iter:}{int, (default = 1000) Number of iterations of t-SNE to run.}
 
-\item{stop_lying_iter:}{int, default=200
-When to switch off early exaggeration.}
+\item{stop_lying_iter:}{int, (default = 200) When to switch off early
+exaggeration.}
 
-\item{fft_not_bh:}{bool, default=False
-If theta is nonzero, this determins whether to use FIt-SNE or Barnes Hut approximation.}
+\item{fft_not_bh:}{boolean, (default = FALSE) If theta is nonzero, this
+determins whether to use FIt-SNE or Barnes Hut approximation.}
 
-\item{ann_not_vptree:}{bool, default=False
-This determines whether to use aproximate (Annoy) or deterministic (vptree) nearest neighbours}
+\item{ann_not_vptree:}{boolean, (default=FALSE) This determines whether to
+use aproximate (Annoy) or deterministic (vptree) nearest neighbours}
 
-\item{early_exag_coeff:}{float, default=12.0
-When to switch off early exaggeration. (>1)}
+\item{early_exag_coeff:}{numeric (default = 12.0) When to switch off early
+exaggeration. (>1)}
 
-\item{no_momentum_during_exag:}{bool=False
-Set to 0 to use momentum and other optimization tricks.
-1 to do plain, vanilla gradient descent (useful for testing large exaggeration coefficients)}
+\item{no_momentum_during_exag:}{boolean (default = FALSE) Set to 0 to use
+momentum and other optimization tricks. 1 to do plain, vanilla gradient
+descent (useful for testing large exaggeration coefficients)}
 
-\item{start_late_exag_iter:}{int, default=-1
-When to start late exaggeration. Set to -1 to not use late exaggeration}
+\item{start_late_exag_iter:}{int, (default=-1) When to start late
+exaggeration. Set to -1 to not use late exaggeration}
 
-\item{late_exag_coeff:}{float, default=-1
-Late exaggeration coefficient. Set to -1 to not use late exaggeration.}
+\item{late_exag_coeff:}{float, (default=-1) Late exaggeration coefficient.
+Set to -1 to not use late exaggeration.}
 
-\item{n_trees:}{int, default=50
-ANNOY parameter}
+\item{n_trees:}{integer (default = 50) ANNOY parameter}
 
-\item{search_k:}{int, default=-1
-ANNOY parameter}
+\item{search_k:}{integer (default = -1) ANNOY parameter}
 
-\item{nterms:}{int, default=3
-If using FIt-SNE, this is the number of interpolation points per
-sub-interval}
+\item{nterms:}{integer (default = 3) If using FIt-SNE, this is the number of
+interpolation points per sub-interval}
 
-\item{intervals_per_integer:}{float, default=1
-See min_num_intervals}
+\item{intervals_per_integer:}{numeric (default = 1) See min_num_intervals}
 
-\item{min_num_intervals:}{int, default=50
-Let maxloc = ceil(max(max(X))) and minloc = floor(min(min(X))). i.e.
-the points are in a [minloc]^no_dims by [maxloc]^no_dims
-interval/square.  The number of intervals in each dimension is either
-min_num_intervals or ceil((maxloc -minloc)/opts.intervals_per_integer),
-whichever is larger.  opts.min_num_intervals must be an integer >0, and
+\item{min_num_intervals:}{integer (default = 50) Let maxloc =
+ceil(max(max(X))) and minloc = floor(min(min(X))). i.e. the points are in a
+[minloc]^no_dims by [maxloc]^no_dims interval/square.  The number of
+intervals in each dimension is either min_num_intervals or ceil((maxloc
+-minloc)/opts.intervals_per_integer), whichever is larger.
+opts.min_num_intervals must be an integer >0, and
 opts.intervals_per_integer must be >0.}
 
-\item{nthreads:}{unsigned int, default=0
-Number of threads to be used in computation of input similarities (both for vptrees and ann). 0 uses the maximum number of threads supported by the hardware.}
+\item{nthreads:}{unsigned integer (default = 0) Number of threads to be used
+in computation of input similarities (both for vptrees and ann). 0 uses the
+maximum number of threads supported by the hardware.}
 }
 \value{
 dataframe
 }
 \description{
-An R wrapper for the FIt-SNE Python module found at https://github.com/KlugerLab/FIt-SNE
+An R wrapper for the FIt-SNE Python module found at
+https://github.com/KlugerLab/FIt-SNE
 }

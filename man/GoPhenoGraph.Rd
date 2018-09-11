@@ -8,18 +8,22 @@ GoPhenoGraph(seuratObj, reduction.use = "pca", k = 30,
   prefix = "community", ...)
 }
 \arguments{
-\item{reduction.use}{Dimensional reduction to use for clustering calculations (i.e. pca, ica, cca, etc...)}
+\item{reduction.use}{Dimensional reduction to use for clustering calculations
+(i.e. pca, ica, cca, etc...)}
 
-\item{k}{Number of nearest neighbors to use in first step of graph construction (default = 30)
-If a list of integers is passed, Phenograph will be run with each value and the last will
-be used to set seuratObj@ident.}
+\item{k}{Number of nearest neighbors to use in first step of graph
+construction (default = 30) If a list of integers is passed, Phenograph
+will be run with each value and the last will be used to set
+seuratObj@ident.}
 
-\item{prefix}{String prefix to used as in the column name entered in the meta.data slot}
+\item{prefix}{String prefix to used as in the column name entered in the
+meta.data slot}
 
 \item{...}{Extra parameters to pass to the phenograph function.}
 }
 \value{
-A Seurat object with community information stored in seuratObj@meta.data$prefix# columns, where # = k
+A Seurat object with community information stored in
+  seuratObj@meta.data$prefix# columns, where # = k
 }
 \description{
 Perform community clustering using Phenograph

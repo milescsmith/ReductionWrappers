@@ -7,9 +7,7 @@
 GoDCA(seuratObj, ...)
 }
 \arguments{
-\item{...}{Extra parameters to pass to the phenograph function.}
-
-\item{prefix}{String prefix to used as in the column name entered in the meta.data slot}
+\item{...}{Extra parameters to pass to the dca function.}
 }
 \value{
 A Seurat object with imputed data stored in seuratObj@dr$dca slot

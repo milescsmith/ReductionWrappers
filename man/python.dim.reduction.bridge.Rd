@@ -8,15 +8,18 @@ python.dim.reduction.bridge(seuratObj, reduction.use, reduction.save,
   function.use, ...)
 }
 \arguments{
-\item{reduction.use}{Prior dimensional reduction to use for calculations (i.e. pca, ica, cca, etc...)}
+\item{reduction.use}{Prior dimensional reduction to use for calculations
+(i.e. pca, ica, cca, etc...)}
 
-\item{reduction.save}{Name to use for the reduction (i. e. tsne, umap, etc...)}
+\item{reduction.save}{Name to use for the reduction (i. e. tsne, umap,
+etc...)}
 
 \item{function.use}{Dimensional reduction function to call.}
 
 \item{...}{Extra parameters to pass to the dimensional reduction function.}
 }
 \description{
-Generalized helper function that pulls the data from a Seurat object, passes the dataframe to a Python function
-and places the resulting dataframe in the appropriate slot
+Generalized helper function that pulls the data from a Seurat object, passes
+the dataframe to a Python function and places the resulting dataframe in the
+appropriate slot
 }

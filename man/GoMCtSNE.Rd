@@ -8,14 +8,17 @@ GoMCtSNE(seuratObj, reduction.use = "pca", reduction.save = "tsne",
   ...)
 }
 \arguments{
-\item{reduction.use}{Prior dimensional reduction to use for calculations (i.e. pca, ica, cca, etc...). (default: pca)}
+\item{reduction.use}{Prior dimensional reduction to use for calculations
+(i.e. pca, ica, cca, etc...). (default: pca)}
 
-\item{reduction.save}{Name to use for the reduction (i. e. tsne, umap, etc...). (default: tsne)}
+\item{reduction.save}{Name to use for the reduction (i. e. tsne, umap,
+etc...). (default: tsne)}
 
 \item{...}{Extra parameters to pass to the multicoreTSNE function.}
 }
 \value{
-Seurat object with the tSNE projection stored in the seuratObj@dr$tsne slot (unless otherwise specified)
+Seurat object with the tSNE projection stored in the
+  seuratObj@dr$tsne slot (unless otherwise specified)
 }
 \description{
 Run tSNE projection on a Seurat object using the MulticoreTSNE function

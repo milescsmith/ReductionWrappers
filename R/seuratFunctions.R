@@ -1,14 +1,17 @@
 #' dim.from.python
 #'
-#' Helper function to assist entering dimensional reduction data from Python reduction methods
+#' Helper function to assist entering dimensional reduction data from Python
+#' reduction methods
 #'
 #' @param seuratObj
 #' @param python.dataframe Dataframe returned by a Python function
-#' @param reduction.save Name to use for the reduction (i. e. tsne, umap, etc...)
+#' @param reduction.save Name to use for the reduction (i. e. tsne, umap,
+#'   etc...)
 #'
 #' @importFrom Seurat SetDimReduction
 #'
-#' @return A Seurat object with the dataframe stored in the seuratObj@dr$reduction.use slot
+#' @return A Seurat object with the dataframe stored in the
+#'   seuratObj@dr$reduction.use slot
 #' @export
 #'
 #' @examples
@@ -28,12 +31,15 @@ dim.from.python <- function(seuratObj, python.dataframe, reduction.save){
 
 #' python.dim.reduction.bridge
 #'
-#' Generalized helper function that pulls the data from a Seurat object, passes the dataframe to a Python function
-#' and places the resulting dataframe in the appropriate slot
+#' Generalized helper function that pulls the data from a Seurat object, passes
+#' the dataframe to a Python function and places the resulting dataframe in the
+#' appropriate slot
 #'
 #' @param seuratObj
-#' @param reduction.use Prior dimensional reduction to use for calculations (i.e. pca, ica, cca, etc...)
-#' @param reduction.save Name to use for the reduction (i. e. tsne, umap, etc...)
+#' @param reduction.use Prior dimensional reduction to use for calculations
+#'   (i.e. pca, ica, cca, etc...)
+#' @param reduction.save Name to use for the reduction (i. e. tsne, umap,
+#'   etc...)
 #' @param function.use Dimensional reduction function to call.
 #' @param ... Extra parameters to pass to the dimensional reduction function.
 #'
@@ -61,11 +67,14 @@ python.dim.reduction.bridge <- function(seuratObj,
 #' Run tSNE projection on a Seurat object using the MulticoreTSNE function
 #'
 #' @param seuratObj
-#' @param reduction.use Prior dimensional reduction to use for calculations (i.e. pca, ica, cca, etc...). (default: pca)
-#' @param reduction.save Name to use for the reduction (i. e. tsne, umap, etc...). (default: tsne)
+#' @param reduction.use Prior dimensional reduction to use for calculations
+#'   (i.e. pca, ica, cca, etc...). (default: pca)
+#' @param reduction.save Name to use for the reduction (i. e. tsne, umap,
+#'   etc...). (default: tsne)
 #' @param ... Extra parameters to pass to the multicoreTSNE function.
 #'
-#' @return Seurat object with the tSNE projection stored in the seuratObj@dr$tsne slot (unless otherwise specified)
+#' @return Seurat object with the tSNE projection stored in the
+#'   seuratObj@dr$tsne slot (unless otherwise specified)
 #' @export
 #'
 #' @examples
@@ -86,11 +95,14 @@ GoMCtSNE <- function(seuratObj,
 #' Run tSNE projection on a Seurat object using the FIt-SNE function
 #'
 #' @param seuratObj
-#' @param reduction.use Prior dimensional reduction to use for calculations (i.e. pca, ica, cca, etc...). (default: pca)
-#' @param reduction.save Name to use for the reduction (i. e. tsne, umap, etc...). (default: fitsne)
+#' @param reduction.use Prior dimensional reduction to use for calculations
+#'   (i.e. pca, ica, cca, etc...). (default: pca)
+#' @param reduction.save Name to use for the reduction (i. e. tsne, umap,
+#'   etc...). (default: fitsne)
 #' @param ... Extra parameters to pass to the FIt-SNE function.
 #'
-#' @return Seurat object with the tSNE projection stored in the seuratObj@dr$tsne slot (unless otherwise specified)
+#' @return Seurat object with the tSNE projection stored in the
+#'   seuratObj@dr$tsne slot (unless otherwise specified)
 #' @export
 #'
 #' @examples
@@ -109,11 +121,14 @@ GofitSNE <- function(seuratObj,
 #' GoUMAP
 #'
 #' @param seuratObj
-#' @param reduction.use Prior dimensional reduction to use for calculations (i.e. pca, ica, cca, etc...). (default: pca)
-#' @param reduction.save Name to use for the reduction (i. e. tsne, umap, etc...). (default: umap)
+#' @param reduction.use Prior dimensional reduction to use for calculations
+#'   (i.e. pca, ica, cca, etc...). (default: pca)
+#' @param reduction.save Name to use for the reduction (i. e. tsne, umap,
+#'   etc...). (default: umap)
 #' @param ... Extra parameters to pass to the umap function.
 #'
-#' @return Seurat object with the UMAP projection stored in the seuratObj@dr$umap slot (unless otherwise specified)
+#' @return Seurat object with the UMAP projection stored in the
+#'   seuratObj@dr$umap slot (unless otherwise specified)
 #' @export
 #'
 #' @examples
@@ -135,11 +150,14 @@ GoUMAP <- function(seuratObj,
 #' Project trajectory-based dimensional reduction using PHATE
 #'
 #' @param seuratObj
-#' @param reduction.use Prior dimensional reduction to use for calculations (i.e. pca, ica, cca, etc...). (default: pca)
-#' @param reduction.save Name to use for the reduction (i. e. tsne, umap, etc...). (default: phate)
+#' @param reduction.use Prior dimensional reduction to use for calculations
+#'   (i.e. pca, ica, cca, etc...). (default: pca)
+#' @param reduction.save Name to use for the reduction (i. e. tsne, umap,
+#'   etc...). (default: phate)
 #' @param ... Extra parameters to pass to the phate function.
 #'
-#' @return Seurat object with the PHATE projection stored in the seuratObj@dr$phate slot (unless otherwise specified)
+#' @return Seurat object with the PHATE projection stored in the
+#'   seuratObj@dr$phate slot (unless otherwise specified)
 #' @export
 #'
 #' @examples
@@ -160,16 +178,20 @@ GoPHATE <- function(seuratObj,
 #' Perform community clustering using Phenograph
 #'
 #' @param seuratObj
-#' @param reduction.use Dimensional reduction to use for clustering calculations (i.e. pca, ica, cca, etc...)
-#' @param k Number of nearest neighbors to use in first step of graph construction (default = 30)
-#'      If a list of integers is passed, Phenograph will be run with each value and the last will
-#'      be used to set seuratObj@ident.
-#' @param prefix String prefix to used as in the column name entered in the meta.data slot
+#' @param reduction.use Dimensional reduction to use for clustering calculations
+#'   (i.e. pca, ica, cca, etc...)
+#' @param k Number of nearest neighbors to use in first step of graph
+#'   construction (default = 30) If a list of integers is passed, Phenograph
+#'   will be run with each value and the last will be used to set
+#'   seuratObj@ident.
+#' @param prefix String prefix to used as in the column name entered in the
+#'   meta.data slot
 #' @param ... Extra parameters to pass to the phenograph function.
 #'
 #' @importFrom Seurat GetDimReduction SetAllIdent
 #'
-#' @return A Seurat object with community information stored in seuratObj@meta.data$prefix# columns, where # = k
+#' @return A Seurat object with community information stored in
+#'   seuratObj@meta.data$prefix# columns, where # = k
 #' @export
 #'
 #' @examples
@@ -194,17 +216,21 @@ GoPhenoGraph <- function(seuratObj,
 #' Use deep count autoencoder to impute data
 #'
 #' @param seuratObj
-#' @param prefix String prefix to used as in the column name entered in the meta.data slot
-#' @param ... Extra parameters to pass to the phenograph function.
+#' @param ... Extra parameters to pass to the dca function.
 #'
-#' @importFrom Seurat GetDimReduction SetAllIdent
+#' @importFrom Seurat SetAssayData
+#' @importFrom magrittr %>%
 #'
 #' @return A Seurat object with imputed data stored in seuratObj@dr$dca slot
 #' @export
 #'
 #' @examples
 GoDCA <- function(seuratObj, ...){
-
-  seuratObj <- SetAllIdent(seuratObj, paste0(prefix,value))
+  exprs <- seuratObj@meta.data %>% as.matrix() %>% t()
+  dca_exprs <- dca(exprs)
+  seuratObj <- SetAssayData(object = seuratObj,
+                            assay.type = "dca",
+                            slot = "data",
+                            new.data = dca_exprs)
   return(seuratObj)
 }

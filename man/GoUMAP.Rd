@@ -7,14 +7,17 @@
 GoUMAP(seuratObj, reduction.use = "pca", reduction.save = "umap", ...)
 }
 \arguments{
-\item{reduction.use}{Prior dimensional reduction to use for calculations (i.e. pca, ica, cca, etc...). (default: pca)}
+\item{reduction.use}{Prior dimensional reduction to use for calculations
+(i.e. pca, ica, cca, etc...). (default: pca)}
 
-\item{reduction.save}{Name to use for the reduction (i. e. tsne, umap, etc...). (default: umap)}
+\item{reduction.save}{Name to use for the reduction (i. e. tsne, umap,
+etc...). (default: umap)}
 
 \item{...}{Extra parameters to pass to the umap function.}
 }
 \value{
-Seurat object with the UMAP projection stored in the seuratObj@dr$umap slot (unless otherwise specified)
+Seurat object with the UMAP projection stored in the
+  seuratObj@dr$umap slot (unless otherwise specified)
 }
 \description{
 GoUMAP

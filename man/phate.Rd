@@ -10,77 +10,69 @@ phate(n.components = 3, k = 5, a = 15, n.landmark = 2000,
   random.state = NULL, verbose = 1)
 }
 \arguments{
-\item{k}{integer, optional, default: 5
-number of nearest neighbors on which to build kernel}
+\item{k}{integer (default: 5) number of nearest neighbors on which to build
+kernel}
 
-\item{a}{integer, optional, default: 15
-sets decay rate of kernel tails.
-If None, alpha decaying kernel is not used}
+\item{a}{integer, (default: 15) sets decay rate of kernel tails. If NULL,
+alpha decaying kernel is not used}
 
-\item{t}{integer, optional, default: 'auto'
-power to which the diffusion operator is powered.
-This sets the level of diffusion. If 'auto', t is selected
-according to the knee point in the Von Neumann Entropy of
-the diffusion operator}
+\item{t}{integer (default: 'auto') power to which the diffusion operator is
+powered. This sets the level of diffusion. If 'auto', t is selected
+according to the knee point in the Von Neumann Entropy of the diffusion
+operator}
 
-\item{gamma}{numeric, optional, default: 1
-Informational distance constant between -1 and 1.
-`gamma=1` gives the PHATE log potential, `gamma=0` gives
-a square root potential.}
+\item{gamma}{numeric (default: 1) Informational distance constant between -1
+and 1. "gamma=1" gives the PHATE log potential, "gamma=0` gives a square
+root potential.}
 
-\item{mds}{string, optional, default: 'metric'
-choose from ['classic', 'metric', 'nonmetric'].
-Selects which MDS algorithm is used for dimensionality reduction}
+\item{mds}{string (default: 'metric') choose from ['classic', 'metric',
+'nonmetric']. Selects which MDS algorithm is used for dimensionality
+reduction}
 
-\item{verbose}{`integer` or `boolean`, optional (default: 1)
-If `True` or `> 0`, print status messages}
+\item{verbose}{integer or boolean (default: 1) If "TRUE` or "> 0", print
+status messages}
 
-\item{n_components}{integer, optional, default: 2
-number of dimensions in which the data will be embedded}
+\item{n_components}{integer (default: 2) number of dimensions in which the
+data will be embedded}
 
-\item{n_landmark}{integer, optional, default: 2000
-number of landmarks to use in fast PHATE}
+\item{n_landmark}{integer, default: 2000 number of landmarks to use in fast
+PHATE}
 
-\item{n_pca}{integer, optional, default: 100
-Number of principal components to use for calculating
-neighborhoods. For extremely large datasets, using
-n_pca < 20 allows neighborhoods to be calculated in
-roughly log(n_samples) time.}
+\item{n_pca}{integer (default: 100) Number of principal components to use for
+calculating neighborhoods. For extremely large datasets, using n_pca < 20
+allows neighborhoods to be calculated in roughly log(n_samples) time.}
 
-\item{knn_dist}{character, optional, default: 'euclidean'
-recommended values: 'euclidean', 'cosine', 'precomputed'
-Any metric from `scipy.spatial.distance` can be used
-distance metric for building kNN graph. If 'precomputed',
-`data` should be an n_samples x n_samples distance or
-affinity matrix. Distance matrices are assumed to have zeros
-down the diagonal, while affinity matrices are assumed to have
-non-zero values down the diagonal. This is detected automatically using
-`data[0,0]`. You can override this detection with
-`knn_dist='precomputed_distance'` or `knn_dist='precomputed_affinity'`.}
+\item{knn_dist}{character (default: 'euclidean') recommended values:
+'euclidean', 'cosine', 'precomputed' Any metric from
+"scipy.spatial.distance` can be used distance metric for building kNN
+graph. If 'precomputed', "data` should be an n_samples x n_samples distance
+or affinity matrix. Distance matrices are assumed to have zeros down the
+diagonal, while affinity matrices are assumed to have non-zero values down
+the diagonal. This is detected automatically using "data[0,0]`. You can
+override this detection with "knn_dist='precomputed_distance'` or
+"knn_dist='precomputed_affinity'`.}
 
-\item{mds_dist}{character, optional, default: 'euclidean'
-recommended values: 'euclidean' and 'cosine'
-Any metric from `scipy.spatial.distance` can be used
-distance metric for MDS}
+\item{mds_dist}{character (default: 'euclidean') recommended values:
+'euclidean' and 'cosine' Any metric from "scipy.spatial.distance` can be
+used distance metric for MDS}
 
-\item{n_jobs}{integer, optional, default: 1
-The number of jobs to use for the computation.
-If -1 all CPUs are used. If 1 is given, no parallel computing code is
-used at all, which is useful for debugging.
-For n_jobs below -1, (n_cpus + 1 + n_jobs) are used. Thus for
-n_jobs = -2, all CPUs but one are used}
+\item{n_jobs}{integer (default: 1) The number of jobs to use for the
+computation. If -1 all CPUs are used. If 1 is given, no parallel computing
+code is used at all, which is useful for debugging. For n_jobs below -1,
+(n_cpus + 1 + n_jobs) are used. Thus for n_jobs = -2, all CPUs but one are
+used}
 
-\item{random_state}{integer or numpy.RandomState, optional, default: None
-The generator used to initialize SMACOF (metric, nonmetric) MDS
-If an integer is given, it fixes the seed
-Defaults to the global `numpy` random number generator}
+\item{random_state}{integer or numpy.RandomState (default: NULL) The
+generator used to initialize SMACOF (metric, nonmetric) MDS If an integer
+is given, it fixes the seed defaults to the global "numpy` random number
+generator}
 }
 \description{
-An R wrapper around the PHATE Python module found at https://github.com/KrishnaswamyLab/PHATE
+An R wrapper around the PHATE Python module found at
+https://github.com/KrishnaswamyLab/PHATE
 }
 \details{
-Potential of Heat-diffusion for Affinity-based Trajectory Embedding
-(PHATE) embeds high dimensional single-cell data into two or three
-dimensions for visualization of biological progressions as described
-in Moon et al, 2017
+Potential of Heat-diffusion for Affinity-based Trajectory Embedding (PHATE)
+embeds high dimensional single-cell data into two or three dimensions for
+visualization of biological progressions as described in Moon et al, 2017
 }
