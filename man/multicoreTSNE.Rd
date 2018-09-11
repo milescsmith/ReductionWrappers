@@ -47,8 +47,8 @@ of 50.}
 \item{min.grad.norm}{numeric (default: 1e-7) If the gradient norm is below
 this threshold, the optimization will be stopped.}
 
-\item{metric}{string or callable The metric to use when calculating distance
-between instances in a feature array. If metric is a string, it must be one
+\item{metric}{character or callable The metric to use when calculating distance
+between instances in a feature array. If metric is a character, it must be one
 of the options allowed by scipy.spatial.distance.pdist for its metric
 parameter, or a metric listed in pairwise.PAIRWISE.DISTANCE.FUNCTIONS. If
 metric is “precomputed”, X is assumed to be a distance matrix.
@@ -58,7 +58,7 @@ take two arrays from X as input and return a value indicating the distance
 between them. The default is “euclidean” which is interpreted as squared
 euclidean distance.}
 
-\item{init}{string or numpy array (default: “random”) Initialization of
+\item{init}{character or numpy array (default: “random”) Initialization of
 embedding. Possible options are ‘random’, ‘pca’, and a numpy array of shape
 (n.samples, n.components). PCA initialization cannot be used with
 precomputed distances and is usually more globally stable than random
@@ -73,7 +73,7 @@ the random number generator is the RandomState instance used by np.random.
 Note that different initializations might result in different local minima
 of the cost function.}
 
-\item{method}{string (default: ‘barnes.hut’) By default the gradient
+\item{method}{character (default: ‘barnes.hut’) By default the gradient
 calculation algorithm uses Barnes-Hut approximation running in O(NlogN)
 time. method=’exact’ will run on the slower, but exact, algorithm in O(N^2)
 time. The exact algorithm should be used when nearest-neighbor errors need

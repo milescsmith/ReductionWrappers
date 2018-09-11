@@ -25,7 +25,7 @@ operator}
 and 1. "gamma=1" gives the PHATE log potential, "gamma=0` gives a square
 root potential.}
 
-\item{mds}{string (default: 'metric') choose from ['classic', 'metric',
+\item{mds}{character (default: 'metric') choose from ['classic', 'metric',
 'nonmetric']. Selects which MDS algorithm is used for dimensionality
 reduction}
 

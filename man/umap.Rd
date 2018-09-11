@@ -28,12 +28,12 @@ determines the scale at which embedded points will be spread out.}
 to embed into. This defaults to 3 to provide easy visualization, but can
 reasonably be set to any integer value in the range 2 to 100.}
 
-\item{metric}{string or function (optional, default 'euclidean') The metric
-to use to compute distances in high dimensional space. If a string is
+\item{metric}{character or function (optional, default 'euclidean') The metric
+to use to compute distances in high dimensional space. If a character is
 passed it must match a valid predefined metric. If a general metric is
 required a function that takes two 1d arrays and returns a numeric can be
 provided. For performance purposes it is required that this be a numba
-jit'd function. Valid string metrics include: euclidean. manhattan,
+jit'd function. Valid character metrics include: euclidean. manhattan,
 chebyshev, minkowski, canberra, braycurtis, mahalanobis, wminkowski,
 seuclidean, cosine, correlation, haversine, hamming, jaccard, dice,
 russelrao, kulsinski, rogerstanimoto, sokalmichener, sokalsneath, yule/
@@ -42,7 +42,7 @@ arguments passed via the metric_kwds dictionary. At this time care must be
 taken and dictionary elements must be ordered appropriately; this will
 hopefully be fixed in the future.}
 
-\item{init}{string (optional, default 'spectral') How to initialize the low
+\item{init}{character (optional, default 'spectral') How to initialize the low
 dimensional embedding. Options are: * 'spectral': use a spectral embedding
 of the fuzzy 1-skeleton * 'random': assign initial embedding positions at
 random. * A numpy array of initial embedding positions.}

@@ -32,8 +32,8 @@
 #'   of 50.
 #' @param min.grad.norm numeric (default: 1e-7) If the gradient norm is below
 #'   this threshold, the optimization will be stopped.
-#' @param metric string or callable The metric to use when calculating distance
-#'   between instances in a feature array. If metric is a string, it must be one
+#' @param metric character or callable The metric to use when calculating distance
+#'   between instances in a feature array. If metric is a character, it must be one
 #'   of the options allowed by scipy.spatial.distance.pdist for its metric
 #'   parameter, or a metric listed in pairwise.PAIRWISE.DISTANCE.FUNCTIONS. If
 #'   metric is “precomputed”, X is assumed to be a distance matrix.
@@ -42,7 +42,7 @@
 #'   take two arrays from X as input and return a value indicating the distance
 #'   between them. The default is “euclidean” which is interpreted as squared
 #'   euclidean distance.
-#' @param init string or numpy array (default: “random”) Initialization of
+#' @param init character or numpy array (default: “random”) Initialization of
 #'   embedding. Possible options are ‘random’, ‘pca’, and a numpy array of shape
 #'   (n.samples, n.components). PCA initialization cannot be used with
 #'   precomputed distances and is usually more globally stable than random
@@ -54,7 +54,7 @@
 #'   the random number generator is the RandomState instance used by np.random.
 #'   Note that different initializations might result in different local minima
 #'   of the cost function.
-#' @param method string (default: ‘barnes.hut’) By default the gradient
+#' @param method character (default: ‘barnes.hut’) By default the gradient
 #'   calculation algorithm uses Barnes-Hut approximation running in O(NlogN)
 #'   time. method=’exact’ will run on the slower, but exact, algorithm in O(N^2)
 #'   time. The exact algorithm should be used when nearest-neighbor errors need
@@ -260,12 +260,12 @@ fitsne <- function(r.data.frame,
 #' @param n.components integer (optional, default 3) The dimension of the space
 #'   to embed into. This defaults to 3 to provide easy visualization, but can
 #'   reasonably be set to any integer value in the range 2 to 100.
-#' @param metric string or function (optional, default 'euclidean') The metric
-#'   to use to compute distances in high dimensional space. If a string is
+#' @param metric character or function (optional, default 'euclidean') The metric
+#'   to use to compute distances in high dimensional space. If a character is
 #'   passed it must match a valid predefined metric. If a general metric is
 #'   required a function that takes two 1d arrays and returns a numeric can be
 #'   provided. For performance purposes it is required that this be a numba
-#'   jit'd function. Valid string metrics include: euclidean. manhattan,
+#'   jit'd function. Valid character metrics include: euclidean. manhattan,
 #'   chebyshev, minkowski, canberra, braycurtis, mahalanobis, wminkowski,
 #'   seuclidean, cosine, correlation, haversine, hamming, jaccard, dice,
 #'   russelrao, kulsinski, rogerstanimoto, sokalmichener, sokalsneath, yule/
@@ -278,7 +278,7 @@ fitsne <- function(r.data.frame,
 #'   in optimizing the low dimensional embedding.
 #' @param alpha numeric (optional, default 1.0) The initial learning rate for
 #'   the embedding optimization.
-#' @param init string (optional, default 'spectral') How to initialize the low
+#' @param init character (optional, default 'spectral') How to initialize the low
 #'   dimensional embedding. Options are: * 'spectral': use a spectral embedding
 #'   of the fuzzy 1-skeleton * 'random': assign initial embedding positions at
 #'   random. * A numpy array of initial embedding positions.
@@ -404,7 +404,7 @@ umap <- function(r.data.frame,
 #' @param mds_dist character (default: 'euclidean') recommended values:
 #'   'euclidean' and 'cosine' Any metric from "scipy.spatial.distance` can be
 #'   used distance metric for MDS
-#' @param mds string (default: 'metric') choose from ['classic', 'metric',
+#' @param mds character (default: 'metric') choose from ['classic', 'metric',
 #'   'nonmetric']. Selects which MDS algorithm is used for dimensionality
 #'   reduction
 #' @param n_jobs integer (default: 1) The number of jobs to use for the
@@ -542,14 +542,16 @@ phenograph <- function(r.data.frame,
 #'
 #' Performs denoising of gene expression using dca
 #' (https://github.com/theislab/dca)
+#' Some arguments have been removed due to being troublesome in the R-Python
+#' interface
 #'
 #' @param exprDat Unnomalized, unscaled gene expression matrix, with cell names
 #'   as rows and gene names as columns
-#' @param mode string. "denoise"(default), or "latent".  "denoise"
+#' @param mode character. "denoise"(default), or "latent".  "denoise"
 #'   overwrites "adata.X" with denoised expression values.  In "latent" mode DCA
 #'   adds "adata.obsm["X_dca"]" to given adata object. This matrix represent
 #'   latent representation of cells via DCA.
-#' @param ae_type string. "zinb-conddisp"(default), "zinb",
+#' @param ae_type character. "zinb-conddisp"(default), "zinb",
 #'   "nb-conddisp" or "nb".  Type of the autoencoder. Return values and the
 #'   architecture is determined by the type e.g. "nb" does not provide dropout
 #'   probabilities.
@@ -566,19 +568,12 @@ phenograph <- function(r.data.frame,
 #' @param log1p boolean (default: TRUE).  If true, the input of the
 #'   autoencoder is log transformed with a pseudocount of one using
 #'   "sc.pp.log1p" function of Scanpy.
-#' @param hidden_size "tuple" or "list". (default: c(64, 32, 64)).
-#'   Width of hidden layers.
-#' @param hidden_dropout "float", "tuple" or "list". (default: 0.0).
-#'   Probability of weight dropout in the autoencoder (per layer if list or
-#'   tuple).
 #' @param batchnorm boolean (default: TRUE).  If true, batch
 #'   normalization is performed.
 #' @param activation str (default: "relu").  Activation function of
 #'   hidden layers.
 #' @param init str (default: "glorot_uniform").  Initialization
 #'   method used to initialize weights.
-#' @param network_kwds dict. Additional keyword arguments for the
-#'   autoencoder.
 #' @param epochs integer (default: 300).  Number of total epochs in
 #'   training.
 #' @param reduce_lr integer (default: 10).  Reduces learning rate if
@@ -595,8 +590,6 @@ phenograph <- function(r.data.frame,
 #'   to use in training. All cores are used by default.
 #' @param verbose boolean (default: FALSE).  If true, prints
 #'   additional information about training and architecture.
-#' @param training_kwds dict.  Additional keyword arguments for
-#'   the training process.
 #' @param return_model boolean (default: FALSE).  If true, trained
 #'   autoencoder object is returned. See "Returns".
 #' @param return_info boolean (default: FALSE).  If true, all
@@ -606,18 +599,24 @@ phenograph <- function(r.data.frame,
 #'   zinb-conddisp.
 #' @param copy boolean (default: FALSE). If true, a copy of anndata
 #'   is returned.
+#'
+#' @importFrom reticulate import py_module_available dict
+#' @importFrom parallel detectCores
+#' @importFrom glue glue
+#'
+#' @return
+#' @export
+#'
+#' @examples
 dca <- function(exprDat,
                 mode = 'denoise',
                 ae_type = 'zinb-conddisp',
                 normalize_per_cell = TRUE,
                 scale = TRUE,
                 log1p = TRUE,
-                hidden_size = c(64, 32, 64), # network args
-                hidden_dropout = 0.0,
                 batchnorm = TRUE,
                 activation = 'relu',
                 init = 'glorot_uniform',
-                network_kwds = list(),
                 epochs = 300,               # training args
                 reduce_lr = 10,
                 early_stop = 15,
@@ -626,7 +625,6 @@ dca <- function(exprDat,
                 random_state = 0,
                 threads = NULL,
                 verbose = TRUE,
-                training_kwds = list(),
                 return_model = FALSE,
                 return_info = FALSE,
                 copy = FALSE){
@@ -642,41 +640,48 @@ dca <- function(exprDat,
          install the module.")
   }
 
+  if(is.null(threads)){
+    threads <- detectCores()
+  }
+
   dca.module <- import(module = 'dca.api', delay_load = TRUE)
   scanpy.module <- import(module = 'scanpy.api', delay_load = TRUE)
 
   cell.names <- rownames(exprDat)
   gene.names <- colnames(exprDat)
-  adata <- scanpy.module$AnnData(exprDat, obs=cell.names, var=gene.names)
+
+  adata <- scanpy.module$AnnData(exprDat,
+                                 obs = cell.names,
+                                 var = gene.names)
   adata$obs_names <- cell.names
   adata$var_names <- gene.names
-  scanpy.module$pp$filter_genes(data = adata, min_counts = as.integer(1))
-  scanpy.module$pp$filter_genes(data = adata, min_cells = as.integer(3))
-  dca.module$dca(adata,
-                 mode,
-                 ae_type,
-                 normalize_per_cell,
-                 scale,
-                 log1p,
-                 hidden_size,
-                 hidden_dropout,
-                 batchnorm,
-                 activation,
-                 init,
-                 network_kwds,
-                 epochs,
-                 reduce_lr,
-                 early_stop,
-                 batch_size,
-                 optimizer,
-                 random_state,
-                 threads,
-                 verbose,
-                 training_kwds,
-                 return_model,
-                 return_info,
-                 copy)
-  conv = adata$data %>% t()
+  scanpy.module$pp$filter_genes(data = adata,
+                                min_counts = as.integer(1))
+  scanpy.module$pp$filter_genes(data = adata,
+                                min_cells = as.integer(3))
+
+  dca.module$dca(adata = adata,
+                 mode = mode,
+                 ae_type = ae_type,
+                 normalize_per_cell = normalize_per_cell,
+                 scale = scale,
+                 log1p = log1p,
+                 batchnorm = batchnorm,
+                 activation = activation,
+                 init = init,
+                 epochs = as.integer(epochs),
+                 reduce_lr = as.integer(reduce_lr),
+                 early_stop = as.integer(early_stop),
+                 batch_size = as.integer(batch_size),
+                 optimizer = optimizer,
+                 random_state = as.integer(random_state),
+                 threads = as.integer(threads),
+                 verbose = verbose,
+                 return_model = return_model,
+                 return_info = return_info,
+                 copy = copy)
+
+  conv <- adata$data %>% t()
   colnames(conv) <- adata$obs_names$values
   rownames(conv) <- glue("DCA_{adata$var_names$values}")
   return(conv)

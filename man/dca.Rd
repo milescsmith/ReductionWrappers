@@ -6,24 +6,22 @@
 \usage{
 dca(exprDat, mode = "denoise", ae_type = "zinb-conddisp",
   normalize_per_cell = TRUE, scale = TRUE, log1p = TRUE,
-  hidden_size = c(64, 32, 64), hidden_dropout = 0, batchnorm = TRUE,
-  activation = "relu", init = "glorot_uniform",
-  network_kwds = list(), epochs = 300, reduce_lr = 10,
-  early_stop = 15, batch_size = 32, optimizer = "rmsprop",
-  random_state = 0, threads = NULL, verbose = TRUE,
-  training_kwds = list(), return_model = FALSE, return_info = FALSE,
+  batchnorm = TRUE, activation = "relu", init = "glorot_uniform",
+  epochs = 300, reduce_lr = 10, early_stop = 15, batch_size = 32,
+  optimizer = "rmsprop", random_state = 0, threads = NULL,
+  verbose = TRUE, return_model = FALSE, return_info = FALSE,
   copy = FALSE)
 }
 \arguments{
 \item{exprDat}{Unnomalized, unscaled gene expression matrix, with cell names
 as rows and gene names as columns}
 
-\item{mode}{string. "denoise"(default), or "latent".  "denoise"
+\item{mode}{character. "denoise"(default), or "latent".  "denoise"
 overwrites "adata.X" with denoised expression values.  In "latent" mode DCA
 adds "adata.obsm["X_dca"]" to given adata object. This matrix represent
 latent representation of cells via DCA.}
 
-\item{ae_type}{string. "zinb-conddisp"(default), "zinb",
+\item{ae_type}{character. "zinb-conddisp"(default), "zinb",
 "nb-conddisp" or "nb".  Type of the autoencoder. Return values and the
 architecture is determined by the type e.g. "nb" does not provide dropout
 probabilities.}
@@ -44,13 +42,6 @@ count data.}
 autoencoder is log transformed with a pseudocount of one using
 "sc.pp.log1p" function of Scanpy.}
 
-\item{hidden_size}{"tuple" or "list". (default: c(64, 32, 64)).
-Width of hidden layers.}
-
-\item{hidden_dropout}{"float", "tuple" or "list". (default: 0.0).
-Probability of weight dropout in the autoencoder (per layer if list or
-tuple).}
-
 \item{batchnorm}{boolean (default: TRUE).  If true, batch
 normalization is performed.}
 
@@ -59,9 +50,6 @@ hidden layers.}
 
 \item{init}{str (default: "glorot_uniform").  Initialization
 method used to initialize weights.}
-
-\item{network_kwds}{dict. Additional keyword arguments for the
-autoencoder.}
 
 \item{epochs}{integer (default: 300).  Number of total epochs in
 training.}
@@ -87,9 +75,6 @@ to use in training. All cores are used by default.}
 \item{verbose}{boolean (default: FALSE).  If true, prints
 additional information about training and architecture.}
 
-\item{training_kwds}{dict.  Additional keyword arguments for
-the training process.}
-
 \item{return_model}{boolean (default: FALSE).  If true, trained
 autoencoder object is returned. See "Returns".}
 
@@ -105,4 +90,6 @@ is returned.}
 \description{
 Performs denoising of gene expression using dca
 (https://github.com/theislab/dca)
+Some arguments have been removed due to being troublesome in the R-Python
+interface
 }

@@ -226,7 +226,7 @@ GoPhenoGraph <- function(seuratObj,
 #'
 #' @examples
 GoDCA <- function(seuratObj, ...){
-  exprs <- seuratObj@meta.data %>% as.matrix() %>% t()
+  exprs <- seuratObj@raw.data %>% as.matrix() %>% t()
   dca_exprs <- dca(exprs)
   seuratObj <- SetAssayData(object = seuratObj,
                             assay.type = "dca",
