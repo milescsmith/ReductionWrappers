@@ -4,50 +4,50 @@
 \alias{phate}
 \title{phate}
 \usage{
-phate(n.components = 3, k = 5, a = 15, n.landmark = 2000, t = "auto",
-  gamma = 1, n.pca = 100, knn.dist = "euclidean",
+phate(n.components = 3, k = 5, a = 15, n.landmark = 2000,
+  t = "auto", gamma = 1, n.pca = 100, knn.dist = "euclidean",
   mds.dist = "euclidean", mds = "metric", n.jobs = NULL,
   random.state = NULL, verbose = 1)
 }
 \arguments{
-\item{k}{: integer, optional, default: 5
+\item{k}{integer, optional, default: 5
 number of nearest neighbors on which to build kernel}
 
-\item{a}{: integer, optional, default: 15
+\item{a}{integer, optional, default: 15
 sets decay rate of kernel tails.
 If None, alpha decaying kernel is not used}
 
-\item{t}{: integer, optional, default: 'auto'
+\item{t}{integer, optional, default: 'auto'
 power to which the diffusion operator is powered.
 This sets the level of diffusion. If 'auto', t is selected
 according to the knee point in the Von Neumann Entropy of
 the diffusion operator}
 
-\item{gamma}{: numeric, optional, default: 1
+\item{gamma}{numeric, optional, default: 1
 Informational distance constant between -1 and 1.
 `gamma=1` gives the PHATE log potential, `gamma=0` gives
 a square root potential.}
 
-\item{mds}{: string, optional, default: 'metric'
+\item{mds}{string, optional, default: 'metric'
 choose from ['classic', 'metric', 'nonmetric'].
 Selects which MDS algorithm is used for dimensionality reduction}
 
-\item{verbose}{: `integer` or `boolean`, optional (default: 1)
+\item{verbose}{`integer` or `boolean`, optional (default: 1)
 If `True` or `> 0`, print status messages}
 
-\item{n_components}{: integer, optional, default: 2
+\item{n_components}{integer, optional, default: 2
 number of dimensions in which the data will be embedded}
 
-\item{n_landmark}{: integer, optional, default: 2000
+\item{n_landmark}{integer, optional, default: 2000
 number of landmarks to use in fast PHATE}
 
-\item{n_pca}{: integer, optional, default: 100
+\item{n_pca}{integer, optional, default: 100
 Number of principal components to use for calculating
 neighborhoods. For extremely large datasets, using
 n_pca < 20 allows neighborhoods to be calculated in
 roughly log(n_samples) time.}
 
-\item{knn_dist}{: character, optional, default: 'euclidean'
+\item{knn_dist}{character, optional, default: 'euclidean'
 recommended values: 'euclidean', 'cosine', 'precomputed'
 Any metric from `scipy.spatial.distance` can be used
 distance metric for building kNN graph. If 'precomputed',
@@ -58,19 +58,19 @@ non-zero values down the diagonal. This is detected automatically using
 `data[0,0]`. You can override this detection with
 `knn_dist='precomputed_distance'` or `knn_dist='precomputed_affinity'`.}
 
-\item{mds_dist}{: character, optional, default: 'euclidean'
+\item{mds_dist}{character, optional, default: 'euclidean'
 recommended values: 'euclidean' and 'cosine'
 Any metric from `scipy.spatial.distance` can be used
 distance metric for MDS}
 
-\item{n_jobs}{: integer, optional, default: 1
+\item{n_jobs}{integer, optional, default: 1
 The number of jobs to use for the computation.
 If -1 all CPUs are used. If 1 is given, no parallel computing code is
 used at all, which is useful for debugging.
 For n_jobs below -1, (n_cpus + 1 + n_jobs) are used. Thus for
 n_jobs = -2, all CPUs but one are used}
 
-\item{random_state}{: integer or numpy.RandomState, optional, default: None
+\item{random_state}{integer or numpy.RandomState, optional, default: None
 The generator used to initialize SMACOF (metric, nonmetric) MDS
 If an integer is given, it fixes the seed
 Defaults to the global `numpy` random number generator}

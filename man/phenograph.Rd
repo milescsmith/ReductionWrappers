@@ -5,9 +5,9 @@
 \title{Phenograph}
 \usage{
 phenograph(r.data.frame, k = 30, directed = FALSE, prune = FALSE,
-  min.cluster.size = 10, jaccard = TRUE, primary.metric = "euclidean",
-  n.jobs = NULL, q.tol = 0.001, louvain.time.limit = 2000,
-  nn_method = "kdtree")
+  min.cluster.size = 10, jaccard = TRUE,
+  primary.metric = "euclidean", n.jobs = NULL, q.tol = 0.001,
+  louvain.time.limit = 2000, nn_method = "kdtree")
 }
 \arguments{
 \item{r.data.frame}{data to cluster, or sparse matrix of k-nearest neighbor graph

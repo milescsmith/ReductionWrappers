@@ -3,37 +3,37 @@
 #' An R wrapper for the Multicore-TSNE Python module found at https://github.com/DmitryUlyanov/Multicore-TSNE
 #'
 #' @param r.data.frame
-#' @param n.components : int, optional (default: 3)
+#' @param n.components int, optional (default: 3)
 #'      Dimension of the embedded space.
-#' @param perplexity : float, optional (default: 30)
+#' @param perplexity float, optional (default: 30)
 #'      The perplexity is related to the number of nearest neighbors
 #'      that is used in other manifold learning algorithms. Larger
 #'      datasets usually require a larger perplexity. Consider selecting
 #'      a value between 5 and 50. The choice is not extremely critical since
 #'      t-SNE is quite insensitive to this parameter.
-#' @param early.exaggeration : float, optional (default: 12.0)
+#' @param early.exaggeration float, optional (default: 12.0)
 #'      Controls how tight natural clusters in the original space are in the
 #'      embedded space and how much space will be between them. For larger
 #'      values, the space between natural clusters will be larger in the
 #'      embedded space. Again, the choice of this parameter is not very
 #'      critical. If the cost function increases during initial optimization,
 #'      the early exaggeration factor or the learning rate might be too high.
-#' @param learning.rate : float, optional (default: 200.0)
+#' @param learning.rate float, optional (default: 200.0)
 #'      The learning rate for t-SNE is usually in the range [10.0, 1000.0].
 #'      If the learning rate is too high, the data may look like a ‘ball’
 #'      with any point approximately equidistant from its nearest neighbours.
 #'      If the learning rate is too low, most points may look compressed in a
 #'      dense cloud with few outliers. If the cost function gets stuck in a
 #'      bad local minimum increasing the learning rate may help.
-#' @param n.iter : int, optional (default: 1000)
+#' @param n.iter int, optional (default: 1000)
 #'      Maximum number of iterations for the optimization. Should be at least 250.
-#' @param n.iter.without.progress : int, optional (default: 300)
+#' @param n.iter.without.progress int, optional (default: 300)
 #'      Maximum number of iterations without progress before we abort the optimization,
 #'      used after 250 initial iterations with early exaggeration. Note that progress
 #'      is only checked every 50 iterations so this value is rounded to the next multiple of 50.
-#' @param min.grad.norm : float, optional (default: 1e-7)
+#' @param min.grad.norm float, optional (default: 1e-7)
 #'      If the gradient norm is below this threshold, the optimization will be stopped.
-#' @param metric : string or callable, optional
+#' @param metric string or callable, optional
 #'      The metric to use when calculating distance between instances in a feature
 #'      array. If metric is a string, it must be one of the options allowed by
 #'      scipy.spatial.distance.pdist for its metric parameter, or a metric listed
@@ -43,23 +43,23 @@
 #'      The callable should take two arrays from X as input and return a value indicating
 #'      the distance between them. The default is “euclidean” which is interpreted as squared
 #'      euclidean distance.
-#' @param init : string or numpy array, optional (default: “random”)
+#' @param init string or numpy array, optional (default: “random”)
 #'      Initialization of embedding. Possible options are ‘random’, ‘pca’, and a numpy array
 #'      of shape (n.samples, n.components). PCA initialization cannot be used with precomputed
 #'      distances and is usually more globally stable than random initialization.
-#' @param verbose : int, optional (default: 0)
+#' @param verbose int, optional (default: 0)
 #'      Verbosity level.
-#' @param random.state : int, RandomState instance or None, optional (default: None)
+#' @param random.state int, RandomState instance or None, optional (default: None)
 #'      If int, random.state is the seed used by the random number generator; If RandomState
 #'      instance, random.state is the random number generator; If None, the random number
 #'      generator is the RandomState instance used by np.random. Note that different
 #'      initializations might result in different local minima of the cost function.
-#' @param method : string (default: ‘barnes.hut’)
+#' @param method string (default: ‘barnes.hut’)
 #'      By default the gradient calculation algorithm uses Barnes-Hut approximation running in
 #'      O(NlogN) time. method=’exact’ will run on the slower, but exact, algorithm in O(N^2) time.
 #'      The exact algorithm should be used when nearest-neighbor errors need to be better than 3%.
 #'      However, the exact method cannot scale to millions of examples.
-#' @param angle : float (default: 0.5)
+#' @param angle float (default: 0.5)
 #'      Only used if method=’barnes.hut’ This is the trade-off between speed and accuracy for
 #'      Barnes-Hut T-SNE. ‘angle’ is the angular size (referred to as theta in [3]) of a distant node
 #'      as measured from a point. If this size is below ‘angle’ then it is used as a summary node of
@@ -90,7 +90,7 @@ multicoreTSNE <- function(r.data.frame,
                           angle = 0.5,
                           n.jobs = NULL,
                           cheat.metric = TRUE
-                          ){
+){
   if(!py_module_available('MulticoreTSNE')){
     stop("The MulticoreTSNE module is unavailable.  Please activate the appropriate environment or install the module.")
   }
@@ -116,6 +116,127 @@ multicoreTSNE <- function(r.data.frame,
                                         cheat_metric = cheat.metric)
   mctsne.df <- mctsne$fit_transform(r.data.frame)
   return(mctsne.df)
+}
+
+#' FIt-SNE
+#'
+#' An R wrapper for the FIt-SNE Python module found at https://github.com/KlugerLab/FIt-SNE
+#'
+#' @param X: np.ndarray, shape (samples x dimensions)
+#' Input data.
+#' @param no_dims: int, default=2
+#' Dimensionality of the embedding
+#' @param perplexity: float, default=30.0
+#' Perplexity is used to determine the bandwidth of the Gaussian kernel in the input space. Set to -1 if using fixed sigma/K (see below)
+#' @param sigma: float, default=-30
+#' Fixed bandwidth of Gaussian kernel to use in lieu of the perplexity-based adaptive kernel width typically used in t-SNE
+#' @param K: int, default=-1
+#' Number of nearest neighbors to get when using fixed sigma in lieu of perplexity-based adaptive kernel width typically used in t-SNE
+#' @param initialization: np.ndarray, shape (samples x no_dims), default=None
+#' Initialization of the embedded points to use in lieu of the random initialization typically used in t-SNE
+#' @param theta: float, default=0.5
+#' Set to 0 for exact.  If non-zero, then will use either Barnes Hut or FIt-SNE based on `fft_not_bh`.
+#' If Barnes Hut, then this determines the accuracy of BH approximation.
+#' @param rand_seed: int, default=-1
+#' Random seed to get deterministic output
+#' @param max_iter: int, default=1000
+#' Number of iterations of t-SNE to run.
+#' @param stop_lying_iter: int, default=200
+#' When to switch off early exaggeration.
+#' @param fft_not_bh: bool, default=False
+#' If theta is nonzero, this determins whether to use FIt-SNE or Barnes Hut approximation.
+#' @param ann_not_vptree: bool, default=False
+#' This determines whether to use aproximate (Annoy) or deterministic (vptree) nearest neighbours
+#' @param early_exag_coeff: float, default=12.0
+#' When to switch off early exaggeration. (>1)
+#' @param no_momentum_during_exag: bool=False
+#' Set to 0 to use momentum and other optimization tricks.
+#' 1 to do plain, vanilla gradient descent (useful for testing large exaggeration coefficients)
+#' @param start_late_exag_iter: int, default=-1
+#' When to start late exaggeration. Set to -1 to not use late exaggeration
+#' @param late_exag_coeff: float, default=-1
+#' Late exaggeration coefficient. Set to -1 to not use late exaggeration.
+#' @param n_trees: int, default=50
+#' ANNOY parameter
+#' @param search_k: int, default=-1
+#' ANNOY parameter
+#' @param nterms: int, default=3
+#' If using FIt-SNE, this is the number of interpolation points per
+#' sub-interval
+#' @param intervals_per_integer: float, default=1
+#' See min_num_intervals
+#' @param min_num_intervals: int, default=50
+#' Let maxloc = ceil(max(max(X))) and minloc = floor(min(min(X))). i.e.
+#' the points are in a [minloc]^no_dims by [maxloc]^no_dims
+#' interval/square.  The number of intervals in each dimension is either
+#' min_num_intervals or ceil((maxloc -minloc)/opts.intervals_per_integer),
+#' whichever is larger.  opts.min_num_intervals must be an integer >0, and
+#' opts.intervals_per_integer must be >0.
+#' @param nthreads: unsigned int, default=0
+#' Number of threads to be used in computation of input similarities (both for vptrees and ann). 0 uses the maximum number of threads supported by the hardware.
+#'
+#' @importFrom reticulate import
+#' @importFrom parallel detectCores
+#'
+#' @return dataframe
+#' @export
+#'
+#' @examples
+fitsne <- function(r.data.frame,
+                   no_dims=2,
+                   perplexity=30.0,
+                   sigma=-30.0,
+                   K=-1,
+                   initialization=NULL,
+                   theta=0.5,
+                   rand_seed=-1,
+                   max_iter=1000,
+                   stop_lying_iter=200,
+                   fft_not_bh=TRUE,
+                   ann_not_vptree=TRUE,
+                   early_exag_coeff=12.0,
+                   no_momentum_during_exag=FALSE,
+                   start_late_exag_iter=-1,
+                   late_exag_coeff=-1,
+                   n_trees=50,
+                   search_k=-1,
+                   nterms=3,
+                   intervals_per_integer=1,
+                   min_num_intervals=50,
+                   nthreads=0
+){
+  if(!py_module_available('fitsne')){
+    stop("The fitsne module is unavailable.  Please activate the appropriate environment or install the module.")
+  }
+
+  fitsne.module <- import(module = 'fitsne', delay_load = TRUE)
+  numpy.module <- import(module = 'numpy', delay_load = TRUE)
+  if (is.null(nthreads)){
+    nthreads <- detectCores()
+  }
+  fitsne.df <- fitsne.module$FItSNE(X = numpy.module$copy(r.data.frame, order = "C"),
+                                    no_dims = as.integer(no_dims),
+                                    perplexity = as.numeric(perplexity),
+                                    sigma = as.numeric(sigma),
+                                    K = as.integer(K),
+                                    initialization = initialization,
+                                    theta = as.numeric(theta),
+                                    rand_seed = as.integer(rand_seed),
+                                    max_iter = as.integer(max_iter),
+                                    stop_lying_iter = as.integer(stop_lying_iter),
+                                    fft_not_bh = fft_not_bh,
+                                    ann_not_vptree = ann_not_vptree,
+                                    early_exag_coeff = as.numeric(early_exag_coeff),
+                                    no_momentum_during_exag = no_momentum_during_exag,
+                                    start_late_exag_iter = as.integer(start_late_exag_iter),
+                                    late_exag_coeff = as.numeric(late_exag_coeff),
+                                    n_trees = as.integer(n_trees),
+                                    search_k = as.integer(search_k),
+                                    nterms = as.integer(nterms),
+                                    intervals_per_integer = as.numeric(intervals_per_integer),
+                                    min_num_intervals = as.integer(min_num_intervals),
+                                    nthreads = as.integer(nthreads))
+  return(fitsne.df)
 }
 
 #' umap
@@ -278,30 +399,30 @@ umap <- function(r.data.frame,
 #' dimensions for visualization of biological progressions as described
 #' in Moon et al, 2017
 #'
-#' @param n_components : integer, optional, default: 2
+#' @param n_components integer, optional, default: 2
 #'     number of dimensions in which the data will be embedded
-#' @param k : integer, optional, default: 5
+#' @param k integer, optional, default: 5
 #'     number of nearest neighbors on which to build kernel
-#' @param a : integer, optional, default: 15
+#' @param a integer, optional, default: 15
 #'     sets decay rate of kernel tails.
 #'     If None, alpha decaying kernel is not used
-#' @param n_landmark : integer, optional, default: 2000
+#' @param n_landmark integer, optional, default: 2000
 #'     number of landmarks to use in fast PHATE
-#' @param t : integer, optional, default: 'auto'
+#' @param t integer, optional, default: 'auto'
 #'     power to which the diffusion operator is powered.
 #'     This sets the level of diffusion. If 'auto', t is selected
 #'     according to the knee point in the Von Neumann Entropy of
 #'     the diffusion operator
-#' @param gamma : numeric, optional, default: 1
+#' @param gamma numeric, optional, default: 1
 #'     Informational distance constant between -1 and 1.
 #'     `gamma=1` gives the PHATE log potential, `gamma=0` gives
 #'     a square root potential.
-#' @param n_pca : integer, optional, default: 100
+#' @param n_pca integer, optional, default: 100
 #'     Number of principal components to use for calculating
 #'     neighborhoods. For extremely large datasets, using
 #'     n_pca < 20 allows neighborhoods to be calculated in
 #'     roughly log(n_samples) time.
-#' @param knn_dist : character, optional, default: 'euclidean'
+#' @param knn_dist character, optional, default: 'euclidean'
 #'     recommended values: 'euclidean', 'cosine', 'precomputed'
 #'     Any metric from `scipy.spatial.distance` can be used
 #'     distance metric for building kNN graph. If 'precomputed',
@@ -311,24 +432,24 @@ umap <- function(r.data.frame,
 #'     non-zero values down the diagonal. This is detected automatically using
 #'     `data[0,0]`. You can override this detection with
 #'     `knn_dist='precomputed_distance'` or `knn_dist='precomputed_affinity'`.
-#' @param mds_dist : character, optional, default: 'euclidean'
+#' @param mds_dist character, optional, default: 'euclidean'
 #'     recommended values: 'euclidean' and 'cosine'
 #'     Any metric from `scipy.spatial.distance` can be used
 #'     distance metric for MDS
-#' @param mds : string, optional, default: 'metric'
+#' @param mds string, optional, default: 'metric'
 #'     choose from ['classic', 'metric', 'nonmetric'].
 #'     Selects which MDS algorithm is used for dimensionality reduction
-#' @param n_jobs : integer, optional, default: 1
+#' @param n_jobs integer, optional, default: 1
 #'     The number of jobs to use for the computation.
 #'     If -1 all CPUs are used. If 1 is given, no parallel computing code is
 #'     used at all, which is useful for debugging.
 #'     For n_jobs below -1, (n_cpus + 1 + n_jobs) are used. Thus for
 #'     n_jobs = -2, all CPUs but one are used
-#' @param random_state : integer or numpy.RandomState, optional, default: None
+#' @param random_state integer or numpy.RandomState, optional, default: None
 #'     The generator used to initialize SMACOF (metric, nonmetric) MDS
 #'     If an integer is given, it fixes the seed
 #'     Defaults to the global `numpy` random number generator
-#' @param verbose : `integer` or `boolean`, optional (default: 1)
+#' @param verbose `integer` or `boolean`, optional (default: 1)
 #'     If `True` or `> 0`, print status messages
 #'
 #' @importFrom reticulate import
@@ -371,7 +492,7 @@ phate <- function(n.components = 3,
                                     n_jobs = as.integer(n.jobs),
                                     random_state = random.state,
                                     verbose = as.integer(verbose)
-                                    )
+  )
   phate.df <- phate.embed$fit_transform(r.data.frame)
   return(phate.df)
 }
@@ -445,3 +566,44 @@ phenograph <- function(r.data.frame,
   return(communities)
 }
 
+#' Deep count autoencoder
+#'
+#' Performs denoising of gene expression using dca (https://github.com/theislab/dca)
+#'
+#'
+#'
+#' @param exprDat Unnomalized, unscaled gene expression matrix, with cell names as rows and gene names as columns
+#' @param ... Additional arguments to pass to dca
+#'
+#' @importFrom reticulate import py_module_available
+#' @importFrom magrittr %>%
+#' @importFrom glue glue
+#'
+#' @return
+#' @export
+#'
+#' @examples
+dca <- function(exprDat, ...){
+  if(!py_module_available('dca')){
+    stop("The DCA module is unavailable.  Please activate the appropriate environment or install the module.")
+  }
+  if(!py_module_available('scanpy')){
+    stop("The scanpy module is unavailable.  Please activate the appropriate environment or install the module.")
+  }
+
+  dca.module <- import(module = 'dca.api', delay_load = TRUE)
+  scanpy.module <- import(module = 'scanpy.api', delay_load = TRUE)
+
+  cell.names <- rownames(exprDat)
+  gene.names <- colnames(exprDat)
+  adata <- scanpy.module$AnnData(exprDat, obs=cell.names, var=gene.names)
+  adata$obs_names <- cell.names
+  adata$var_names <- gene.names
+  scanpy.module$pp$filter_genes(data = adata, min_counts = 1)
+  scanpy.module$pp$filter_genes(data = adata, min_cells = 3)
+  dca.module$dca(adata, verbose = TRUE, ...)
+  conv = adata$data %>% t()
+  colnames(conv) <- adata$obs_names$values
+  rownames(conv) <- glue("DCA_{adata$var_names$values}")
+  return(conv)
+}

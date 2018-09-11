@@ -81,6 +81,30 @@ GoMCtSNE <- function(seuratObj,
   return(seuratObj)
 }
 
+#' GofitSNE
+#'
+#' Run tSNE projection on a Seurat object using the FIt-SNE function
+#'
+#' @param seuratObj
+#' @param reduction.use Prior dimensional reduction to use for calculations (i.e. pca, ica, cca, etc...). (default: pca)
+#' @param reduction.save Name to use for the reduction (i. e. tsne, umap, etc...). (default: fitsne)
+#' @param ... Extra parameters to pass to the FIt-SNE function.
+#'
+#' @return Seurat object with the tSNE projection stored in the seuratObj@dr$tsne slot (unless otherwise specified)
+#' @export
+#'
+#' @examples
+GofitSNE <- function(seuratObj,
+                     reduction.use = 'pca',
+                     reduction.save = 'fitsne',
+                     ...){
+  seuratObj <- python.dim.reduction.bridge(seuratObj,
+                                           reduction.use = reduction.use,
+                                           reduction.save = reduction.save,
+                                           function.use = fitsne,
+                                           ...)
+  return(seuratObj)
+}
 
 #' GoUMAP
 #'
@@ -161,6 +185,26 @@ GoPhenoGraph <- function(seuratObj,
     communities <- phenograph(ce, k = value, ...)
     seuratObj@meta.data[,paste0(prefix,value)] <- communities
   }
+  seuratObj <- SetAllIdent(seuratObj, paste0(prefix,value))
+  return(seuratObj)
+}
+
+#' GoDCA
+#'
+#' Use deep count autoencoder to impute data
+#'
+#' @param seuratObj
+#' @param prefix String prefix to used as in the column name entered in the meta.data slot
+#' @param ... Extra parameters to pass to the phenograph function.
+#'
+#' @importFrom Seurat GetDimReduction SetAllIdent
+#'
+#' @return A Seurat object with imputed data stored in seuratObj@dr$dca slot
+#' @export
+#'
+#' @examples
+GoDCA <- function(seuratObj, ...){
+
   seuratObj <- SetAllIdent(seuratObj, paste0(prefix,value))
   return(seuratObj)
 }

@@ -4,7 +4,8 @@
 \alias{GoPHATE}
 \title{GoPHATE}
 \usage{
-GoPHATE(seuratObj, reduction.use = "pca", reduction.save = "phate", ...)
+GoPHATE(seuratObj, reduction.use = "pca", reduction.save = "phate",
+  ...)
 }
 \arguments{
 \item{reduction.use}{Prior dimensional reduction to use for calculations (i.e. pca, ica, cca, etc...). (default: pca)}

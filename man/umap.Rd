@@ -4,11 +4,11 @@
 \alias{umap}
 \title{umap}
 \usage{
-umap(r.data.frame, n.neighbors = 30, min.dist = 0.1, n.components = 3,
-  metric = "euclidean", init = "spectral", alpha = 1, spread = 1,
-  bandwidth = 1, random.state = NULL, angular.rp.forest = FALSE,
-  set.op.mix.ratio = 1, gamma = 1, negative.sample.rate = 5,
-  verbose = TRUE)
+umap(r.data.frame, n.neighbors = 30, min.dist = 0.1,
+  n.components = 3, metric = "euclidean", init = "spectral",
+  alpha = 1, spread = 1, bandwidth = 1, random.state = NULL,
+  angular.rp.forest = FALSE, set.op.mix.ratio = 1, gamma = 1,
+  negative.sample.rate = 5, verbose = TRUE)
 }
 \arguments{
 \item{n.neighbors:}{numeric (optional, default 30)
