@@ -4,7 +4,7 @@ R wrappers around dimensionality reduction methods found in Python modules.  Use
   * [UMAP (Uniform Manifold Approximation and Projection)](https://github.com/lmcinnes/umap)
   * [PHATE (Potential of Heat-diffusion for Affinity-based Trajectory Embedding)](https://www.biorxiv.org/content/early/2017/03/24/120378)
   * [PhenoGraph](https://github.com/jacoblevine/PhenoGraph)
+    * [Deep count autoencoder](https://github.com/theislab/dca)
   
 To be added shortly:
   * [UNCURL](https://github.com/yjzhang/uncurl_python)
-  * [Deep count autoencoder](https://github.com/theislab/dca)
