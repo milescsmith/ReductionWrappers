@@ -276,7 +276,7 @@ fitsne <- function(r.data.frame,
 #' @param negative.sample.rate integer (optional, default 5) The number of
 #'   negative edge/1-simplex samples to use per positive edge/1-simplex sample
 #'   in optimizing the low dimensional embedding.
-#' @param alpha numeric (optional, default 1.0) The initial learning rate for
+#' @param initial_alpha numeric (optional, default 1.0) The initial learning rate for
 #'   the embedding optimization.
 #' @param init character (optional, default 'spectral') How to initialize the low
 #'   dimensional embedding. Options are: * 'spectral': use a spectral embedding
@@ -334,7 +334,7 @@ umap <- function(r.data.frame,
                  n.components = 3,
                  metric = 'euclidean',
                  init = 'spectral',
-                 alpha = 1.0,
+                 initial_alpha = 1.0,
                  spread = 1.0,
                  bandwidth = 1.0,
                  random.state = NULL,
@@ -352,7 +352,7 @@ umap <- function(r.data.frame,
                                  n_components = as.integer(n.components),
                                  metric = metric,
                                  init = init,
-                                 alpha = as.numeric(alpha),
+                                 initial_alpha = as.numeric(initial_alpha),
                                  spread = as.numeric(spread),
                                  bandwidth = as.numeric(bandwidth),
                                  random_state = random.state,
