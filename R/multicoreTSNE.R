@@ -90,8 +90,7 @@ multicoreTSNE <- function(r.data.frame,
                           random.state = NULL,
                           method = 'barnes_hut',
                           angle = 0.5,
-                          n.jobs = NULL,
-                          cheat.metric = TRUE
+                          n.jobs = NULL
 ){
   if(!py_module_available('MulticoreTSNE')){
     stop("The MulticoreTSNE module is unavailable.  Please activate the appropriate environment or install the module.")
@@ -114,8 +113,8 @@ multicoreTSNE <- function(r.data.frame,
                                         random_state = random.state,
                                         method = method,
                                         angle = as.numeric(angle),
-                                        n_jobs = n.jobs,
-                                        cheat_metric = cheat.metric)
+                                        n_jobs = n.jobs)
+
   mctsne.df <- mctsne$fit_transform(r.data.frame)
   return(mctsne.df)
 }

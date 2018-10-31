@@ -9,7 +9,7 @@ multicoreTSNE(r.data.frame, n.components = 3, perplexity = 30,
   n.iter.without.progress = 300, min.grad.norm = 1e-07,
   metric = "euclidean", init = "random", verbose = 1,
   random.state = NULL, method = "barnes_hut", angle = 0.5,
-  n.jobs = NULL, cheat.metric = TRUE)
+  n.jobs = NULL)
 }
 \arguments{
 \item{n.components}{integer (default: 3) Dimension of the embedded space.}
