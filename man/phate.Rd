@@ -4,17 +4,23 @@
 \alias{phate}
 \title{phate}
 \usage{
-phate(n.components = 3, k = 5, a = 15, n.landmark = 2000,
-  t = "auto", gamma = 1, n.pca = 100, knn.dist = "euclidean",
-  mds.dist = "euclidean", mds = "metric", n.jobs = NULL,
+phate(n_components = 3, k = 5, a = 15, n_landmark = 2000,
+  t = "auto", gamma = 1, n_pca = 100, knn_dist = "euclidean",
+  mds_dist = "euclidean", mds = "metric", n_jobs = NULL,
   random.state = NULL, verbose = 1)
 }
 \arguments{
+\item{n_components}{integer (default: 3) number of dimensions in which the
+data will be embedded}
+
 \item{k}{integer (default: 5) number of nearest neighbors on which to build
 kernel}
 
 \item{a}{integer, (default: 15) sets decay rate of kernel tails. If NULL,
 alpha decaying kernel is not used}
+
+\item{n_landmark}{integer, default: 2000 number of landmarks to use in fast
+PHATE}
 
 \item{t}{integer (default: 'auto') power to which the diffusion operator is
 powered. This sets the level of diffusion. If 'auto', t is selected
@@ -24,19 +30,6 @@ operator}
 \item{gamma}{numeric (default: 1) Informational distance constant between -1
 and 1. "gamma=1" gives the PHATE log potential, "gamma=0` gives a square
 root potential.}
-
-\item{mds}{character (default: 'metric') choose from ['classic', 'metric',
-'nonmetric']. Selects which MDS algorithm is used for dimensionality
-reduction}
-
-\item{verbose}{integer or boolean (default: 1) If "TRUE` or "> 0", print
-status messages}
-
-\item{n_components}{integer (default: 2) number of dimensions in which the
-data will be embedded}
-
-\item{n_landmark}{integer, default: 2000 number of landmarks to use in fast
-PHATE}
 
 \item{n_pca}{integer (default: 100) Number of principal components to use for
 calculating neighborhoods. For extremely large datasets, using n_pca < 20
@@ -56,11 +49,18 @@ override this detection with "knn_dist='precomputed_distance'` or
 'euclidean' and 'cosine' Any metric from "scipy.spatial.distance` can be
 used distance metric for MDS}
 
+\item{mds}{character (default: 'metric') choose from ['classic', 'metric',
+'nonmetric']. Selects which MDS algorithm is used for dimensionality
+reduction}
+
 \item{n_jobs}{integer (default: 1) The number of jobs to use for the
 computation. If -1 all CPUs are used. If 1 is given, no parallel computing
 code is used at all, which is useful for debugging. For n_jobs below -1,
 (n_cpus + 1 + n_jobs) are used. Thus for n_jobs = -2, all CPUs but one are
 used}
+
+\item{verbose}{integer or boolean (default: 1) If "TRUE` or "> 0", print
+status messages}
 
 \item{random_state}{integer or numpy.RandomState (default: NULL) The
 generator used to initialize SMACOF (metric, nonmetric) MDS If an integer

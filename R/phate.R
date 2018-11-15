@@ -7,7 +7,7 @@
 #' embeds high dimensional single-cell data into two or three dimensions for
 #' visualization of biological progressions as described in Moon et al, 2017
 #'
-#' @param n_components integer (default: 2) number of dimensions in which the
+#' @param n_components integer (default: 3) number of dimensions in which the
 #'   data will be embedded
 #' @param k integer (default: 5) number of nearest neighbors on which to build
 #'   kernel
@@ -59,37 +59,37 @@
 #' @export
 #'
 #' @examples
-phate <- function(n.components = 3,
+phate <- function(n_components = 3,
                   k = 5,
                   a = 15,
-                  n.landmark = 2000,
+                  n_landmark = 2000,
                   t = 'auto',
                   gamma = 1,
-                  n.pca = 100,
-                  knn.dist = 'euclidean',
-                  mds.dist = 'euclidean',
+                  n_pca = 100,
+                  knn_dist = 'euclidean',
+                  mds_dist = 'euclidean',
                   mds = 'metric',
-                  n.jobs = NULL,
+                  n_jobs = NULL,
                   random.state = NULL,
                   verbose = 1){
   if(!py_module_available('phate')){
     stop("The phate module is unavailable.  Please activate the appropriate environment or install the module.")
   }
   phate.module <- import(module = 'phate', delay_load = TRUE)
-  if (is.null(n.jobs)){
-    n.jobs <- detectCores()
+  if (is.null(n_jobs)){
+    n_jobs <- detectCores()
   }
-  phate.embed <- phate.module$PHATE(n_components = as.integer(n.components),
+  phate.embed <- phate.module$PHATE(n_components = as.integer(n_components),
                                     k = as.integer(k),
                                     a = as.integer(a),
-                                    n_landmark = as.integer(n.landmark),
+                                    n_landmark = as.integer(n_landmark),
                                     t = as.integer(t),
                                     gamma = as.numeric(gamma),
-                                    n_pca = as.integer(n.pca),
-                                    knn_dist = knn.dist,
-                                    mds_dist = mds.dist,
+                                    n_pca = as.integer(n_pca),
+                                    knn_dist = knn_dist,
+                                    mds_dist = mds_dist,
                                     mds = mds,
-                                    n_jobs = as.integer(n.jobs),
+                                    n_jobs = as.integer(n_jobs),
                                     random_state = random.state,
                                     verbose = as.integer(verbose)
   )

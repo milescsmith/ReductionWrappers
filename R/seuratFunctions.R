@@ -62,15 +62,15 @@ python.dim.reduction.bridge <- function(seuratObj,
   return(seuratObj)
 }
 
-#' GoMCtSNE
+#' DoMCtSNE
 #'
-#' Run tSNE projection on a Seurat object using the MulticoreTSNE function
+#' Do tSNE projection on a Seurat object using the MulticoreTSNE function
 #'
 #' @param seuratObj
 #' @param reduction.use Prior dimensional reduction to use for calculations
-#'   (i.e. pca, ica, cca, etc...). (default: pca)
+#'   (i.e. pca, ica, cca, etc...). Default: pca
 #' @param reduction.save Name to use for the reduction (i. e. tsne, umap,
-#'   etc...). (default: tsne)
+#'   etc...). Default: tsne
 #' @param ... Extra parameters to pass to the multicoreTSNE function.
 #'
 #' @return Seurat object with the tSNE projection stored in the
@@ -78,7 +78,7 @@ python.dim.reduction.bridge <- function(seuratObj,
 #' @export
 #'
 #' @examples
-GoMCtSNE <- function(seuratObj,
+DoMCtSNE <- function(seuratObj,
                         reduction.use = 'pca',
                         reduction.save = 'tsne',
                         ...){
@@ -90,41 +90,42 @@ GoMCtSNE <- function(seuratObj,
   return(seuratObj)
 }
 
-#' GofitSNE
+#' @title DofastTSNE
 #'
-#' Run tSNE projection on a Seurat object using the FIt-SNE function
+#' @description Do tSNE projection on a Seurat object using the fastTSNE
+#' library, with FIt-SNE selected by default
 #'
 #' @param seuratObj
 #' @param reduction.use Prior dimensional reduction to use for calculations
-#'   (i.e. pca, ica, cca, etc...). (default: pca)
+#'   (i.e. pca, ica, cca, etc...). Default: pca
 #' @param reduction.save Name to use for the reduction (i. e. tsne, umap,
-#'   etc...). (default: fitsne)
-#' @param ... Extra parameters to pass to the FIt-SNE function.
+#'   etc...). Default: fastTSNE
+#' @param ... Extra parameters to pass to the fastTSNE function.
 #'
 #' @return Seurat object with the tSNE projection stored in the
 #'   seuratObj@dr$tsne slot (unless otherwise specified)
 #' @export
 #'
 #' @examples
-GofitSNE <- function(seuratObj,
+DofastTSNE <- function(seuratObj,
                      reduction.use = 'pca',
-                     reduction.save = 'fitsne',
+                     reduction.save = 'fasttsne',
                      ...){
   seuratObj <- python.dim.reduction.bridge(seuratObj,
                                            reduction.use = reduction.use,
                                            reduction.save = reduction.save,
-                                           function.use = fitsne,
+                                           function.use = fastTSNE,
                                            ...)
   return(seuratObj)
 }
 
-#' GoUMAP
+#' DoUMAP
 #'
 #' @param seuratObj
 #' @param reduction.use Prior dimensional reduction to use for calculations
-#'   (i.e. pca, ica, cca, etc...). (default: pca)
+#'   (i.e. pca, ica, cca, etc...). Default: pca
 #' @param reduction.save Name to use for the reduction (i. e. tsne, umap,
-#'   etc...). (default: umap)
+#'   etc...). Default: umap
 #' @param ... Extra parameters to pass to the umap function.
 #'
 #' @return Seurat object with the UMAP projection stored in the
@@ -132,7 +133,7 @@ GofitSNE <- function(seuratObj,
 #' @export
 #'
 #' @examples
-GoUMAP <- function(seuratObj,
+DoUMAP <- function(seuratObj,
                       reduction.use = 'pca',
                       reduction.save = 'umap',
                       ...){
@@ -145,15 +146,15 @@ GoUMAP <- function(seuratObj,
 }
 
 
-#' GoPHATE
+#' DoPHATE
 #'
 #' Project trajectory-based dimensional reduction using PHATE
 #'
 #' @param seuratObj
 #' @param reduction.use Prior dimensional reduction to use for calculations
-#'   (i.e. pca, ica, cca, etc...). (default: pca)
+#'   (i.e. pca, ica, cca, etc...). Default: pca
 #' @param reduction.save Name to use for the reduction (i. e. tsne, umap,
-#'   etc...). (default: phate)
+#'   etc...). Default: phate
 #' @param ... Extra parameters to pass to the phate function.
 #'
 #' @return Seurat object with the PHATE projection stored in the
@@ -161,7 +162,7 @@ GoUMAP <- function(seuratObj,
 #' @export
 #'
 #' @examples
-GoPHATE <- function(seuratObj,
+DoPHATE <- function(seuratObj,
                        reduction.use = 'pca',
                        reduction.save = 'phate',
                        ...){
@@ -173,7 +174,7 @@ GoPHATE <- function(seuratObj,
   return(seuratObj)
 }
 
-#' GoPhenoGraph
+#' DoPhenoGraph
 #'
 #' Perform community clustering using Phenograph
 #'
@@ -181,9 +182,9 @@ GoPHATE <- function(seuratObj,
 #' @param reduction.use Dimensional reduction to use for clustering calculations
 #'   (i.e. pca, ica, cca, etc...)
 #' @param k Number of nearest neighbors to use in first step of graph
-#'   construction (default = 30) If a list of integers is passed, Phenograph
-#'   will be run with each value and the last will be used to set
-#'   seuratObj@ident.
+#'   construction.  If a list of integers is passed, Phenograph
+#'   will be Do with each value and the last will be used to set
+#'   seuratObj@ident.  Default = 30
 #' @param prefix String prefix to used as in the column name entered in the
 #'   meta.data slot
 #' @param ... Extra parameters to pass to the phenograph function.
@@ -195,7 +196,7 @@ GoPHATE <- function(seuratObj,
 #' @export
 #'
 #' @examples
-GoPhenoGraph <- function(seuratObj,
+DoPhenoGraph <- function(seuratObj,
                          reduction.use = 'pca',
                          k = 30,
                          prefix = "community",
@@ -211,7 +212,7 @@ GoPhenoGraph <- function(seuratObj,
   return(seuratObj)
 }
 
-#' GoDCA
+#' DoDCA
 #'
 #' Use deep count autoencoder to impute data
 #'
@@ -225,7 +226,7 @@ GoPhenoGraph <- function(seuratObj,
 #' @export
 #'
 #' @examples
-GoDCA <- function(seuratObj, ...){
+DoDCA <- function(seuratObj, ...){
   exprs <- seuratObj@raw.data %>% as.matrix() %>% t()
   dca_exprs <- dca(exprs)
   seuratObj <- SetAssayData(object = seuratObj,
