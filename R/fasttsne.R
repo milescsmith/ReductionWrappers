@@ -134,7 +134,7 @@ fastTSNE <- function(n_components = 2,
     n_jobs <- detectCores()
   }
   # X = numpy.module$copy(r.data.frame, order = "C")
-  fasttsne.df <- fastTSNE.module$TSNE(n_components = as.integer(n_components),
+  tsne <- fastTSNE.module$TSNE(n_components = as.integer(n_components),
                                     perplexity = as.numeric(perplexity),
                                     learning_rate = as.numeric(learning_rate),
                                     early_exaggeration_iter = as.integer(early_exaggeration_iter),
@@ -157,8 +157,8 @@ fastTSNE <- function(n_components = 2,
                                     callbacks_every_iters = as.integer(callbacks_every_iters),
                                     random_state = random_state)
 
-  fasttsne.df = tsne.fit(X = r_data_frame)
-  rownames(fasttsne.df) <- r_data_frame
-  colnames(fasttsne.df) <- glue('tsne_{n_components}')
+  fasttsne.df = tsne$fit(X = r_data_frame)
+  rownames(fasttsne.df) <- rownames(r_data_frame)
+  colnames(fasttsne.df) <- glue('tsne_{1:n_components}')
   return(fasttsne.df)
 }
