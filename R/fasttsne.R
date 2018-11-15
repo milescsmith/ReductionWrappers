@@ -101,7 +101,8 @@
 #' @export
 #'
 #' @examples
-fastTSNE <- function(n_components = 2,
+fastTSNE <- function(r_data_frame,
+                     n_components = 2,
                      perplexity = 30,
                      learning_rate = 100,
                      early_exaggeration_iter = 250,
