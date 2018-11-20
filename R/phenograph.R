@@ -51,7 +51,7 @@ phenograph <- function(r_data_frame,
                        louvain_time_limit = 2000,
                        nn_method = 'kdtree'){
   if(!py_module_available('phenograph')){
-    stop("The MulticoreTSNE module is unavailable.  Please activate the appropriate environment or install the module.")
+    stop("The PhenoGraph module is unavailable.  Please activate the appropriate environment or install the module.")
   }
   if (is.null(n_jobs)){
     n_jobs <- detectCores()
