@@ -7,25 +7,23 @@
 #' @param python.dataframe Dataframe returned by a Python function
 #' @param reduction.save Name to use for the reduction (i. e. tsne, umap,
 #'   etc...)
+#' @param assay.used Assay from which the data that is dimensionally reduced comes
 #'
-#' @importFrom Seurat SetDimReduction
+#' @importFrom Seurat CreateDimReducObject
+#' @importFrom glue glue
 #'
 #' @return A Seurat object with the dataframe stored in the
 #'   seuratObj@dr$reduction.use slot
 #' @export
 #'
 #' @examples
-dim.from.python <- function(seuratObj, python.dataframe, reduction.save){
+dim.from.python <- function(seuratObj, python.dataframe, reduction.save, assay.used){
   dim.xfer <- as.matrix(python.dataframe)
-  rownames(dim.xfer) <- rownames(seuratObj@meta.data)
-  seuratObj <- SetDimReduction(object = seuratObj,
-                               reduction.type = reduction.save,
-                               slot = "cell.embeddings",
-                               new.data = dim.xfer)
-  seuratObj <- SetDimReduction(object = seuratObj,
-                               reduction.type = reduction.save,
-                               slot = "key",
-                               new.data = paste0(reduction.save, "_"))
+  rownames(dim.xfer) <- colnames(seuratObj)
+  reduction.data <- CreateDimReducObject(embeddings = dim.xfer,
+                                         assay = assay.used,
+                                         key = glue("{reduction.save}_"))
+  seuratObj[[reduction.save]] <- reduction.data
   return(seuratObj)
 }
 
@@ -54,11 +52,21 @@ python.dim.reduction.bridge <- function(seuratObj,
                                         reduction.save,
                                         function.use,
                                         ...){
-  cell.embeddings <- GetDimReduction(object = seuratObj,
-                                     reduction.type = reduction.use,
-                                     slot = "cell.embeddings")
+
+  if (reduction.use %in% names(seuratObj)) {
+    cell.embeddings <- Embeddings(object[[reduction]])
+    assay <- DefaultAssay(object = object[[reduction]])
+  }
+  else {
+    message(glue("{reduction.use} has not yet been performed"))
+    stop()
+  }
+
   dim.df <- function.use(cell.embeddings, ...)
-  seuratObj <- dim.from.python(seuratObj = seuratObj, python.dataframe = dim.df, reduction.save = reduction.save)
+  seuratObj <- dim.from.python(seuratObj = seuratObj,
+                               python.dataframe = dim.df,
+                               reduction.save = reduction.save,
+                               assay.used = assay)
   return(seuratObj)
 }
 
