@@ -20,5 +20,5 @@ Seurat object with the UMAP projection stored in the
   seuratObj@dr$umap slot (unless otherwise specified)
 }
 \description{
-DoUMAP
+Perform UMAP dimentional reduction
 }

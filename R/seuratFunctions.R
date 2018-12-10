@@ -1,6 +1,6 @@
-#' dim.from.python
+#' @title dim.from.python
 #'
-#' Helper function to assist entering dimensional reduction data from Python
+#' @description Helper function to assist entering dimensional reduction data from Python
 #' reduction methods
 #'
 #' @param seuratObj
@@ -27,9 +27,9 @@ dim.from.python <- function(seuratObj, python.dataframe, reduction.save, assay.u
   return(seuratObj)
 }
 
-#' python.dim.reduction.bridge
+#' @title python.dim.reduction.bridge
 #'
-#' Generalized helper function that pulls the data from a Seurat object, passes
+#' @description Generalized helper function that pulls the data from a Seurat object, passes
 #' the dataframe to a Python function and places the resulting dataframe in the
 #' appropriate slot
 #'
@@ -41,7 +41,8 @@ dim.from.python <- function(seuratObj, python.dataframe, reduction.save, assay.u
 #' @param function.use Dimensional reduction function to call.
 #' @param ... Extra parameters to pass to the dimensional reduction function.
 #'
-#' @importFrom Seurat GetDimReduction
+#' @importFrom Seurat Embeddings DefaultAssay
+#' @importFrom glue glue
 #'
 #' @return
 #' @export
@@ -54,8 +55,8 @@ python.dim.reduction.bridge <- function(seuratObj,
                                         ...){
 
   if (reduction.use %in% names(seuratObj)) {
-    cell.embeddings <- Embeddings(object[[reduction]])
-    assay <- DefaultAssay(object = object[[reduction]])
+    cell.embeddings <- Embeddings(seuratObj[[reduction.use]])
+    assay <- DefaultAssay(object = seuratObj[[reduction.use]])
   }
   else {
     message(glue("{reduction.use} has not yet been performed"))
@@ -70,9 +71,9 @@ python.dim.reduction.bridge <- function(seuratObj,
   return(seuratObj)
 }
 
-#' DoMCtSNE
+#' @title DoMCtSNE
 #'
-#' Do tSNE projection on a Seurat object using the MulticoreTSNE function
+#' @description Perform tSNE projection on a Seurat object using the MulticoreTSNE function
 #'
 #' @param seuratObj
 #' @param reduction.use Prior dimensional reduction to use for calculations
@@ -100,7 +101,7 @@ DoMCtSNE <- function(seuratObj,
 
 #' @title DofastTSNE
 #'
-#' @description Do tSNE projection on a Seurat object using the fastTSNE
+#' @description Perform tSNE projection on a Seurat object using the fastTSNE
 #' library, with FIt-SNE selected by default
 #'
 #' @param seuratObj
@@ -112,6 +113,7 @@ DoMCtSNE <- function(seuratObj,
 #'
 #' @return Seurat object with the tSNE projection stored in the
 #'   seuratObj@dr$tsne slot (unless otherwise specified)
+#'
 #' @export
 #'
 #' @examples
@@ -127,7 +129,9 @@ DofastTSNE <- function(seuratObj,
   return(seuratObj)
 }
 
-#' DoUMAP
+#' @title DoUMAP
+#'
+#' @description Perform UMAP dimentional reduction
 #'
 #' @param seuratObj
 #' @param reduction.use Prior dimensional reduction to use for calculations
@@ -154,9 +158,9 @@ DoUMAP <- function(seuratObj,
 }
 
 
-#' DoPHATE
+#' @title DoPHATE
 #'
-#' Project trajectory-based dimensional reduction using PHATE
+#' @description Project trajectory-based dimensional reduction using PHATE
 #'
 #' @param seuratObj
 #' @param reduction.use Prior dimensional reduction to use for calculations
@@ -182,9 +186,9 @@ DoPHATE <- function(seuratObj,
   return(seuratObj)
 }
 
-#' DoPhenoGraph
+#' @title DoPhenoGraph
 #'
-#' Perform community clustering using Phenograph
+#' @description Perform community clustering using Phenograph
 #'
 #' @param seuratObj
 #' @param reduction.use Dimensional reduction to use for clustering calculations
@@ -197,7 +201,8 @@ DoPHATE <- function(seuratObj,
 #'   meta.data slot
 #' @param ... Extra parameters to pass to the phenograph function.
 #'
-#' @importFrom Seurat GetDimReduction SetAllIdent
+#' @importFrom Seurat AddMetaData Embeddings Idents
+#' @importFrom glue glue
 #'
 #' @return A Seurat object with community information stored in
 #'   seuratObj@meta.data$prefix# columns, where # = k
@@ -209,20 +214,31 @@ DoPhenoGraph <- function(seuratObj,
                          k = 30,
                          prefix = "community",
                          ...){
-  ce <- GetDimReduction(seuratObj,
-                        reduction.type = reduction.use,
-                        slot = "cell.embeddings")
-  for (value in k){
-    communities <- phenograph(ce, k = value, ...)
-    seuratObj@meta.data[,paste0(prefix,value)] <- communities
+
+  if (reduction.use %in% names(seuratObj)) {
+    cell.embeddings <- Embeddings(seuratObj[[reduction.use]])
   }
-  seuratObj <- SetAllIdent(seuratObj, paste0(prefix,value))
+  else {
+    message(glue("{reduction.use} has not yet been performed"))
+    stop()
+  }
+
+
+  for (value in k){
+    cluster_name <- glue("{prefix}{value}")
+    communities <- phenograph(cell.embeddings, k = value, ...)
+    seuratObj <- AddMetaData(object = seuratObj,
+                             metadata = communities,
+                             col.name = cluster_name)
+    Idents(seuratObj) <- cluster_name
+  }
+
   return(seuratObj)
 }
 
-#' DoDCA
+#' @title DoDCA
 #'
-#' Use deep count autoencoder to impute data
+#' @description Use deep count autoencoder to impute data
 #'
 #' @param seuratObj
 #' @param ... Extra parameters to pass to the dca function.
@@ -235,7 +251,9 @@ DoPhenoGraph <- function(seuratObj,
 #'
 #' @examples
 DoDCA <- function(seuratObj, ...){
-  exprs <- seuratObj@raw.data %>% as.matrix() %>% t()
+  exprs <- GetAssayData(object = seuratObj, slot = "counts") %>%
+    as.matrix() %>%
+    t()
   dca_exprs <- dca(exprs)
   seuratObj <- SetAssayData(object = seuratObj,
                             assay.type = "dca",

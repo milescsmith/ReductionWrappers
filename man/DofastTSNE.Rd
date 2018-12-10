@@ -21,6 +21,6 @@ Seurat object with the tSNE projection stored in the
   seuratObj@dr$tsne slot (unless otherwise specified)
 }
 \description{
-Do tSNE projection on a Seurat object using the fastTSNE
+Perform tSNE projection on a Seurat object using the fastTSNE
 library, with FIt-SNE selected by default
 }

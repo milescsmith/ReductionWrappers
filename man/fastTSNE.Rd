@@ -4,10 +4,10 @@
 \alias{fastTSNE}
 \title{fastTSNE}
 \usage{
-fastTSNE(n_components = 2, perplexity = 30, learning_rate = 100,
-  early_exaggeration_iter = 250, early_exaggeration = 12,
-  n_iter = 750, exaggeration = NULL, theta = 0.5,
-  n_interpolation_points = 3, min_num_intervals = 10,
+fastTSNE(r_data_frame, n_components = 2, perplexity = 30,
+  learning_rate = 100, early_exaggeration_iter = 250,
+  early_exaggeration = 12, n_iter = 750, exaggeration = NULL,
+  theta = 0.5, n_interpolation_points = 3, min_num_intervals = 10,
   ints_in_interval = 2, initialization = "pca", metric = "euclidean",
   metric_params = NULL, initial_momentum = 0.5, final_momentum = 0.8,
   n_jobs = NULL, neighbors = "exact",

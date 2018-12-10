@@ -4,13 +4,16 @@
 \alias{dim.from.python}
 \title{dim.from.python}
 \usage{
-\method{dim}{from.python}(seuratObj, python.dataframe, reduction.save)
+\method{dim}{from.python}(seuratObj, python.dataframe, reduction.save,
+  assay.used)
 }
 \arguments{
 \item{python.dataframe}{Dataframe returned by a Python function}
 
 \item{reduction.save}{Name to use for the reduction (i. e. tsne, umap,
 etc...)}
+
+\item{assay.used}{Assay from which the data that is dimensionally reduced comes}
 }
 \value{
 A Seurat object with the dataframe stored in the
