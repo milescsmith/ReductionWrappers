@@ -80,7 +80,7 @@
 #' @export
 #'
 #' @examples
-optTSNE <- function(r.data.frame,
+optSNE <- function(r.data.frame,
                           n.components = 3,
                           perplexity = 30.,
                           early.exaggeration = 12.0,
