@@ -71,9 +71,10 @@ python.dim.reduction.bridge <- function(seuratObj,
   return(seuratObj)
 }
 
-#' @title DoMCtSNE
+#' @title DooptSNE
 #'
-#' @description Perform tSNE projection on a Seurat object using the MulticoreTSNE function
+#' @description Perform tSNE projection on a Seurat object using the
+#' Multicore-opt-SNE function
 #'
 #' @param seuratObj
 #' @param reduction.use Prior dimensional reduction to use for calculations
@@ -87,14 +88,14 @@ python.dim.reduction.bridge <- function(seuratObj,
 #' @export
 #'
 #' @examples
-DoMCtSNE <- function(seuratObj,
+DooptSNE <- function(seuratObj,
                         reduction.use = 'pca',
-                        reduction.save = 'tsne',
+                        reduction.save = 'optsne',
                         ...){
   seuratObj <- python.dim.reduction.bridge(seuratObj,
                                            reduction.use = reduction.use,
                                            reduction.save = reduction.save,
-                                           function.use = multicoreTSNE,
+                                           function.use = optSNE,
                                            ...)
   return(seuratObj)
 }
