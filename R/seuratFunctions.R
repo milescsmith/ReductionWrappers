@@ -100,17 +100,17 @@ DooptSNE <- function(seuratObj,
   return(seuratObj)
 }
 
-#' @title DofastTSNE
+#' @title DoopenTSNE
 #'
-#' @description Perform tSNE projection on a Seurat object using the fastTSNE
+#' @description Perform tSNE projection on a Seurat object using the openTSNE
 #' library, with FIt-SNE selected by default
 #'
 #' @param seuratObj
 #' @param reduction.use Prior dimensional reduction to use for calculations
 #'   (i.e. pca, ica, cca, etc...). Default: pca
 #' @param reduction.save Name to use for the reduction (i. e. tsne, umap,
-#'   etc...). Default: fastTSNE
-#' @param ... Extra parameters to pass to the fastTSNE function.
+#'   etc...). Default: openTSNE
+#' @param ... Extra parameters to pass to the openTSNE function.
 #'
 #' @return Seurat object with the tSNE projection stored in the
 #'   seuratObj@dr$tsne slot (unless otherwise specified)
@@ -118,14 +118,14 @@ DooptSNE <- function(seuratObj,
 #' @export
 #'
 #' @examples
-DofastTSNE <- function(seuratObj,
+DoopenTSNE <- function(seuratObj,
                      reduction.use = 'pca',
-                     reduction.save = 'fasttsne',
+                     reduction.save = 'openTSNE',
                      ...){
   seuratObj <- python.dim.reduction.bridge(seuratObj,
                                            reduction.use = reduction.use,
                                            reduction.save = reduction.save,
-                                           function.use = fastTSNE,
+                                           function.use = openTSNE,
                                            ...)
   return(seuratObj)
 }
@@ -244,7 +244,7 @@ DoPhenoGraph <- function(seuratObj,
 #' @param seuratObj
 #' @param ... Extra parameters to pass to the dca function.
 #'
-#' @importFrom Seurat SetAssayData
+#' @importFrom Seurat CreateAssayObject
 #' @importFrom magrittr %>%
 #'
 #' @return A Seurat object with imputed data stored in seuratObj@dr$dca slot
@@ -256,9 +256,6 @@ DoDCA <- function(seuratObj, ...){
     as.matrix() %>%
     t()
   dca_exprs <- dca(exprs)
-  seuratObj <- SetAssayData(object = seuratObj,
-                            assay.type = "dca",
-                            slot = "data",
-                            new.data = dca_exprs)
+  seuratObj[['dca']] <- CreateAssayObject(data = dca_exprs)
   return(seuratObj)
 }

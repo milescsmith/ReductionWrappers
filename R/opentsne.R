@@ -1,7 +1,7 @@
-#' fastTSNE
+#' openTSNE
 #'
-#' An R wrapper for the fastTSNE Python module found at
-#' https://github.com/pavlin-policar/fastTSNE/
+#' An R wrapper for the openTSNE Python module found at
+#' https://github.com/pavlin-policar/openTSNE/
 #'
 #' @param n_components: The dimension of the embedding space. Default: 2
 #' @param perplexity: Perplexity can be thought of as the continuous :math:`k` number of
@@ -101,7 +101,7 @@
 #' @export
 #'
 #' @examples
-fastTSNE <- function(r_data_frame,
+openTSNE <- function(r_data_frame,
                      n_components = 2,
                      perplexity = 30,
                      learning_rate = 100,
@@ -124,18 +124,18 @@ fastTSNE <- function(r_data_frame,
                      callbacks = NULL,
                      callbacks_every_iters = 50,
                      random_state = NULL){
-  if(!py_module_available('fastTSNE')){
+  if(!py_module_available('openTSNE')){
     stop("The fitsne module is unavailable.
          Please activate the appropriate environment or install the module.")
   }
 
-  fastTSNE.module <- import(module = 'fastTSNE', delay_load = TRUE)
+  openTSNE.module <- import(module = 'openTSNE', delay_load = TRUE)
   # numpy.module <- import(module = 'numpy', delay_load = TRUE)
   if (is.null(n_jobs)){
     n_jobs <- detectCores()
   }
   # X = numpy.module$copy(r.data.frame, order = "C")
-  tsne <- fastTSNE.module$TSNE(n_components = as.integer(n_components),
+  tsne <- openTSNE.module$TSNE(n_components = as.integer(n_components),
                                     perplexity = as.numeric(perplexity),
                                     learning_rate = as.numeric(learning_rate),
                                     early_exaggeration_iter = as.integer(early_exaggeration_iter),
@@ -158,8 +158,8 @@ fastTSNE <- function(r_data_frame,
                                     callbacks_every_iters = as.integer(callbacks_every_iters),
                                     random_state = random_state)
 
-  fasttsne.df = tsne$fit(X = r_data_frame)
-  rownames(fasttsne.df) <- rownames(r_data_frame)
-  colnames(fasttsne.df) <- glue('tsne_{1:n_components}')
-  return(fasttsne.df)
+  opentsne.df = tsne$fit(X = r_data_frame)
+  rownames(opentsne.df) <- rownames(r_data_frame)
+  colnames(opentsne.df) <- glue('tsne_{1:n_components}')
+  return(opentsne.df)
 }
