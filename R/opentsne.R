@@ -125,7 +125,7 @@ openTSNE <- function(r_data_frame,
                      callbacks_every_iters = 50,
                      random_state = NULL){
   if(!py_module_available('openTSNE')){
-    stop("The fitsne module is unavailable.
+    stop("The openTSNE module is unavailable.
          Please activate the appropriate environment or install the module.")
   }
 

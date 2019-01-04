@@ -236,26 +236,3 @@ DoPhenoGraph <- function(seuratObj,
 
   return(seuratObj)
 }
-
-#' @title DoDCA
-#'
-#' @description Use deep count autoencoder to impute data
-#'
-#' @param seuratObj
-#' @param ... Extra parameters to pass to the dca function.
-#'
-#' @importFrom Seurat CreateAssayObject
-#' @importFrom magrittr %>%
-#'
-#' @return A Seurat object with imputed data stored in seuratObj@dr$dca slot
-#' @export
-#'
-#' @examples
-DoDCA <- function(seuratObj, ...){
-  exprs <- GetAssayData(object = seuratObj, slot = "counts") %>%
-    as.matrix() %>%
-    t()
-  dca_exprs <- dca(exprs)
-  seuratObj[['dca']] <- CreateAssayObject(data = dca_exprs)
-  return(seuratObj)
-}
