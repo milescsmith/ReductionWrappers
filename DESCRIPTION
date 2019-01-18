@@ -6,9 +6,10 @@ Description: R wrapper around the Python dimensional reduction tools, including 
 Depends: R (>= 3.5.0),
   reticulate,
   parallel,
-  Seurat,
   glue,
   magrittr
+Suggests:
+  Seurat
 License: BSD-3
 Encoding: UTF-8
 LazyData: true

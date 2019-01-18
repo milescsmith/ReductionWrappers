@@ -1,4 +1,4 @@
-#' @title dim.from.python
+#' @title PushData
 #'
 #' @description Helper function to assist entering dimensional reduction data from Python
 #' reduction methods
@@ -9,7 +9,6 @@
 #'   etc...)
 #' @param assay.used Assay from which the data that is dimensionally reduced comes
 #'
-#' @importFrom Seurat CreateDimReducObject
 #' @importFrom glue glue
 #'
 #' @return A Seurat object with the dataframe stored in the
@@ -17,17 +16,56 @@
 #' @export
 #'
 #' @examples
-dim.from.python <- function(seuratObj, python.dataframe, reduction.save, assay.used){
+PushData <- function(object, ...) {
+  UseMethod("PushData")
+}
+
+#' @rdname PushData
+#' @method PushData Seurat
+#' @importFrom Seurat CreateDimReducObject
+#' @return
+#' @export
+PushData.Seurat <- function(seuratObj,
+                            python.dataframe,
+                            reduction.save,
+                            assay.used) {
   dim.xfer <- as.matrix(python.dataframe)
   rownames(dim.xfer) <- colnames(seuratObj)
-  reduction.data <- CreateDimReducObject(embeddings = dim.xfer,
-                                         assay = assay.used,
-                                         key = glue("{reduction.save}_"))
+  reduction.data <- CreateDimReducObject(
+    embeddings = dim.xfer,
+    assay = assay.used,
+    key = glue("{reduction.save}_")
+  )
   seuratObj[[reduction.save]] <- reduction.data
   return(seuratObj)
 }
 
-#' @title python.dim.reduction.bridge
+#' @rdname PushData
+#' @method PushData seurat
+#' @importFrom Seurat SetDimReduction
+#' @return
+#' @export
+PushData.seurat <- function(seuratObj,
+                            python.dataframe,
+                            reduction.save) {
+  dim.xfer <- as.matrix(python.dataframe)
+  rownames(dim.xfer) <- rownames(seuratObj@meta.data)
+  seuratObj <- SetDimReduction(
+    object = seuratObj,
+    reduction.type = reduction.save,
+    slot = "cell.embeddings",
+    new.data = dim.xfer
+  )
+  seuratObj <- SetDimReduction(
+    object = seuratObj,
+    reduction.type = reduction.save,
+    slot = "key",
+    new.data = glue("{reduction.save}_") %>% as.character()
+  )
+  return(seuratObj)
+}
+
+#' @title ReductionBridge
 #'
 #' @description Generalized helper function that pulls the data from a Seurat object, passes
 #' the dataframe to a Python function and places the resulting dataframe in the
@@ -48,12 +86,44 @@ dim.from.python <- function(seuratObj, python.dataframe, reduction.save, assay.u
 #' @export
 #'
 #' @examples
-python.dim.reduction.bridge <- function(seuratObj,
-                                        reduction.use,
-                                        reduction.save,
-                                        function.use,
-                                        ...){
+ReductionBridge <- function(object, ...) {
+  UseMethod("ReductionBridge")
+}
 
+#' @rdname ReductionBridge
+#' @method ReductionBridge seurat
+#' @importFrom Seurat GetDimReduction
+#' @return
+#' @export
+ReductionBridge.seurat <- function(seuratObj,
+                                   reduction.use,
+                                   reduction.save,
+                                   function.use,
+                                   ...) {
+  cell.embeddings <- GetDimReduction(
+    object = seuratObj,
+    reduction.type = reduction.use,
+    slot = "cell.embeddings"
+  )
+  dim.df <- function.use(cell.embeddings, ...)
+  seuratObj <- PushData(
+    seuratObj = seuratObj,
+    python.dataframe = dim.df,
+    reduction.save = reduction.save
+  )
+  return(seuratObj)
+}
+
+#' @rdname ReductionBridge
+#' @method ReductionBridge Seurat
+#' @importFrom Seurat Embeddings DefaultAssay
+#' @return
+#' @export
+ReductionBridge.Seurat <- function(seuratObj,
+                                   reduction.use,
+                                   reduction.save,
+                                   function.use,
+                                   ...) {
   if (reduction.use %in% names(seuratObj)) {
     cell.embeddings <- Embeddings(seuratObj[[reduction.use]])
     assay <- DefaultAssay(object = seuratObj[[reduction.use]])
@@ -64,10 +134,12 @@ python.dim.reduction.bridge <- function(seuratObj,
   }
 
   dim.df <- function.use(cell.embeddings, ...)
-  seuratObj <- dim.from.python(seuratObj = seuratObj,
-                               python.dataframe = dim.df,
-                               reduction.save = reduction.save,
-                               assay.used = assay)
+  seuratObj <- PushData(
+    seuratObj = seuratObj,
+    python.dataframe = dim.df,
+    reduction.save = reduction.save,
+    assay.used = assay
+  )
   return(seuratObj)
 }
 
@@ -89,14 +161,15 @@ python.dim.reduction.bridge <- function(seuratObj,
 #'
 #' @examples
 DooptSNE <- function(seuratObj,
-                        reduction.use = 'pca',
-                        reduction.save = 'optsne',
-                        ...){
-  seuratObj <- python.dim.reduction.bridge(seuratObj,
-                                           reduction.use = reduction.use,
-                                           reduction.save = reduction.save,
-                                           function.use = optSNE,
-                                           ...)
+                     reduction.use = "pca",
+                     reduction.save = "optsne",
+                     ...) {
+  seuratObj <- ReductionBridge(seuratObj,
+    reduction.use = reduction.use,
+    reduction.save = reduction.save,
+    function.use = optSNE,
+    ...
+  )
   return(seuratObj)
 }
 
@@ -119,14 +192,15 @@ DooptSNE <- function(seuratObj,
 #'
 #' @examples
 DoopenTSNE <- function(seuratObj,
-                     reduction.use = 'pca',
-                     reduction.save = 'openTSNE',
-                     ...){
-  seuratObj <- python.dim.reduction.bridge(seuratObj,
-                                           reduction.use = reduction.use,
-                                           reduction.save = reduction.save,
-                                           function.use = openTSNE,
-                                           ...)
+                       reduction.use = "pca",
+                       reduction.save = "openTSNE",
+                       ...) {
+  seuratObj <- ReductionBridge(seuratObj,
+    reduction.use = reduction.use,
+    reduction.save = reduction.save,
+    function.use = openTSNE,
+    ...
+  )
   return(seuratObj)
 }
 
@@ -147,14 +221,15 @@ DoopenTSNE <- function(seuratObj,
 #'
 #' @examples
 DoUMAP <- function(seuratObj,
-                      reduction.use = 'pca',
-                      reduction.save = 'umap',
-                      ...){
-  seuratObj <- python.dim.reduction.bridge(seuratObj,
-                                           reduction.use = reduction.use,
-                                           reduction.save = reduction.save,
-                                           function.use = umap,
-                                           ...)
+                   reduction.use = "pca",
+                   reduction.save = "umap",
+                   ...) {
+  seuratObj <- ReductionBridge(seuratObj,
+    reduction.use = reduction.use,
+    reduction.save = reduction.save,
+    function.use = umap,
+    ...
+  )
   return(seuratObj)
 }
 
@@ -176,14 +251,15 @@ DoUMAP <- function(seuratObj,
 #'
 #' @examples
 DoPHATE <- function(seuratObj,
-                       reduction.use = 'pca',
-                       reduction.save = 'phate',
-                       ...){
-  seuratObj <- python.dim.reduction.bridge(seuratObj,
-                                           reduction.use = reduction.use,
-                                           reduction.save = reduction.save,
-                                           function.use = phate,
-                                           ...)
+                    reduction.use = "pca",
+                    reduction.save = "phate",
+                    ...) {
+  seuratObj <- ReductionBridge(seuratObj,
+    reduction.use = reduction.use,
+    reduction.save = reduction.save,
+    function.use = phate,
+    ...
+  )
   return(seuratObj)
 }
 
@@ -211,11 +287,10 @@ DoPHATE <- function(seuratObj,
 #'
 #' @examples
 DoPhenoGraph <- function(seuratObj,
-                         reduction.use = 'pca',
+                         reduction.use = "pca",
                          k = 30,
                          prefix = "community",
-                         ...){
-
+                         ...) {
   if (reduction.use %in% names(seuratObj)) {
     cell.embeddings <- Embeddings(seuratObj[[reduction.use]])
   }
@@ -225,12 +300,14 @@ DoPhenoGraph <- function(seuratObj,
   }
 
 
-  for (value in k){
+  for (value in k) {
     cluster_name <- glue("{prefix}{value}")
     communities <- phenograph(cell.embeddings, k = value, ...)
-    seuratObj <- AddMetaData(object = seuratObj,
-                             metadata = communities,
-                             col.name = cluster_name)
+    seuratObj <- AddMetaData(
+      object = seuratObj,
+      metadata = communities,
+      col.name = cluster_name
+    )
     Idents(seuratObj) <- cluster_name
   }
 
