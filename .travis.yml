@@ -29,11 +29,11 @@ before_install:
   - $PYTHON --version
   - curl https://bootstrap.pypa.io/get-pip.py | sudo -H $PYTHON
   - sudo $PYTHON -m pip install --upgrade pip
-  - pip install numpy scipy pandas scikit-learn numba cffi matplotlib future graphtools tasklogger psutil
-  - pip install opentsne
-  - pip install umap-learn
-  - pip install phate
-  - pip install git+https://github.com/jacoblevine/phenograph.git
+  - pip install --user numpy scipy pandas scikit-learn numba cffi matplotlib future graphtools tasklogger psutil
+  - pip install --user opentsne
+  - pip install --user umap-learn
+  - pip install --user phate
+  - pip install --user git+https://github.com/jacoblevine/phenograph.git
   
 r_packages:
   - reticulate
