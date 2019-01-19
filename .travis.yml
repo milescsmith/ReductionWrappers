@@ -1,17 +1,21 @@
 language: r
 
+dist: xenial
+
 sudo: required
 
 addons:
   apt:
     packages:
-      - python3
       - fftw3
   homebrew:
     packages:
       - cmake
       - python3
       - gcc
+
+python: 
+  - 3.6.5
 
 before_install:
   - pip install numpy scipy pandas scikit-learn numba cffi matplotlib future graphtools tasklogger psutil
