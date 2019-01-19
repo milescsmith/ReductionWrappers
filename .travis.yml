@@ -1,4 +1,10 @@
+language: python
+python: 
+  - "3.6"
+cache: pip
+
 language: r
+cache: packages
 
 dist: xenial
 
@@ -13,9 +19,6 @@ addons:
       - cmake
       - python3
       - gcc
-
-python: 
-  - "3.6.5"
 
 before_install:
   - pip install numpy scipy pandas scikit-learn numba cffi matplotlib future graphtools tasklogger psutil
