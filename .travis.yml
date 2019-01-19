@@ -14,8 +14,6 @@ addons:
       - gcc
 
 before_install:
-  - python3 -m pip3 install --upgrade pip
-  - pip3 install --upgrade setuptools
   - pip3 install numpy scipy pandas scikit-learn numba cffi matplotlib future graphtools tasklogger psutil
   - pip3 install opentsne
   - pip3 install umap-learn
