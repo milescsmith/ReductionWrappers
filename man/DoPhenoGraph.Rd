@@ -2,28 +2,35 @@
 % Please edit documentation in R/seuratFunctions.R
 \name{DoPhenoGraph}
 \alias{DoPhenoGraph}
+\alias{DoPhenoGraph.Seurat}
+\alias{DoPhenoGraph.seurat}
+\alias{DoPhenoGraph.SingleCellExperiment}
 \title{DoPhenoGraph}
 \usage{
-DoPhenoGraph(seuratObj, reduction.use = "pca", k = 30,
+DoPhenoGraph(object, ...)
+
+\method{DoPhenoGraph}{Seurat}(object, reduction.use = "pca", k = 30,
   prefix = "community", ...)
+
+\method{DoPhenoGraph}{seurat}(object, reduction.use = "pca", k = 30,
+  prefix = "community", ...)
+
+\method{DoPhenoGraph}{SingleCellExperiment}(object,
+  reduction.use = "pca", k = 30, prefix = "community", ...)
 }
 \arguments{
+\item{...}{Extra parameters to pass to the phenograph function.}
+
 \item{reduction.use}{Dimensional reduction to use for clustering calculations
 (i.e. pca, ica, cca, etc...)}
 
 \item{k}{Number of nearest neighbors to use in first step of graph
 construction.  If a list of integers is passed, Phenograph
 will be Do with each value and the last will be used to set
-seuratObj@ident.  Default = 30}
+object@ident.  Default = 30}
 
 \item{prefix}{String prefix to used as in the column name entered in the
 meta.data slot}
-
-\item{...}{Extra parameters to pass to the phenograph function.}
-}
-\value{
-A Seurat object with community information stored in
-  seuratObj@meta.data$prefix# columns, where # = k
 }
 \description{
 Perform community clustering using Phenograph

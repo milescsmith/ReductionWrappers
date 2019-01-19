@@ -4,8 +4,7 @@
 \alias{DoPHATE}
 \title{DoPHATE}
 \usage{
-DoPHATE(seuratObj, reduction.use = "pca", reduction.save = "phate",
-  ...)
+DoPHATE(object, reduction.use = "pca", reduction.save = "phate", ...)
 }
 \arguments{
 \item{reduction.use}{Prior dimensional reduction to use for calculations
@@ -15,10 +14,6 @@ DoPHATE(seuratObj, reduction.use = "pca", reduction.save = "phate",
 etc...). Default: phate}
 
 \item{...}{Extra parameters to pass to the phate function.}
-}
-\value{
-Seurat object with the PHATE projection stored in the
-  seuratObj@dr$phate slot (unless otherwise specified)
 }
 \description{
 Project trajectory-based dimensional reduction using PHATE
