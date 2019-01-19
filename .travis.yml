@@ -2,9 +2,6 @@ language: r
 r:
   - release
 cache: packages
-matrix:
-  include:
-    - python:3.6
 
 dist: xenial
 
