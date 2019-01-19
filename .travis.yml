@@ -15,6 +15,7 @@ addons:
       - fftw3
       - python3.6
       - python3.6-dev
+      - libgit2-dev
   homebrew:
     packages:
       - cmake
@@ -37,4 +38,11 @@ before_install:
   
 r_packages:
   - reticulate
+  - parallel
+  - glue
+  - magrittr
+  
+bioc_packages:
+  - SingleCellExperiment
+  - Seurat
   
