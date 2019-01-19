@@ -15,10 +15,6 @@ etc...). Default: umap}
 
 \item{...}{Extra parameters to pass to the umap function.}
 }
-\value{
-Seurat object with the UMAP projection stored in the
-  object@dr$umap slot (unless otherwise specified)
-}
 \description{
 Perform UMAP dimentional reduction
 }

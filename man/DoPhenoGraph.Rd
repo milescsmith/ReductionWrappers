@@ -32,10 +32,6 @@ object@ident.  Default = 30}
 \item{prefix}{String prefix to used as in the column name entered in the
 meta.data slot}
 }
-\value{
-A Seurat object with community information stored in
-  object@meta.data$prefix# columns, where # = k
-}
 \description{
 Perform community clustering using Phenograph
 }

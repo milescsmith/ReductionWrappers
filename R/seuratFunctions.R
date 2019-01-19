@@ -12,10 +12,7 @@
 #' @importFrom glue glue
 #' @importFrom magrittr %<>%
 #'
-#' @return A Seurat object with the dataframe stored in the
-#'   object@dr$reduction.use slot
-#' @export
-#'
+#' @return
 #' @examples
 PushData <- function(object, ...) {
   UseMethod("PushData")
@@ -23,9 +20,8 @@ PushData <- function(object, ...) {
 
 #' @rdname PushData
 #' @method PushData Seurat
-#' @importFrom Seurat CreateDimReducObject
+#' @import Seurat
 #' @return
-#' @export
 PushData.Seurat <- function(object,
                             python_df,
                             reduction.save,
@@ -43,9 +39,8 @@ PushData.Seurat <- function(object,
 
 #' @rdname PushData
 #' @method PushData seurat
-#' @importFrom Seurat SetDimReduction
+#' @import Seurat
 #' @return
-#' @export
 PushData.seurat <- function(object,
                             python_df,
                             reduction.save) {
@@ -68,9 +63,8 @@ PushData.seurat <- function(object,
 
 #' @rdname PushData
 #' @method PushData SingleCellExperiment
-#' @importFrom SingleCellExperiment reducedDim
+#' @import SingleCellExperiment
 #' @return
-#' @export
 PushData.SingleCellExperiment <- function(object,
                                           python_df,
                                           reduction.save) {
@@ -94,7 +88,6 @@ PushData.SingleCellExperiment <- function(object,
 #' @param function.use Dimensional reduction function to call.
 #' @param ... Extra parameters to pass to the dimensional reduction function.
 #'
-#' @importFrom Seurat Embeddings DefaultAssay
 #' @importFrom glue glue
 #'
 #' @return
@@ -107,18 +100,16 @@ ReductionBridge <- function(object, ...) {
 
 #' @rdname ReductionBridge
 #' @method ReductionBridge seurat
-#' @importFrom Seurat GetDimReduction
+#' @import Seurat
 #' @return
-#' @export
 ReductionBridge.seurat <- function(object,
                                    reduction.use,
                                    reduction.save,
                                    function.use,
                                    ...) {
-  cell.embeddings <- GetDimReduction(
+  cell.embeddings <- GetCellEmbeddings(
     object = object,
     reduction.type = reduction.use,
-    slot = "cell.embeddings"
   )
   python_df <- function.use(cell.embeddings, ...)
   object <- PushData(
@@ -131,9 +122,8 @@ ReductionBridge.seurat <- function(object,
 
 #' @rdname ReductionBridge
 #' @method ReductionBridge Seurat
-#' @importFrom Seurat Embeddings DefaultAssay
+#' @import Seurat
 #' @return
-#' @export
 ReductionBridge.Seurat <- function(object,
                                    reduction.use,
                                    reduction.save,
@@ -160,9 +150,8 @@ ReductionBridge.Seurat <- function(object,
 
 #' @rdname ReductionBridge
 #' @method ReductionBridge SingleCellExperiment
-#' @importFrom SingleCellExperiment reducedDim reducedDimNames
+#' @import SingleCellExperiment
 #' @return
-#' @export
 ReductionBridge.SingleCellExperiment <- function(object,
                                                  reduction.use,
                                                  reduction.save,
@@ -198,8 +187,7 @@ ReductionBridge.SingleCellExperiment <- function(object,
 #'   etc...). Default: tsne
 #' @param ... Extra parameters to pass to the multicoreTSNE function.
 #'
-#' @return Seurat object with the tSNE projection stored in the
-#'   object@dr$tsne slot (unless otherwise specified)
+#' @return
 #' @export
 #'
 #' @examples
@@ -228,9 +216,7 @@ DooptSNE <- function(object,
 #'   etc...). Default: openTSNE
 #' @param ... Extra parameters to pass to the openTSNE function.
 #'
-#' @return Seurat object with the tSNE projection stored in the
-#'   object@dr$tsne slot (unless otherwise specified)
-#'
+#' @return
 #' @export
 #'
 #' @examples
@@ -258,8 +244,7 @@ DoopenTSNE <- function(object,
 #'   etc...). Default: umap
 #' @param ... Extra parameters to pass to the umap function.
 #'
-#' @return Seurat object with the UMAP projection stored in the
-#'   object@dr$umap slot (unless otherwise specified)
+#' @return
 #' @export
 #'
 #' @examples
@@ -288,8 +273,7 @@ DoUMAP <- function(object,
 #'   etc...). Default: phate
 #' @param ... Extra parameters to pass to the phate function.
 #'
-#' @return Seurat object with the PHATE projection stored in the
-#'   object@dr$phate slot (unless otherwise specified)
+#' @return
 #' @export
 #'
 #' @examples
@@ -321,11 +305,9 @@ DoPHATE <- function(object,
 #'   meta.data slot
 #' @param ... Extra parameters to pass to the phenograph function.
 #'
-#' @importFrom Seurat AddMetaData Embeddings Idents
 #' @importFrom glue glue
 #'
-#' @return A Seurat object with community information stored in
-#'   object@meta.data$prefix# columns, where # = k
+#' @return
 #' @export
 #'
 #' @examples
@@ -335,7 +317,7 @@ DoPhenoGraph <- function(object, ...) {
 
 #' @rdname DoPhenoGraph
 #' @method DoPhenoGraph Seurat
-#' @importFrom Seurat Embeddings DefaultAssay
+#' @import Seurat
 #' @return
 #' @export
 DoPhenoGraph.Seurat <- function(object,
@@ -367,7 +349,7 @@ DoPhenoGraph.Seurat <- function(object,
 
 #' @rdname DoPhenoGraph
 #' @method DoPhenoGraph seurat
-#' @importFrom Seurat GetDimReduction SetAllIdent AddMetaData
+#' @import Seurat
 #' @return
 #' @export
 DoPhenoGraph.seurat <- function(object,
@@ -376,10 +358,9 @@ DoPhenoGraph.seurat <- function(object,
                                 prefix = "community",
                                 ...) {
   if (reduction.use %in% names(object@dr)) {
-    cell.embeddings <- GetDimReduction(
+    cell.embeddings <- GetCellEmbeddings(
       object = object,
       reduction.type = reduction.use,
-      slot = "cell.embeddings"
     )
   }
   else {
@@ -403,7 +384,7 @@ DoPhenoGraph.seurat <- function(object,
 
 #' @rdname DoPhenoGraph
 #' @method DoPhenoGraph SingleCellExperiment
-#' @importFrom SingleCellExperiment colData reducedDim reducedDimNames
+#' @import SingleCellExperiment
 #' @return
 #' @export
 DoPhenoGraph.SingleCellExperiment <- function(object,

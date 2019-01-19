@@ -15,10 +15,6 @@ etc...). Default: phate}
 
 \item{...}{Extra parameters to pass to the phate function.}
 }
-\value{
-Seurat object with the PHATE projection stored in the
-  object@dr$phate slot (unless otherwise specified)
-}
 \description{
 Project trajectory-based dimensional reduction using PHATE
 }

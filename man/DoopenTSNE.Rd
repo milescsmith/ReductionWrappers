@@ -16,10 +16,6 @@ etc...). Default: openTSNE}
 
 \item{...}{Extra parameters to pass to the openTSNE function.}
 }
-\value{
-Seurat object with the tSNE projection stored in the
-  object@dr$tsne slot (unless otherwise specified)
-}
 \description{
 Perform tSNE projection on a Seurat object using the openTSNE
 library, with FIt-SNE selected by default

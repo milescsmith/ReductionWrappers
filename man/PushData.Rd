@@ -23,10 +23,6 @@ etc...)}
 
 \item{assay.used}{Assay from which the data that is dimensionally reduced comes}
 }
-\value{
-A Seurat object with the dataframe stored in the
-  object@dr$reduction.use slot
-}
 \description{
 Helper function to assist entering dimensional reduction data from Python
 reduction methods
