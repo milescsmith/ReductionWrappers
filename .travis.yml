@@ -14,8 +14,8 @@ addons:
       - gcc
 
 before_install:
-  - pip3 install numpy scipy pandas scikit-learn numba cffi matplotlib future graphtools tasklogger psutil
-  - pip3 install opentsne
-  - pip3 install umap-learn
-  - pip3 install phate
-  - pip3 install git+https://github.com/jacoblevine/phenograph.git
+  - pip install numpy scipy pandas scikit-learn numba cffi matplotlib future graphtools tasklogger psutil
+  - pip install opentsne
+  - pip install umap-learn
+  - pip install phate
+  - pip install git+https://github.com/jacoblevine/phenograph.git
