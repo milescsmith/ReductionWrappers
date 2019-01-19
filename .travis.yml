@@ -1,0 +1,16 @@
+language: r
+addons:
+  apt:
+    packages:
+      - python3.6
+  homebrew:
+    packages:
+      - cmake
+      - python3
+      - gcc
+before_install:
+  - pip install opentsne
+  - pip install numpy scipy scikit-learn numba
+  - pip install umap-learn
+  - pip install phate
+  - pip install git+https://github.com/jacoblevine/phenograph.git
