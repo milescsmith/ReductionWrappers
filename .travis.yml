@@ -15,7 +15,7 @@ addons:
       - gcc
 
 python: 
-  - 3.6.5
+  - "3.6.5"
 
 before_install:
   - pip install numpy scipy pandas scikit-learn numba cffi matplotlib future graphtools tasklogger psutil
