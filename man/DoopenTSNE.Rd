@@ -4,8 +4,8 @@
 \alias{DoopenTSNE}
 \title{DoopenTSNE}
 \usage{
-DoopenTSNE(seuratObj, reduction.use = "pca",
-  reduction.save = "openTSNE", ...)
+DoopenTSNE(object, reduction.use = "pca", reduction.save = "openTSNE",
+  ...)
 }
 \arguments{
 \item{reduction.use}{Prior dimensional reduction to use for calculations
@@ -18,7 +18,7 @@ etc...). Default: openTSNE}
 }
 \value{
 Seurat object with the tSNE projection stored in the
-  seuratObj@dr$tsne slot (unless otherwise specified)
+  object@dr$tsne slot (unless otherwise specified)
 }
 \description{
 Perform tSNE projection on a Seurat object using the openTSNE

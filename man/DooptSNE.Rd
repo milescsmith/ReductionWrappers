@@ -4,8 +4,7 @@
 \alias{DooptSNE}
 \title{DooptSNE}
 \usage{
-DooptSNE(seuratObj, reduction.use = "pca", reduction.save = "optsne",
-  ...)
+DooptSNE(object, reduction.use = "pca", reduction.save = "optsne", ...)
 }
 \arguments{
 \item{reduction.use}{Prior dimensional reduction to use for calculations
@@ -18,7 +17,7 @@ etc...). Default: tsne}
 }
 \value{
 Seurat object with the tSNE projection stored in the
-  seuratObj@dr$tsne slot (unless otherwise specified)
+  object@dr$tsne slot (unless otherwise specified)
 }
 \description{
 Perform tSNE projection on a Seurat object using the

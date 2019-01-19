@@ -4,15 +4,19 @@
 \alias{ReductionBridge}
 \alias{ReductionBridge.seurat}
 \alias{ReductionBridge.Seurat}
+\alias{ReductionBridge.SingleCellExperiment}
 \title{ReductionBridge}
 \usage{
 ReductionBridge(object, ...)
 
-\method{ReductionBridge}{seurat}(seuratObj, reduction.use, reduction.save,
+\method{ReductionBridge}{seurat}(object, reduction.use, reduction.save,
   function.use, ...)
 
-\method{ReductionBridge}{Seurat}(seuratObj, reduction.use, reduction.save,
+\method{ReductionBridge}{Seurat}(object, reduction.use, reduction.save,
   function.use, ...)
+
+\method{ReductionBridge}{SingleCellExperiment}(object, reduction.use,
+  reduction.save, function.use, ...)
 }
 \arguments{
 \item{...}{Extra parameters to pass to the dimensional reduction function.}

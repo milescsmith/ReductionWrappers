@@ -2,14 +2,16 @@ Package: dim.reduction.wrappers
 Title: Wrapper exposing several Python dimensional reduction tools
 Version: 1.3.0.0000
 Authors@R: person("Miles", "Smith", email = "miles-smith@omrf.org", role = c("aut", "cre"))
-Description: R wrapper around the Python dimensional reduction tools, including Multicore-TSNE, fastTSNE, UMAP, PHATE, Phenograph, and Deep Count Autoencoder
+Description: R wrapper around the Python dimensionality reduction and clustering tools, 
+  currently including openTSNE, opt-SNE, UMAP, PHATE, and Phenograph
 Depends: R (>= 3.5.0),
   reticulate,
   parallel,
   glue,
   magrittr
 Suggests:
-  Seurat
+  Seurat,
+  SingleCellExperiment
 License: BSD-3
 Encoding: UTF-8
 LazyData: true

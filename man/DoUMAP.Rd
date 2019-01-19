@@ -4,7 +4,7 @@
 \alias{DoUMAP}
 \title{DoUMAP}
 \usage{
-DoUMAP(seuratObj, reduction.use = "pca", reduction.save = "umap", ...)
+DoUMAP(object, reduction.use = "pca", reduction.save = "umap", ...)
 }
 \arguments{
 \item{reduction.use}{Prior dimensional reduction to use for calculations
@@ -17,7 +17,7 @@ etc...). Default: umap}
 }
 \value{
 Seurat object with the UMAP projection stored in the
-  seuratObj@dr$umap slot (unless otherwise specified)
+  object@dr$umap slot (unless otherwise specified)
 }
 \description{
 Perform UMAP dimentional reduction
