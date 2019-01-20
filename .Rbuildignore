@@ -1,1 +1,6 @@
 .travis.yml
+dim.reduction.wrappers.Rproj
+.Rhistory
+.gitignore
+^.*\.Rproj$
+^\.Rproj\.user$

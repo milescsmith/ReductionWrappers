@@ -76,7 +76,7 @@
 #' data sets, the Barnes-Hut approximation is appropriate and can be
 #' set using one of the following aliases: "bh", "BH" or
 #' "barnes-hut". Note that the time complexity of Barnes-Hut scales as
-#' \eqn{(N\logN)}. For larger data sets, the FFT accelerated
+#' \eqn{(N log N)}. For larger data sets, the FFT accelerated
 #' interpolation method is more appropriate and can be set using one of the
 #' following aliases: "fft", "FFT" or "ìnterpolation". Note that
 #' this method scales linearly in the number of points
