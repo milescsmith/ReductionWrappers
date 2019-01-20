@@ -55,7 +55,7 @@
 #' Note that different initializations might result in different local minima
 #' of the cost function. Default: NULL
 #' @param method character By default the gradient
-#' calculation algorithm uses Barnes-Hut approximation running in \eqn{O(N\logN)}
+#' calculation algorithm uses Barnes-Hut approximation running in \eqn{O(N log N)}
 #' time. method=’exact’ will run on the slower, but exact, algorithm in \eqn{O(N^2)}
 #' time. The exact algorithm should be used when nearest-neighbor errors need
 #' to be better than 3%. However, the exact method cannot scale to millions of
