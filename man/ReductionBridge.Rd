@@ -19,6 +19,8 @@ ReductionBridge(object, ...)
   reduction.save, function.use, ...)
 }
 \arguments{
+\item{object}{A Seurat or SingleCellExperiment object to be transformed.}
+
 \item{...}{Extra parameters to pass to the dimensional reduction function.}
 
 \item{reduction.use}{Prior dimensional reduction to use for calculations
@@ -30,7 +32,7 @@ etc...)}
 \item{function.use}{Dimensional reduction function to call.}
 }
 \description{
-Generalized helper function that pulls the data from a Seurat object, passes
-the dataframe to a Python function and places the resulting dataframe in the
+Generalized helper function that pulls the data from an object, passes
+the dataframe to a Python function, and places the resulting dataframe in the
 appropriate slot
 }

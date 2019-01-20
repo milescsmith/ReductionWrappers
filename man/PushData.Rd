@@ -16,6 +16,10 @@ PushData(object, ...)
 \method{PushData}{SingleCellExperiment}(object, python_df, reduction.save)
 }
 \arguments{
+\item{object}{A Seurat or SingleCellExperiment object to be transformed.}
+
+\item{...}{Arguments passed to specific downstream methods}
+
 \item{python_df}{Dataframe returned by a Python function}
 
 \item{reduction.save}{Name to use for the reduction (i. e. tsne, umap,

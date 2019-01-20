@@ -8,8 +8,7 @@ Depends: R (>= 3.5.0),
   reticulate,
   parallel,
   glue,
-  magrittr
-Suggests:
+  magrittr,
   Seurat,
   SingleCellExperiment
 License: BSD-3

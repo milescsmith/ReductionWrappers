@@ -7,6 +7,8 @@
 DooptSNE(object, reduction.use = "pca", reduction.save = "optsne", ...)
 }
 \arguments{
+\item{object}{A Seurat or SingleCellExperiment object to be transformed.}
+
 \item{reduction.use}{Prior dimensional reduction to use for calculations
 (i.e. pca, ica, cca, etc...). Default: pca}
 

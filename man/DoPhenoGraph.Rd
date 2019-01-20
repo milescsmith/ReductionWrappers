@@ -19,6 +19,8 @@ DoPhenoGraph(object, ...)
   reduction.use = "pca", k = 30, prefix = "community", ...)
 }
 \arguments{
+\item{object}{A Seurat or SingleCellExperiment object with data to be clustered.}
+
 \item{...}{Extra parameters to pass to the phenograph function.}
 
 \item{reduction.use}{Dimensional reduction to use for clustering calculations

@@ -3,11 +3,12 @@
 #' @description Helper function to assist entering dimensional reduction data from Python
 #' reduction methods
 #'
-#' @param object
+#' @param object A Seurat or SingleCellExperiment object to be transformed.
 #' @param python_df Dataframe returned by a Python function
 #' @param reduction.save Name to use for the reduction (i. e. tsne, umap,
 #'   etc...)
 #' @param assay.used Assay from which the data that is dimensionally reduced comes
+#' @param ... Arguments passed to specific downstream methods
 #'
 #' @importFrom glue glue
 #' @importFrom magrittr %<>%
@@ -76,11 +77,11 @@ PushData.SingleCellExperiment <- function(object,
 
 #' @title ReductionBridge
 #'
-#' @description Generalized helper function that pulls the data from a Seurat object, passes
-#' the dataframe to a Python function and places the resulting dataframe in the
+#' @description Generalized helper function that pulls the data from an object, passes
+#' the dataframe to a Python function, and places the resulting dataframe in the
 #' appropriate slot
 #'
-#' @param object
+#' @param object A Seurat or SingleCellExperiment object to be transformed.
 #' @param reduction.use Prior dimensional reduction to use for calculations
 #'   (i.e. pca, ica, cca, etc...)
 #' @param reduction.save Name to use for the reduction (i. e. tsne, umap,
@@ -180,7 +181,7 @@ ReductionBridge.SingleCellExperiment <- function(object,
 #' @description Perform tSNE projection on a Seurat object using the
 #' Multicore-opt-SNE function
 #'
-#' @param object
+#' @param object A Seurat or SingleCellExperiment object to be transformed.
 #' @param reduction.use Prior dimensional reduction to use for calculations
 #'   (i.e. pca, ica, cca, etc...). Default: pca
 #' @param reduction.save Name to use for the reduction (i. e. tsne, umap,
@@ -209,7 +210,7 @@ DooptSNE <- function(object,
 #' @description Perform tSNE projection on a Seurat object using the openTSNE
 #' library, with FIt-SNE selected by default
 #'
-#' @param object
+#' @param object A Seurat or SingleCellExperiment object to be transformed.
 #' @param reduction.use Prior dimensional reduction to use for calculations
 #'   (i.e. pca, ica, cca, etc...). Default: pca
 #' @param reduction.save Name to use for the reduction (i. e. tsne, umap,
@@ -237,7 +238,7 @@ DoopenTSNE <- function(object,
 #'
 #' @description Perform UMAP dimentional reduction
 #'
-#' @param object
+#' @param object A Seurat or SingleCellExperiment object to be transformed.
 #' @param reduction.use Prior dimensional reduction to use for calculations
 #'   (i.e. pca, ica, cca, etc...). Default: pca
 #' @param reduction.save Name to use for the reduction (i. e. tsne, umap,
@@ -266,7 +267,7 @@ DoUMAP <- function(object,
 #'
 #' @description Project trajectory-based dimensional reduction using PHATE
 #'
-#' @param object
+#' @param object A Seurat or SingleCellExperiment object to be transformed.
 #' @param reduction.use Prior dimensional reduction to use for calculations
 #'   (i.e. pca, ica, cca, etc...). Default: pca
 #' @param reduction.save Name to use for the reduction (i. e. tsne, umap,
@@ -294,7 +295,7 @@ DoPHATE <- function(object,
 #'
 #' @description Perform community clustering using Phenograph
 #'
-#' @param object
+#' @param object A Seurat or SingleCellExperiment object with data to be clustered.
 #' @param reduction.use Dimensional reduction to use for clustering calculations
 #'   (i.e. pca, ica, cca, etc...)
 #' @param k Number of nearest neighbors to use in first step of graph
