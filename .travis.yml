@@ -47,7 +47,7 @@ r_packages:
   
 bioc_packages:
   - SingleCellExperiment
-  - Seurat#  
+  - Seurat 
   - GenomeInfoDbData
   - DESeq2
   - MAST
