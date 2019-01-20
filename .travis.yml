@@ -47,10 +47,8 @@ r_packages:
   
 bioc_packages:
   - SingleCellExperiment
-  - Seurat 
   - GenomeInfoDbData
-  - DESeq2
-  - MAST
   - S4Vectors
   - SummarizedExperiment
-  - SingleCellExperiment
+
+Remotes: satijalab/Seurat@release/3.0
