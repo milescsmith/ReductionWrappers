@@ -16,6 +16,9 @@ addons:
       - python3.6
       - python3.6-dev
       - libgit2-dev
+      - libhdf5-dev
+      - libtool
+      - libmagick++-dev
   homebrew:
     packages:
       - cmake
@@ -44,5 +47,10 @@ r_packages:
   
 bioc_packages:
   - SingleCellExperiment
-  - Seurat
-  
+  - Seurat#  
+  - GenomeInfoDbData
+  - DESeq2
+  - MAST
+  - S4Vectors
+  - SummarizedExperiment
+  - SingleCellExperiment
