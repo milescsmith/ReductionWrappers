@@ -4,38 +4,38 @@
 \alias{phate}
 \title{phate}
 \usage{
-phate(n_components = 3, k = 5, a = 15, n_landmark = 2000,
-  t = "auto", gamma = 1, n_pca = 100, knn_dist = "euclidean",
+phate(ce, n_components = 3, k = 5, a = 15, n_landmark = 2000,
+  t = "auto", gamma = 1, n_pca = NULL, knn_dist = "euclidean",
   mds_dist = "euclidean", mds = "metric", n_jobs = NULL,
-  random_state = NULL, verbose = 1)
+  random.state = NULL, verbose = 1)
 }
 \arguments{
-\item{n_components}{integer number of dimensions in which the
-data will be embedded. Default: 3}
+\item{n_components}{integer (default: 3) number of dimensions in which the
+data will be embedded}
 
-\item{k}{integer number of nearest neighbors on which to build
-kernel. Default: 5}
+\item{k}{integer (default: 5) number of nearest neighbors on which to build
+kernel}
 
-\item{a}{integer sets decay rate of kernel tails. If NULL,
-alpha decaying kernel is not used.}
+\item{a}{integer, (default: 15) sets decay rate of kernel tails. If NULL,
+alpha decaying kernel is not used}
 
 \item{n_landmark}{integer, default: 2000 number of landmarks to use in fast
-PHATE. Default: 15}
+PHATE}
 
-\item{t}{integer power to which the diffusion operator is
-powered. This sets the level of diffusion. If "auto", t is selected
+\item{t}{integer (default: 'auto') power to which the diffusion operator is
+powered. This sets the level of diffusion. If 'auto', t is selected
 according to the knee point in the Von Neumann Entropy of the diffusion
-operator. Default: "auto"}
+operator}
 
-\item{gamma}{numeric Informational distance constant between -1
+\item{gamma}{numeric (default: 1) Informational distance constant between -1
 and 1. "gamma=1" gives the PHATE log potential, "gamma=0" gives a square
-root potential. Default: 1}
+root potential.}
 
-\item{n_pca}{integer Number of principal components to use for
+\item{n_pca}{integer (default: 100) Number of principal components to use for
 calculating neighborhoods. For extremely large datasets, using n_pca < 20
-allows neighborhoods to be calculated in roughly log(n_samples) time. Default: 100)}
+allows neighborhoods to be calculated in roughly log(n_samples) time.}
 
-\item{knn_dist}{character recommended values:
+\item{knn_dist}{character (default: 'euclidean') recommended values:
 'euclidean', 'cosine', 'precomputed' Any metric from
 "scipy.spatial.distance" can be used distance metric for building kNN
 graph. If 'precomputed', "data" should be an n_samples x n_samples distance
@@ -43,29 +43,29 @@ or affinity matrix. Distance matrices are assumed to have zeros down the
 diagonal, while affinity matrices are assumed to have non-zero values down
 the diagonal. This is detected automatically using "data[0,0]". You can
 override this detection with "knn_dist='precomputed_distance'" or
-"knn_dist='precomputed_affinity'". Default: 'euclidean'}
+"knn_dist='precomputed_affinity'".}
 
-\item{mds_dist}{character recommended values:
+\item{mds_dist}{character (default: 'euclidean') recommended values:
 'euclidean' and 'cosine' Any metric from "scipy.spatial.distance" can be
-used distance metric for MDS. Default: 'euclidean'}
+used distance metric for MDS}
 
-\item{mds}{character choose from ['classic', 'metric',
+\item{mds}{character (default: 'metric') choose from ['classic', 'metric',
 'nonmetric']. Selects which MDS algorithm is used for dimensionality
-reduction. Default: 'metric'}
+reduction}
 
-\item{n_jobs}{integer The number of jobs to use for the
+\item{n_jobs}{integer (default: 1) The number of jobs to use for the
 computation. If -1 all CPUs are used. If 1 is given, no parallel computing
 code is used at all, which is useful for debugging. For n_jobs below -1,
 (n_cpus + 1 + n_jobs) are used. Thus for n_jobs = -2, all CPUs but one are
-used. Default: 1}
+used}
 
-\item{random_state}{integer or numpy.RandomState The
+\item{verbose}{integer or boolean (default: 1) If "TRUE" or "> 0", print
+status messages}
+
+\item{random_state}{integer or numpy.RandomState (default: NULL) The
 generator used to initialize SMACOF (metric, nonmetric) MDS If an integer
 is given, it fixes the seed defaults to the global "numpy" random number
-generator. Default: NULL}
-
-\item{verbose}{integer or boolean If "TRUE" or "> 0", print
-status messages. Default: 1}
+generator}
 }
 \description{
 An R wrapper around the PHATE Python module found at
