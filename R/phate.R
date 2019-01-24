@@ -7,6 +7,7 @@
 #' embeds high dimensional single-cell data into two or three dimensions for
 #' visualization of biological progressions as described in Moon et al, 2017
 #'
+#' @param ce cell embeddings
 #' @param n_components integer (default: 3) number of dimensions in which the
 #' data will be embedded
 #' @param k integer (default: 5) number of nearest neighbors on which to build
@@ -71,7 +72,7 @@ phate <- function(ce,
                   mds_dist = 'euclidean',
                   mds = 'metric',
                   n_jobs = NULL,
-                  random.state = NULL,
+                  random_state = NULL,
                   verbose = 1){
   if(!py_module_available('phate')){
     stop("The phate module is unavailable.  Please activate the appropriate environment or install the module.")
@@ -96,7 +97,7 @@ phate <- function(ce,
                           mds_dist = mds_dist,
                           mds = mds,
                           n_jobs = as.integer(n_jobs),
-                          random_state = random.state,
+                          random_state = random_state,
                           verbose = as.integer(verbose)
   )
   phate_df <- phate_op$fit_transform(ce)
