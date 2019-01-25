@@ -7,9 +7,11 @@
 phate(ce, n_components = 3, k = 5, a = 15, n_landmark = 2000,
   t = "auto", gamma = 1, n_pca = NULL, knn_dist = "euclidean",
   mds_dist = "euclidean", mds = "metric", n_jobs = NULL,
-  random.state = NULL, verbose = 1)
+  random_state = NULL, verbose = 1)
 }
 \arguments{
+\item{ce}{cell embeddings}
+
 \item{n_components}{integer (default: 3) number of dimensions in which the
 data will be embedded}
 
@@ -59,13 +61,13 @@ code is used at all, which is useful for debugging. For n_jobs below -1,
 (n_cpus + 1 + n_jobs) are used. Thus for n_jobs = -2, all CPUs but one are
 used}
 
-\item{verbose}{integer or boolean (default: 1) If "TRUE" or "> 0", print
-status messages}
-
 \item{random_state}{integer or numpy.RandomState (default: NULL) The
 generator used to initialize SMACOF (metric, nonmetric) MDS If an integer
 is given, it fixes the seed defaults to the global "numpy" random number
 generator}
+
+\item{verbose}{integer or boolean (default: 1) If "TRUE" or "> 0", print
+status messages}
 }
 \description{
 An R wrapper around the PHATE Python module found at
