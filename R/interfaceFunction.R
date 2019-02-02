@@ -71,7 +71,7 @@ PushData.SingleCellExperiment <- function(object,
                                           reduction.save) {
   python_df %<>% as.matrix()
   rownames(python_df) <- colnames(object)
-  reducedDim(x = object, type = reduction.save) <- python_df
+  reducedDim(x = object, type = toupper(reduction.save)) <- python_df
   return(object)
 }
 
@@ -104,7 +104,7 @@ ReductionBridge <- function(object, ...) {
 #' @import Seurat
 #' @return
 ReductionBridge.seurat <- function(object,
-                                   reduction.use,
+                                   reduction.use = "pca",
                                    reduction.save,
                                    function.use,
                                    ...) {
@@ -126,7 +126,7 @@ ReductionBridge.seurat <- function(object,
 #' @import Seurat
 #' @return
 ReductionBridge.Seurat <- function(object,
-                                   reduction.use,
+                                   reduction.use = "pca",
                                    reduction.save,
                                    function.use,
                                    ...) {
@@ -154,12 +154,12 @@ ReductionBridge.Seurat <- function(object,
 #' @import SingleCellExperiment
 #' @return
 ReductionBridge.SingleCellExperiment <- function(object,
-                                                 reduction.use,
+                                                 reduction.use = "PCA",
                                                  reduction.save,
                                                  function.use,
                                                  ...) {
   if (reduction.use %in% reducedDimNames(object)) {
-    cell.embeddings <- reducedDim(x = object, type = reduction.use)
+    cell.embeddings <- reducedDim(x = object, type = toupper(reduction.use))
   }
   else {
     message(glue("{reduction.use} has not yet been performed"))
@@ -170,8 +170,7 @@ ReductionBridge.SingleCellExperiment <- function(object,
   object <- PushData(
     object = object,
     python_df = python_df,
-    reduction.save = reduction.save,
-    assay.used = assay
+    reduction.save = toupper(reduction.save)
   )
   return(object)
 }
