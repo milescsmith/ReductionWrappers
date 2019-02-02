@@ -37,6 +37,9 @@ its nearest neighbours. If the learning rate is too low, most points may
 look compressed in a dense cloud with few outliers. If the cost function
 gets stuck in a bad local minimum increasing the learning rate may help. Default: 200.0}
 
+\item{n_iter}{integer Maximum number of iterations for the
+optimization. Should be at least 250. Default: 1000}
+
 \item{n_iter_without_progress}{integer Maximum number of
 iterations without progress before we abort the optimization, used after
 250 initial iterations with early exaggeration. Note that progress is only
@@ -95,9 +98,6 @@ If false, behaves like stock MulticoreTSNE Default: TRUE}
 optimization. Default: 5000}
 
 \item{n_jobs}{Number of processors to use.  Default: all.}
-
-\item{n.iter}{integer Maximum number of iterations for the
-optimization. Should be at least 250. Default: 1000}
 }
 \value{
 dataframe
