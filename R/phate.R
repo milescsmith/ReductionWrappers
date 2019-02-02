@@ -65,25 +65,25 @@ phate <- function(ce,
                   k = 5,
                   a = 15,
                   n_landmark = 2000,
-                  t = 'auto',
+                  t = "auto",
                   gamma = 1,
                   n_pca = NULL,
-                  knn_dist = 'euclidean',
-                  mds_dist = 'euclidean',
-                  mds = 'metric',
+                  knn_dist = "euclidean",
+                  mds_dist = "euclidean",
+                  mds = "metric",
                   n_jobs = NULL,
                   random_state = NULL,
                   verbose = 1){
-  if(!py_module_available('phate')){
+  if (!py_module_available("phate")){
     stop("The phate module is unavailable.  Please activate the appropriate environment or install the module.")
   }
-  phate <- import(module = 'phate', delay_load = TRUE)
+  phate <- import(module = "phate", delay_load = TRUE)
   if (is.null(n_jobs)){
     n_jobs <- detectCores()
   }
 
 
-  if(is.null(n_pca)){
+  if (is.null(n_pca)){
     n_pca <- ncol(ce)
   }
   phate_op <- phate$PHATE(n_components = as.integer(n_components),

@@ -4,17 +4,17 @@
 \alias{optSNE}
 \title{opt-SNE}
 \usage{
-optSNE(r.data.frame, n.components = 3, perplexity = 30,
-  early.exaggeration = 12, learning.rate = 200, n.iter = 1000,
-  n.iter.without.progress = 300, min.grad.norm = 1e-07,
+optSNE(rdf, n_components = 3, perplexity = 30,
+  early_exaggeration = 12, learning_rate = 200, n_iter = 1000,
+  n_iter_without_progress = 300, min_grad_norm = 1e-07,
   metric = "euclidean", init = "random", verbose = 1,
-  random.state = NULL, method = "barnes_hut", angle = 0.5,
-  auto_iter = TRUE, auto_iter_end = 5000, n.jobs = NULL)
+  random_state = NULL, method = "barnes_hut", angle = 0.5,
+  auto_iter = TRUE, auto_iter_end = 5000, n_jobs = NULL)
 }
 \arguments{
-\item{r.data.frame}{A variable by observation data frame}
+\item{rdf}{A variable by observation data frame}
 
-\item{n.components}{integer Dimensions of the embedded space. Default: 3}
+\item{n_components}{integer Dimensions of the embedded space. Default: 3}
 
 \item{perplexity}{numeric The perplexity is related to the
 number of nearest neighbors that is used in other manifold learning
@@ -22,7 +22,7 @@ algorithms. Larger datasets usually require a larger perplexity. Consider
 selecting a value between 5 and 50. The choice is not extremely critical
 since t-SNE is quite insensitive to this parameter. Default: 30}
 
-\item{early.exaggeration}{numeric Controls how tight natural
+\item{early_exaggeration}{numeric Controls how tight natural
 clusters in the original space are in the embedded space and how much space
 will be between them. For larger values, the space between natural clusters
 will be larger in the embedded space. Again, the choice of this parameter
@@ -30,23 +30,20 @@ is not very critical. If the cost function increases during initial
 optimization, the early exaggeration factor or the learning rate might be
 too high. Default: 12.0}
 
-\item{learning.rate}{numeric The learning rate for t-SNE is
+\item{learning_rate}{numeric The learning rate for t-SNE is
 usually in the range [10.0, 1000.0]. If the learning rate is too high, the
 data may look like a ‘ball’ with any point approximately equidistant from
 its nearest neighbours. If the learning rate is too low, most points may
 look compressed in a dense cloud with few outliers. If the cost function
 gets stuck in a bad local minimum increasing the learning rate may help. Default: 200.0}
 
-\item{n.iter}{integer Maximum number of iterations for the
-optimization. Should be at least 250. Default: 1000}
-
-\item{n.iter.without.progress}{integer Maximum number of
+\item{n_iter_without_progress}{integer Maximum number of
 iterations without progress before we abort the optimization, used after
 250 initial iterations with early exaggeration. Note that progress is only
 checked every 50 iterations so this value is rounded to the next multiple
 of 50. Default: 300}
 
-\item{min.grad.norm}{numeric If the gradient norm is below
+\item{min_grad_norm}{numeric If the gradient norm is below
 this threshold, the optimization will be stopped. Default: 1e-7}
 
 \item{metric}{character or callable The metric to use when calculating distance
@@ -68,7 +65,7 @@ initialization. Default: “random”}
 
 \item{verbose}{integer Verbosity level. Default: 0}
 
-\item{random.state}{int, RandomState instance or NULL If int,
+\item{random_state}{int, RandomState instance or NULL If int,
 random.state is the seed used by the random number generator; If
 RandomState instance, random.state is the random number generator; If NULL,
 the random number generator is the RandomState instance used by np.random.
@@ -97,7 +94,10 @@ If false, behaves like stock MulticoreTSNE Default: TRUE}
 \item{auto_iter_end}{intNumber of iterations for parameter
 optimization. Default: 5000}
 
-\item{n.jobs}{Number of processors to use.  Default: all.}
+\item{n_jobs}{Number of processors to use.  Default: all.}
+
+\item{n.iter}{integer Maximum number of iterations for the
+optimization. Should be at least 250. Default: 1000}
 }
 \value{
 dataframe

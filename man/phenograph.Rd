@@ -4,13 +4,13 @@
 \alias{phenograph}
 \title{Phenograph}
 \usage{
-phenograph(r_data_frame, k = 30, directed = FALSE, prune = FALSE,
+phenograph(rdf, k = 30, directed = FALSE, prune = FALSE,
   min_cluster_size = 10, jaccard = TRUE,
   primary_metric = "euclidean", n_jobs = NULL, q_tol = 0.001,
   louvain_time_limit = 2000, nn_method = "kdtree")
 }
 \arguments{
-\item{r_data_frame}{data to cluster, or sparse matrix of k-nearest neighbor
+\item{rdf}{data to cluster, or sparse matrix of k-nearest neighbor
 graph If ndarray, n-by-d array of n cells in d dimensions If sparse matrix,
 n-by-n adjacency matrix}
 

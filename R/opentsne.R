@@ -3,7 +3,7 @@
 #' An R wrapper for the openTSNE Python module found at
 #' https://github.com/pavlin-policar/openTSNE/
 #'
-#' @param r_data_frame A variable by observation data frame
+#' @param rdf A variable by observation data frame
 #' @param n_components The dimension of the embedding space. Default: 2
 #' @param perplexity Perplexity can be thought of as the continuous :math:"k" number of
 #' neighbors to consider for each data point. To avoid confusion, note that
@@ -102,7 +102,7 @@
 #' @export
 #'
 #' @examples
-openTSNE <- function(r_data_frame,
+openTSNE <- function(rdf,
                      n_components = 2,
                      perplexity = 30,
                      learning_rate = 100,
@@ -114,28 +114,27 @@ openTSNE <- function(r_data_frame,
                      n_interpolation_points = 3,
                      min_num_intervals = 10,
                      ints_in_interval = 2,
-                     initialization = 'pca',
-                     metric = 'euclidean',
+                     initialization = "pca",
+                     metric = "euclidean",
                      metric_params = NULL,
                      initial_momentum = 0.5,
                      final_momentum = 0.8,
                      n_jobs = NULL,
-                     neighbors = 'exact',
-                     negative_gradient_method = 'fft',
+                     neighbors = "exact",
+                     negative_gradient_method = "fft",
                      callbacks = NULL,
                      callbacks_every_iters = 50,
                      random_state = NULL){
-  if(!py_module_available('openTSNE')){
+  if (!py_module_available("openTSNE")){
     stop("The openTSNE module is unavailable.
          Please activate the appropriate environment or install the module.")
   }
 
-  openTSNE.module <- import(module = 'openTSNE', delay_load = TRUE)
-  # numpy.module <- import(module = 'numpy', delay_load = TRUE)
+  openTSNE.module <- import(module = "openTSNE", delay_load = TRUE)
   if (is.null(n_jobs)){
     n_jobs <- detectCores()
   }
-  # X = numpy.module$copy(r.data.frame, order = "C")
+
   tsne <- openTSNE.module$TSNE(n_components = as.integer(n_components),
                                     perplexity = as.numeric(perplexity),
                                     learning_rate = as.numeric(learning_rate),
@@ -159,8 +158,8 @@ openTSNE <- function(r_data_frame,
                                     callbacks_every_iters = as.integer(callbacks_every_iters),
                                     random_state = random_state)
 
-  opentsne.df = tsne$fit(X = r_data_frame)
-  rownames(opentsne.df) <- rownames(r_data_frame)
-  colnames(opentsne.df) <- glue('tsne_{1:n_components}')
-  return(opentsne.df)
+  opentsne_df <- tsne$fit(X = rdf)
+  rownames(opentsne_df) <- rownames(rdf)
+  colnames(opentsne_df) <- glue("tsne_{1:n_components}")
+  return(opentsne_df)
 }

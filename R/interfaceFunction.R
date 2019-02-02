@@ -158,12 +158,11 @@ ReductionBridge.SingleCellExperiment <- function(object,
                                                  reduction.save,
                                                  function.use,
                                                  ...) {
-  if (reduction.use %in% reducedDimNames(object)) {
+  if (toupper(reduction.use) %in% reducedDimNames(object)) {
     cell.embeddings <- reducedDim(x = object, type = toupper(reduction.use))
   }
   else {
-    message(glue("{reduction.use} has not yet been performed"))
-    stop()
+    stop(glue("{reduction.use} has not yet been performed"))
   }
 
   python_df <- function.use(cell.embeddings, ...)

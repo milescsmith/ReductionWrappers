@@ -8,7 +8,7 @@
 #' Finds a low dimensional embedding of the data that approximates an underlying
 #' manifold.
 #'
-#' @param r.data.frame A high dimensional variable-by-observation (i.e. gene-by-cell)
+#' @param rdf A high dimensional variable-by-observation (i.e. gene-by-cell)
 #' matrix of values to be transformed.#'
 #' @param n_neighbors float (optional, default 15)
 #' The size of local neighborhood (in terms of number of neighboring
@@ -154,13 +154,13 @@
 #'
 #' @rdname umap
 #' @examples
-umap <- function(r.data.frame,
+umap <- function(rdf,
                  n_neighbors = 15,
                  n_components = 3,
-                 metric = 'euclidean',
+                 metric = "euclidean",
                  n_epochs = NULL,
                  learning_rate = 1.0,
-                 init = 'spectral',
+                 init = "spectral",
                  min_dist = 0.1,
                  spread = 1.0,
                  set_op_mix_ratio = 1.0,
@@ -174,15 +174,15 @@ umap <- function(r.data.frame,
                  metric_kwds = NULL,
                  angular_rp_forest = FALSE,
                  target_n_neighbors = -1,
-                 target_metric = 'categorical',
+                 target_metric = "categorical",
                  target_metric_kwds = NULL,
                  target_weight = 0.5,
                  transform_seed = 42,
                  verbose = FALSE){
-  if(!py_module_available('umap')){
+  if (!py_module_available("umap")){
     stop("The umap module is unavailable.  Please activate the appropriate environment or install the module.")
   }
-  umap.module <- import(module = 'umap', delay_load = TRUE)
+  umap.module <- import(module = "umap", delay_load = TRUE)
   if (!is.null(n_epochs)){
     n_epochs <- as.integer(n_epochs)
   }
@@ -202,7 +202,6 @@ umap <- function(r.data.frame,
                                  negative_sample_rate = as.integer(negative_sample_rate),
                                  transform_queue_size = as.numeric(transform_queue_size),
                                  a = as.numeric(a),
-                                 # b = as.numeric(b)
                                  metric_kwds = metric_kwds,
                                  target_n_neighbors = as.integer(target_n_neighbors),
                                  target_metric = target_metric,
@@ -212,6 +211,6 @@ umap <- function(r.data.frame,
                                  verbose = TRUE
                                  )
 
-  umap.df <- umap.embed$fit_transform(r.data.frame)
+  umap.df <- umap.embed$fit_transform(rdf)
   return(umap.df)
 }
