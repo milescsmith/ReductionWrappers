@@ -32,7 +32,7 @@ PushData.Seurat <- function(object,
   reduction.data <- CreateDimReducObject(
     embeddings = python_df,
     assay = assay.used,
-    key = glue("{reduction.save}_")
+    key = as.character(glue("{reduction.save}_"))
   )
   object[[reduction.save]] <- reduction.data
   return(object)
@@ -57,7 +57,7 @@ PushData.seurat <- function(object,
     object = object,
     reduction.type = reduction.save,
     slot = "key",
-    new.data = glue("{reduction.save}_") %>% as.character()
+    new.data = as.character(glue("{reduction.save}_"))
   )
   return(object)
 }
