@@ -2,8 +2,9 @@ Package: dim.reduction.wrappers
 Title: Wrapper exposing several Python dimensional reduction tools
 Version: 2.0.0.0000
 Authors@R: person("Miles", "Smith", email = "miles-smith@omrf.org", role = c("aut", "cre"))
-Description: R wrapper around the Python dimensionality reduction and clustering tools, 
-  currently including openTSNE, opt-SNE, UMAP, PHATE, and Phenograph
+Description: An R wrapper connecting Python dimensionality reduction and clustering tools, 
+ including openTSNE, opt-SNE, UMAP, PHATE, and Phenograph, to R single cell data objects, 
+ such as those from Seurat 2/3 or scater.
 Depends: R (>= 3.5.0),
   reticulate,
   parallel,
