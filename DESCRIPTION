@@ -1,4 +1,4 @@
-Package: dim.reduction.wrappers
+Package: ReductionWrappers
 Title: Wrapper exposing several Python dimensional reduction tools
 Version: 2.0.0.0000
 Authors@R: person("Miles", "Smith", email = "miles-smith@omrf.org", role = c("aut", "cre"))
