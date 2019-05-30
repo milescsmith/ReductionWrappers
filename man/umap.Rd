@@ -179,7 +179,7 @@ This ensures consistency in transform operations.}
 Controls verbosity of logging.}
 }
 \value{
-A data frame with UMAP coordinates
+data.frame with UMAP coordinates
 }
 \description{
 An R wrapper around the UMAP Python module found at

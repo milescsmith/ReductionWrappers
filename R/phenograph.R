@@ -32,13 +32,12 @@
 #' search. For very large high-dimensional data sets, brute force (with
 #' parallel computation) performs faster than kdtree.
 #'
-#' @importFrom reticulate import
+#' @importFrom reticulate import py_module_available
 #' @importFrom parallel detectCores
 #'
-#' @return
+#' @return data.frame with community membership infomation
 #' @export
 #'
-#' @examples
 phenograph <- function(rdf,
                        k = 30,
                        directed = FALSE,

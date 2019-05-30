@@ -3,27 +3,23 @@
 \name{DoPhenoGraph}
 \alias{DoPhenoGraph}
 \alias{DoPhenoGraph.Seurat}
-\alias{DoPhenoGraph.seurat}
 \alias{DoPhenoGraph.SingleCellExperiment}
 \title{DoPhenoGraph}
 \usage{
 DoPhenoGraph(object, ...)
 
-\method{DoPhenoGraph}{Seurat}(object, reduction.use = "pca", k = 30,
-  prefix = "community", ...)
-
-\method{DoPhenoGraph}{seurat}(object, reduction.use = "pca", k = 30,
+\method{DoPhenoGraph}{Seurat}(object, reduction_use = "pca", k = 30,
   prefix = "community", ...)
 
 \method{DoPhenoGraph}{SingleCellExperiment}(object,
-  reduction.use = "pca", k = 30, prefix = "community", ...)
+  reduction_use = "pca", k = 30, prefix = "community", ...)
 }
 \arguments{
 \item{object}{A Seurat or SingleCellExperiment object with data to be clustered.}
 
 \item{...}{Extra parameters to pass to the phenograph function.}
 
-\item{reduction.use}{Dimensional reduction to use for clustering calculations
+\item{reduction_use}{Dimensional reduction to use for clustering calculations
 (i.e. pca, ica, cca, etc...)}
 
 \item{k}{Number of nearest neighbors to use in first step of graph
@@ -33,6 +29,11 @@ object@ident.  Default = 30}
 
 \item{prefix}{String prefix to used as in the column name entered in the
 meta.data slot}
+}
+\value{
+Seurat object
+
+SingleCellExperiment object
 }
 \description{
 Perform community clustering using Phenograph

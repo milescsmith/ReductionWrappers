@@ -94,14 +94,13 @@
 #' be used as the random number generator. If the value is None, the random
 #' number generator is the RandomState instance used by "np.random". Default: NULL
 #'
-#' @importFrom reticulate import
+#' @importFrom reticulate import py_module_available
 #' @importFrom parallel detectCores
 #' @importFrom glue glue
 #'
-#' @return dataframe
+#' @return data.frame with tSNE coordinates
 #' @export
 #'
-#' @examples
 openTSNE <- function(rdf,
                      n_components = 2,
                      perplexity = 30,

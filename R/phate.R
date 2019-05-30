@@ -53,13 +53,12 @@
 #' @param verbose integer or boolean (default: 1) If "TRUE" or "> 0", print
 #' status messages
 #'
-#' @importFrom reticulate import
+#' @importFrom reticulate import py_module_available
 #' @importFrom parallel detectCores
 #'
-#' @return
+#' @return data.frame with PHATE coordinates
 #' @export
 #'
-#' @examples
 phate <- function(ce,
                   n_components = 3,
                   k = 5,

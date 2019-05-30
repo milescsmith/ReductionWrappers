@@ -147,13 +147,13 @@
 #' @param verbose bool (optional, default False)
 #' Controls verbosity of logging.
 #'
-#' @importFrom reticulate import
+#' @importFrom reticulate import py_module_available
 #'
-#' @return A data frame with UMAP coordinates
+#' @return data.frame with UMAP coordinates
 #' @export
 #'
 #' @rdname umap
-#' @examples
+#'
 umap <- function(rdf,
                  n_neighbors = 15,
                  n_components = 3,

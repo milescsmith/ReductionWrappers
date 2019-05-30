@@ -2,34 +2,37 @@
 % Please edit documentation in R/interfaceFunction.R
 \name{ReductionBridge}
 \alias{ReductionBridge}
-\alias{ReductionBridge.seurat}
 \alias{ReductionBridge.Seurat}
 \alias{ReductionBridge.SingleCellExperiment}
 \title{ReductionBridge}
 \usage{
 ReductionBridge(object, ...)
 
-\method{ReductionBridge}{seurat}(object, reduction.use = "pca",
-  reduction.save, function.use, ...)
-
-\method{ReductionBridge}{Seurat}(object, reduction.use = "pca",
-  reduction.save, function.use, ...)
+\method{ReductionBridge}{Seurat}(object, reduction_use = "pca",
+  reduction_save, function_use, dims_use = NULL, ...)
 
 \method{ReductionBridge}{SingleCellExperiment}(object,
-  reduction.use = "PCA", reduction.save, function.use, ...)
+  reduction_use = "PCA", reduction_save, function_use, dims_use, ...)
 }
 \arguments{
 \item{object}{A Seurat or SingleCellExperiment object to be transformed.}
 
 \item{...}{Extra parameters to pass to the dimensional reduction function.}
 
-\item{reduction.use}{Prior dimensional reduction to use for calculations
+\item{reduction_use}{Prior dimensional reduction to use for calculations
 (i.e. pca, ica, cca, etc...)}
 
-\item{reduction.save}{Name to use for the reduction (i. e. tsne, umap,
+\item{reduction_save}{Name to use for the reduction (i. e. tsne, umap,
 etc...)}
 
-\item{function.use}{Dimensional reduction function to call.}
+\item{function_use}{Dimensional reduction function to call.}
+
+\item{dims_use}{Dimensions of `reduction_use` to pass to `function_use`}
+}
+\value{
+Seurat object
+
+SingleCellExperiment object
 }
 \description{
 Generalized helper function that pulls the data from an object, passes

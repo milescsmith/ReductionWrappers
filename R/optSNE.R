@@ -74,13 +74,12 @@
 #' optimization. Default: 5000
 #' @param n_jobs Number of processors to use.  Default: all.
 #'
-#' @importFrom reticulate import
+#' @importFrom reticulate import py_module_available
 #' @importFrom parallel detectCores
 #'
-#' @return dataframe
+#' @return data.frame with tSNE coordinates
 #' @export
 #'
-#' @examples
 optSNE <- function(rdf,
                    n_components = 3,
                    perplexity = 30.0,

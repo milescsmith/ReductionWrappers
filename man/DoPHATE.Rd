@@ -4,16 +4,19 @@
 \alias{DoPHATE}
 \title{DoPHATE}
 \usage{
-DoPHATE(object, reduction.use = "pca", reduction.save = "phate", ...)
+DoPHATE(object, reduction_use = "pca", reduction_save = "phate",
+  dims_use, ...)
 }
 \arguments{
 \item{object}{A Seurat or SingleCellExperiment object to be transformed.}
 
-\item{reduction.use}{Prior dimensional reduction to use for calculations
+\item{reduction_use}{Prior dimensional reduction to use for calculations
 (i.e. pca, ica, cca, etc...). Default: pca}
 
-\item{reduction.save}{Name to use for the reduction (i. e. tsne, umap,
+\item{reduction_save}{Name to use for the reduction (i. e. tsne, umap,
 etc...). Default: phate}
+
+\item{dims_use}{Dimensions from `reduction_use` to pass to PHATE}
 
 \item{...}{Extra parameters to pass to the phate function.}
 }

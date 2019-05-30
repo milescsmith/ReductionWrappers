@@ -49,6 +49,9 @@ optimization. If exceeded the best result so far is returned}
 search. For very large high-dimensional data sets, brute force (with
 parallel computation) performs faster than kdtree.}
 }
+\value{
+data.frame with community membership infomation
+}
 \description{
 Used to cluster high dimensional data. An R wrapper around the Python
 Phenograph module found at https://github.com/jacoblevine/PhenoGraph

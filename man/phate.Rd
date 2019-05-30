@@ -69,6 +69,9 @@ generator}
 \item{verbose}{integer or boolean (default: 1) If "TRUE" or "> 0", print
 status messages}
 }
+\value{
+data.frame with PHATE coordinates
+}
 \description{
 An R wrapper around the PHATE Python module found at
 https://github.com/KrishnaswamyLab/PHATE

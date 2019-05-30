@@ -100,7 +100,7 @@ optimization. Default: 5000}
 \item{n_jobs}{Number of processors to use.  Default: all.}
 }
 \value{
-dataframe
+data.frame with tSNE coordinates
 }
 \description{
 An R wrapper for the opt-SNE Python module found at

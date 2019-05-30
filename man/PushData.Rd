@@ -3,17 +3,14 @@
 \name{PushData}
 \alias{PushData}
 \alias{PushData.Seurat}
-\alias{PushData.seurat}
 \alias{PushData.SingleCellExperiment}
 \title{PushData}
 \usage{
 PushData(object, ...)
 
-\method{PushData}{Seurat}(object, python_df, reduction.save, assay.used)
+\method{PushData}{Seurat}(object, python_df, reduction_save, assay_used)
 
-\method{PushData}{seurat}(object, python_df, reduction.save)
-
-\method{PushData}{SingleCellExperiment}(object, python_df, reduction.save)
+\method{PushData}{SingleCellExperiment}(object, python_df, reduction_save)
 }
 \arguments{
 \item{object}{A Seurat or SingleCellExperiment object to be transformed.}
@@ -22,10 +19,15 @@ PushData(object, ...)
 
 \item{python_df}{Dataframe returned by a Python function}
 
-\item{reduction.save}{Name to use for the reduction (i. e. tsne, umap,
+\item{reduction_save}{Name to use for the reduction (i. e. tsne, umap,
 etc...)}
 
-\item{assay.used}{Assay from which the data that is dimensionally reduced comes}
+\item{assay_used}{Assay from which the data that is dimensionally reduced comes}
+}
+\value{
+Seurat object
+
+SingleCellExperiment object
 }
 \description{
 Helper function to assist entering dimensional reduction data from Python

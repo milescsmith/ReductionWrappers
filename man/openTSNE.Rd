@@ -129,7 +129,7 @@ be used as the random number generator. If the value is None, the random
 number generator is the RandomState instance used by "np.random". Default: NULL}
 }
 \value{
-dataframe
+data.frame with tSNE coordinates
 }
 \description{
 An R wrapper for the openTSNE Python module found at
