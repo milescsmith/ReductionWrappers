@@ -14,7 +14,6 @@ BugReports: https://github.com/milescsmith/ReductionWrappers/issues
 Depends: R (>= 3.5.0)
 Imports:
   rlang,
-  purrr,
   reticulate,
   parallel,
   glue,

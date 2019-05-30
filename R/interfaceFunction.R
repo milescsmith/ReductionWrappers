@@ -94,7 +94,7 @@ ReductionBridge.Seurat <- function(object,
 
   dims_use = dims_use %||% 1:ncol(cell_embeddings)
 
-  if (dims_use %nin% 1:ncol(cell_embeddings)) {
+  if (!all(dims_use %in% 1:ncol(cell_embeddings))) {
     stop(glue("You have selected dimensions that are outside the bounds of {reduction_use}"))
   }
 
@@ -127,7 +127,7 @@ ReductionBridge.SingleCellExperiment <- function(object,
 
   dims_use = dims_use %||% 1:ncol(cell_embeddings)
 
-  if (dims_use %nin% 1:ncol(cell_embeddings)) {
+  if (!all(dims_use %in% 1:ncol(cell_embeddings))) {
     stop(glue("You have selected dimensions that are outside the bounds of {reduction_use}"))
   }
 
@@ -162,11 +162,11 @@ DooptSNE <- function(object,
                      dims_use,
                      ...) {
   object <- ReductionBridge(object,
-    reduction_use = reduction_use,
-    reduction_save = reduction_save,
-    function_use = optSNE,
-    dims_use = dims_use,
-    ...
+                            reduction_use = reduction_use,
+                            reduction_save = reduction_save,
+                            function_use = optSNE,
+                            dims_use = dims_use,
+                            ...
   )
   return(object)
 }
@@ -193,11 +193,11 @@ DoopenTSNE <- function(object,
                        dims_use,
                        ...) {
   object <- ReductionBridge(object,
-    reduction_use = reduction_use,
-    reduction_save = reduction_save,
-    function_use = openTSNE,
-    dims_use = dims_use,
-    ...
+                            reduction_use = reduction_use,
+                            reduction_save = reduction_save,
+                            function_use = openTSNE,
+                            dims_use = dims_use,
+                            ...
   )
   return(object)
 }
@@ -222,11 +222,11 @@ DoUMAP <- function(object,
                    dims_use,
                    ...) {
   object <- ReductionBridge(object,
-    reduction_use = reduction_use,
-    reduction_save = reduction_save,
-    function_use = umap,
-    dims_use = dims_use,
-    ...
+                            reduction_use = reduction_use,
+                            reduction_save = reduction_save,
+                            function_use = umap,
+                            dims_use = dims_use,
+                            ...
   )
   return(object)
 }
@@ -252,11 +252,11 @@ DoPHATE <- function(object,
                     dims_use,
                     ...) {
   object <- ReductionBridge(object,
-    reduction_use = reduction_use,
-    reduction_save = reduction_save,
-    function_use = phate,
-    dims_use = dims_use,
-    ...
+                            reduction_use = reduction_use,
+                            reduction_save = reduction_save,
+                            function_use = phate,
+                            dims_use = dims_use,
+                            ...
   )
   return(object)
 }
