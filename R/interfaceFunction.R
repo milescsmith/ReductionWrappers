@@ -101,7 +101,12 @@ ReductionBridge.Seurat <- function(object,
     stop(glue("You have selected dimensions that are outside the bounds of {reduction_use}"))
   }
 
-  python_df <- function_use(cell_embeddings[,dims_use], snn, ...)
+  if (match.call()[5] == "fa2()") {
+    python_df <- function_use(cell_embeddings[,dims_use], snn, ...)  
+  } else {
+    python_df <- function_use(cell_embeddings[,dims_use], ...)
+  }
+  
   object <- PushData(
     object = object,
     python_df = python_df,
