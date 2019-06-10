@@ -5,7 +5,7 @@
 \title{DoUMAP}
 \usage{
 DoUMAP(object, reduction_use = "pca", reduction_save = "umap",
-  dims_use, ...)
+  dims_use = NULL, ...)
 }
 \arguments{
 \item{object}{A Seurat or SingleCellExperiment object to be transformed.}

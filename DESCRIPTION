@@ -1,6 +1,6 @@
 Package: ReductionWrappers
 Title: Wrapper exposing several Python dimensional reduction tools
-Version: 2.0.1.0000
+Version: 2.1.0.0000
 Authors@R: 
     person(given = "Miles",
            family = "Smith",
@@ -18,6 +18,8 @@ Imports:
   parallel,
   glue,
   magrittr,
+  RANN,
+  Matrix,
   Seurat,
   SingleCellExperiment,
   SummarizedExperiment

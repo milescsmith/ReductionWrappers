@@ -85,7 +85,10 @@ ReductionBridge.Seurat <- function(object,
                                    ...) {
   if (reduction_use %in% names(object)) {
     cell_embeddings <- Embeddings(object[[reduction_use]])
+    adjacencies <- object@graphs
     assay <- DefaultAssay(object = object[[reduction_use]])
+    snn <- as.matrix(object@graphs[[glue("{assay}_snn")]])
+    snn <- snn[rownames(cell_embeddings),rownames(cell_embeddings)]
   }
   else {
     message(glue("{reduction_use} has not yet been performed"))
@@ -98,7 +101,7 @@ ReductionBridge.Seurat <- function(object,
     stop(glue("You have selected dimensions that are outside the bounds of {reduction_use}"))
   }
 
-  python_df <- function_use(cell_embeddings[,dims_use], ...)
+  python_df <- function_use(cell_embeddings[,dims_use], snn, ...)
   object <- PushData(
     object = object,
     python_df = python_df,
@@ -111,6 +114,8 @@ ReductionBridge.Seurat <- function(object,
 #' @rdname ReductionBridge
 #' @method ReductionBridge SingleCellExperiment
 #' @importFrom SingleCellExperiment reducedDim reducedDimNames
+#' @importFrom RANN nn2
+#' @importFrom Matrix sparseMatrix
 #' @return SingleCellExperiment object
 ReductionBridge.SingleCellExperiment <- function(object,
                                                  reduction_use = "PCA",
@@ -123,6 +128,11 @@ ReductionBridge.SingleCellExperiment <- function(object,
   }
   else {
     stop(glue("{reduction_use} has not yet been performed"))
+  }
+
+  if (match.call()[5] == "fa2()") {
+    stop("Sorry, ForceAtlas2 projection is not currently implemented for SingleCellAssay objects and won't be until
+         I can figure out how to get a simultaneous nearest network calculated for it.")
   }
 
   dims_use = dims_use %||% 1:ncol(cell_embeddings)
@@ -225,6 +235,36 @@ DoUMAP <- function(object,
                             reduction_use = reduction_use,
                             reduction_save = reduction_save,
                             function_use = umap,
+                            dims_use = dims_use,
+                            ...
+  )
+  return(object)
+}
+
+
+#' @title DoForceAtlas2
+#'
+#' @description Perform ForceAtlas2 dimentional reduction
+#'
+#' @param object A Seurat or SingleCellExperiment object to be transformed.
+#' @param reduction_use Prior dimensional reduction to use for calculations
+#' (i.e. pca, ica, cca, etc...). Default: pca
+#' @param reduction_save Name to use for the reduction (i. e. tsne, umap,
+#' etc...). Default: umap
+#' @param dims_use Dimensions from `reduction_use` to pass to PHATE
+#' @param ... Extra parameters to pass to the umap function.
+#'
+#' @export
+#'
+DoForceAtlas2 <- function(object,
+                          reduction_use = "pca",
+                          reduction_save = "fa2",
+                          dims_use = NULL,
+                          ...) {
+  object <- ReductionBridge(object,
+                            reduction_use = reduction_use,
+                            reduction_save = reduction_save,
+                            function_use = fa2,
                             dims_use = dims_use,
                             ...
   )

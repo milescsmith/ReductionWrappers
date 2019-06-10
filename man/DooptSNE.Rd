@@ -5,7 +5,7 @@
 \title{DooptSNE}
 \usage{
 DooptSNE(object, reduction_use = "pca", reduction_save = "optsne",
-  dims_use, ...)
+  dims_use = NULL, ...)
 }
 \arguments{
 \item{object}{A Seurat or SingleCellExperiment object to be transformed.}
