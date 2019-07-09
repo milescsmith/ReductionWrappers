@@ -88,8 +88,6 @@ ReductionBridge.Seurat <- function(object,
     cell_embeddings <- Embeddings(object[[reduction_use]])
     adjacencies <- object@graphs
     assay <- DefaultAssay(object = object[[reduction_use]])
-    snn <- Matrix(object@graphs[[glue("{assay}_snn")]])
-    snn <- snn[rownames(cell_embeddings),rownames(cell_embeddings)]
   }
   else {
     message(glue("{reduction_use} has not yet been performed"))
@@ -103,6 +101,8 @@ ReductionBridge.Seurat <- function(object,
   }
 
   if (match.call()[5] == "fa2()") {
+    snn <- Matrix(object@graphs[[glue("{assay}_snn")]])
+    snn <- snn[rownames(cell_embeddings),rownames(cell_embeddings)]
     python_df <- function_use(cell_embeddings[,dims_use], snn, ...)  
   } else {
     python_df <- function_use(cell_embeddings[,dims_use], ...)
