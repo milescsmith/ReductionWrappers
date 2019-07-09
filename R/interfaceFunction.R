@@ -67,6 +67,7 @@ PushData.SingleCellExperiment <- function(object,
 #'
 #' @importFrom glue glue
 #' @importFrom rlang %||%
+#' @importFrom Matrix Matrix
 #'
 ReductionBridge <- function(object, ...) {
   UseMethod("ReductionBridge")
@@ -87,7 +88,7 @@ ReductionBridge.Seurat <- function(object,
     cell_embeddings <- Embeddings(object[[reduction_use]])
     adjacencies <- object@graphs
     assay <- DefaultAssay(object = object[[reduction_use]])
-    snn <- as.matrix(object@graphs[[glue("{assay}_snn")]])
+    snn <- Matrix(object@graphs[[glue("{assay}_snn")]])
     snn <- snn[rownames(cell_embeddings),rownames(cell_embeddings)]
   }
   else {
