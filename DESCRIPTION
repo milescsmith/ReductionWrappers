@@ -1,30 +1,34 @@
 Package: ReductionWrappers
 Title: Wrapper exposing several Python dimensional reduction tools
-Version: 2.1.0.0000
+Version: 2.2.0.0000
 Authors@R: 
     person(given = "Miles",
            family = "Smith",
            role = c("aut", "cre"),
            email = "miles-smith@omrf.org")
 Description: An R wrapper connecting Python dimensionality reduction and clustering tools, 
- including openTSNE, opt-SNE, UMAP, PHATE, and Phenograph, to R single cell data objects, 
+ including openTSNE, opt-SNE, UMAP, PAGA, PHATE, and Phenograph, to R single cell data objects, 
  such as those from Seurat 2/3 or scater.
-Url: https://github.com/milescsmith/ReductionWrappers
-BugReports: https://github.com/milescsmith/ReductionWrappers/issues
+Url: https://gitlab.com/milothepsychic/ReductionWrappers
+BugReports: https://github.com/milothepsychic/ReductionWrappers/issues
 Depends: R (>= 3.5.0)
 Imports:
+  cowplot,
   rlang,
   reticulate,
   parallel,
+  ggplot2,
   glue,
   magrittr,
   RANN,
   Matrix,
   Seurat,
   SingleCellExperiment,
-  SummarizedExperiment
+  SummarizedExperiment,
+  s2a
 Remotes:
     bioc::release/SummarizedExperiment
+    gitlab::milothepsychic/s2a
 License: BSD_3_clause + file LICENSE
 Encoding: UTF-8
 LazyData: true

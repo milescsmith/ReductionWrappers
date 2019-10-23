@@ -4,3 +4,4 @@ dim.reduction.wrappers.Rproj
 .gitignore
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^data-raw$
