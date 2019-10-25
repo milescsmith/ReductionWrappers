@@ -13,10 +13,12 @@
 #' Heavily based on the fantastic walk through found at https://romanhaa.github.io/blog/paga_to_r/
 #'
 #' @param seurat_obj
-#' @param assay
-#' @param clustering_algorithm Whether to use the "louvain" or "leiden" algorithms
-#' @param clustering_resolution Resolution to pass to the clustering algorith
-#' @param edge_filter_weight
+#' @param assay Seurat object assay to use when converting to Scanpy object
+#' @param seurat_grouping Force PAGA to use this metadata grouping variable. (Default: NULL)
+#' @param set_ident Set the cluster identity for each cell when returning the object? (Default: TRUE)
+#' @param clustering_algorithm Whether to use the "louvain" or "leiden" algorithms (Default: "leiden")
+#' @param clustering_resolution Resolution to pass to the clustering algorith (Default: 1.0)
+#' @param edge_filter_weight Set edges with a weight below this threshold to NA (Default: 0.1)
 #' @param neighbors_n_neighbors
 #' @param neighbors_n_pcs
 #' @param neighbors_use_rep
@@ -57,6 +59,8 @@
 #' @examples
 PAGA <- function(seurat_obj,
                  assay = "RNA",
+                 seurat_grouping = NULL,
+                 set_ident = TRUE,
                  clustering_algorithm = "leiden",
                  edge_filter_weight = 0.10,
 
@@ -124,19 +128,26 @@ PAGA <- function(seurat_obj,
     stop("Unknown clustering algorithm specified.")
   }
 
-  sc$tl[[clustering_algorithm]](adata = alpha,
-                                resolution = as.numeric(clustering_resolution),
-                                restrict_to = clustering_restrict_to,
-                                random_state = as.integer(clustering_random_state),
-                                key_added = clustering_key_added,
-                                adjacency = clustering_adjacency,
-                                directed = clustering_directed,
-                                use_weights = clustering_use_weights,
-                                n_iterations = as.integer(clustering_n_iterations),
-                                partition_type = clustering_partition_type)
-
-  sc$tl$paga(adata = alpha,
-             groups = clustering_key_added)
+  if (is.null(seurat_grouping)){
+    grouping <- clustering_algorithm
+    sc$tl[[grouping]](adata = alpha,
+                                  resolution = as.numeric(clustering_resolution),
+                                  restrict_to = clustering_restrict_to,
+                                  random_state = as.integer(clustering_random_state),
+                                  key_added = clustering_key_added,
+                                  adjacency = clustering_adjacency,
+                                  directed = clustering_directed,
+                                  use_weights = clustering_use_weights,
+                                  n_iterations = as.integer(clustering_n_iterations),
+                                  partition_type = clustering_partition_type)
+    sc$tl$paga(adata = alpha,
+               groups = clustering_key_added)
+    seurat_obj@meta.data[[grouping]] <- alpha$obs[[grouping]]
+  } else {
+    grouping <- seurat_grouping
+    sc$tl$paga(adata = alpha,
+               groups = grouping)
+  }
 
   sc$pl$paga(adata = alpha,
              show = paga_show,
@@ -156,19 +167,18 @@ PAGA <- function(seurat_obj,
              gamma=as.numeric(umap_gamma),
              negative_sample_rate=as.integer(umap_negative_sample_rate))
 
-  seurat_obj@meta.data[[clustering_algorithm]] <- alpha$obs[[clustering_algorithm]]
-
   paga <- list(
     connectivities = alpha$uns$paga$connectivities$todense() %>%
-      `rownames<-`(1:nrow(paga$pos)) %>%
-      `colnames<-`(1:nrow(paga$pos)),
+      `rownames<-`(levels(alpha$obs[[alpha$uns$paga$groups]])) %>%
+      `colnames<-`(levels(alpha$obs[[alpha$uns$paga$groups]])),
     connectivities_tree = alpha$uns$paga$connectivities$todense(),
     group_name = alpha$uns$paga$groups,
-    groups = levels(alpha$obs[[clustering_algorithm]]),
-    group_colors = setNames(alpha$uns$leiden_colors, 0:(nrow(alpha$uns$paga$pos)-1)),
+    groups = levels(alpha$obs[[alpha$uns$paga$groups]]),
+    group_colors = setNames(alpha$uns[[glue("{alpha$uns$paga$groups}_colors")]],
+                            0:(nrow(alpha$uns$paga$pos)-1)),
     position = as_tibble(
       cbind(
-        levels(alpha$obs[["leiden"]]),
+        levels(alpha$obs[[alpha$uns$paga$groups]]),
         alpha$uns$paga$pos),
       .name_repair = ~make.names(c("group","x", "y"))
     ),
@@ -177,6 +187,19 @@ PAGA <- function(seurat_obj,
                                                                1:ncol(alpha$obsm['X_umap'])),
                                                 unique = TRUE))
   )
+
+  paga$edges <- tibble(
+    group1 = paga$groups[row(paga$connectivities)[upper.tri(paga$connectivities)]],
+    group2 = paga$groups[col(paga$connectivities)[upper.tri(paga$connectivities)]],
+    weight = paga$connectivities[upper.tri(paga$connectivities)]
+  ) %>%
+    mutate(
+      x1 = paga$position$x[match(.$group1, rownames(paga$position))],
+      y1 = paga$position$y[match(.$group1, rownames(paga$position))],
+      x2 = paga$position$x[match(.$group2, rownames(paga$position))],
+      y2 = paga$position$y[match(.$group2, rownames(paga$position))]
+    ) %>%
+    filter(weight >= edge_filter_weight)
 
   paga_umap <- CreateDimReducObject(embeddings = alpha$obsm[['X_umap']] %>%
                                       `rownames<-`(colnames(seurat_obj[[assay]])) %>%
@@ -187,22 +210,11 @@ PAGA <- function(seurat_obj,
 
   seurat_obj[["paga_umap"]] <- paga_umap
 
-  edges <- tibble(
-    group1 = rownames(paga$connectivities)[row(paga$connectivities)[upper.tri(paga$connectivities)]],
-    group2 = colnames(paga$connectivities)[col(paga$connectivities)[upper.tri(paga$connectivities)]],
-    weight = paga$connectivities[upper.tri(paga$connectivities)]
-    ) %>%
-    mutate(
-      x1 = paga$position$x[match(.$group1, rownames(paga$position))],
-      y1 = paga$position$y[match(.$group1, rownames(paga$position))],
-      x2 = paga$position$x[match(.$group2, rownames(paga$position))],
-      y2 = paga$position$y[match(.$group2, rownames(paga$position))]
-      ) %>%
-    filter(weight >= edge_filter_weight)
-
-  paga$edges <- edges
-
   seurat_obj@misc$paga <- paga
+
+  if (isTRUE(set_ident)){
+    Idents(seurat_obj) <- seurat_obj@meta.data[[grouping]]
+  }
 
   return(seurat_obj)
 }
