@@ -5,5 +5,6 @@ R wrappers around dimensionality reduction methods found in Python modules.  Use
   * [opt-SNE](https://github.com/omiq-ai/Multicore-opt-SNE)
   * [openTSNE](https://github.com/pavlin-policar/openTSNE)
   * [UMAP (Uniform Manifold Approximation and Projection)](https://github.com/lmcinnes/umap)
+  * [PAGA (Partition-Based Graph Abstraction)](https://github.com/theislab/paga) through Scanpy.
   * [PHATE (Potential of Heat-diffusion for Affinity-based Trajectory Embedding)](https://www.biorxiv.org/content/early/2017/03/24/120378)
   * [PhenoGraph](https://github.com/jacoblevine/PhenoGraph)
