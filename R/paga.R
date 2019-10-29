@@ -83,6 +83,8 @@ PAGA <- function(seurat_obj,
                  clustering_partition_type=NULL,
 
                  paga_show = FALSE,
+                 paga_plot = FALSE,
+                 paga_add_pos = TRUE,
                  paga_threshold=0.01,
                  paga_layout=NULL,
                  paga_init_pos=NULL,
@@ -156,7 +158,9 @@ PAGA <- function(seurat_obj,
              init_pos=paga_init_pos,
              root=paga_root,
              single_component=paga_single_component,
-             random_state=as.integer(paga_random_state))
+             random_state=as.integer(paga_random_state,
+             plot=FALSE,
+             add_pos=TRUE))
 
   sc$tl$umap(adata = alpha,
              init_pos = "paga",
