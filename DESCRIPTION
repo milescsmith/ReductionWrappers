@@ -27,7 +27,7 @@ Imports:
   SummarizedExperiment,
   s2a
 Remotes:
-    bioc::release/SummarizedExperiment
+    bioc::release/SummarizedExperiment,
     gitlab::milothepsychic/s2a
 License: BSD_3_clause + file LICENSE
 Encoding: UTF-8
