@@ -4,7 +4,8 @@
 \alias{PAGA}
 \title{PAGA}
 \usage{
-PAGA(seurat_obj, assay = "RNA", clustering_algorithm = "leiden",
+PAGA(seurat_obj, assay = "RNA", slim = FALSE, seurat_grouping = NULL,
+  set_ident = TRUE, clustering_algorithm = "leiden",
   edge_filter_weight = 0.1, neighbors_n_neighbors = 15,
   neighbors_n_pcs = NULL, neighbors_use_rep = "pca",
   neighbors_knn = TRUE, neighbors_random_state = 0,
@@ -21,9 +22,19 @@ PAGA(seurat_obj, assay = "RNA", clustering_algorithm = "leiden",
   umap_init_pos = "spectral")
 }
 \arguments{
-\item{clustering_algorithm}{Whether to use the "louvain" or "leiden" algorithms}
+\item{assay}{Seurat object assay to use when converting to Scanpy object}
 
-\item{clustering_resolution}{Resolution to pass to the clustering algorith}
+\item{slim}{Temporarily discard all unnecessary data from the Seurat object (i.e. keep only the normalized data for the assay and reduction used for neighborhood calculation).  May help when performing PAGA on large objects. (Default: FALSE)}
+
+\item{seurat_grouping}{Force PAGA to use this metadata grouping variable. (Default: NULL)}
+
+\item{set_ident}{Set the cluster identity for each cell when returning the object? (Default: TRUE)}
+
+\item{clustering_algorithm}{Whether to use the "louvain" or "leiden" algorithms (Default: "leiden")}
+
+\item{edge_filter_weight}{Set edges with a weight below this threshold to NA (Default: 0.1)}
+
+\item{clustering_resolution}{Resolution to pass to the clustering algorith (Default: 1.0)}
 
 \item{umap_init_pos}{}
 }

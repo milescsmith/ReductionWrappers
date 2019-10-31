@@ -14,6 +14,7 @@
 #'
 #' @param seurat_obj
 #' @param assay Seurat object assay to use when converting to Scanpy object
+#' @param slim Temporarily discard all unnecessary data from the Seurat object (i.e. keep only the normalized data for the assay and reduction used for neighborhood calculation).  May help when performing PAGA on large objects. (Default: FALSE)
 #' @param seurat_grouping Force PAGA to use this metadata grouping variable. (Default: NULL)
 #' @param set_ident Set the cluster identity for each cell when returning the object? (Default: TRUE)
 #' @param clustering_algorithm Whether to use the "louvain" or "leiden" algorithms (Default: "leiden")
@@ -55,10 +56,12 @@
 #' @importFrom s2a convert_to_anndata
 #' @importFrom glue glue
 #' @importFrom reticulate import
+#' @importFrom Seurat DietSeurat Idents<-
 #'
 #' @examples
 PAGA <- function(seurat_obj,
                  assay = "RNA",
+                 slim = FALSE,
                  seurat_grouping = NULL,
                  set_ident = TRUE,
                  clustering_algorithm = "leiden",
@@ -98,8 +101,18 @@ PAGA <- function(seurat_obj,
                  umap_negative_sample_rate=5,
                  umap_init_pos='spectral'){
 
-  alpha <- convert_to_anndata(object = seurat_obj,
-                              assay = assay)
+  if (isTRUE(slim)){
+    slimmed_obj <- DietSeurat(object = seurat_obj,
+                              assay = assay,
+                              dimreducs = neighbors_use_rep,
+                              counts = FALSE)
+    alpha <- convert_to_anndata(object = slimmed_obj,
+                                assay = assay)
+  } else {
+    alpha <- convert_to_anndata(object = seurat_obj,
+                                assay = assay)
+  }
+
 
   sc <- import("scanpy",
                delay_load = TRUE)
