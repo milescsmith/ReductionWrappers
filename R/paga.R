@@ -19,6 +19,8 @@
 #' @param set_ident Set the cluster identity for each cell when returning the object? (Default: TRUE)
 #' @param clustering_algorithm Whether to use the "louvain" or "leiden" algorithms (Default: "leiden")
 #' @param clustering_resolution Resolution to pass to the clustering algorith (Default: 1.0)
+#' @param reduction_name dimensional reduction name, `umap` by default
+#' @param reduction_key dimensional reduction key, specifies the string before the number for the dimension names. `umap` by default
 #' @param edge_filter_weight Set edges with a weight below this threshold to NA (Default: 0.1)
 #' @param neighbors_n_neighbors
 #' @param neighbors_n_pcs
@@ -65,6 +67,8 @@ PAGA <- function(seurat_obj,
                  seurat_grouping = NULL,
                  set_ident = TRUE,
                  clustering_algorithm = "leiden",
+                 reduction_name = "umap",
+                 reduction_key = "umap_",
                  edge_filter_weight = 0.10,
 
                  neighbors_n_neighbors = 15,
@@ -86,6 +90,8 @@ PAGA <- function(seurat_obj,
                  clustering_partition_type=NULL,
 
                  paga_show = FALSE,
+                 paga_plot = FALSE,
+                 paga_add_pos = TRUE,
                  paga_threshold=0.01,
                  paga_layout=NULL,
                  paga_init_pos=NULL,
@@ -112,7 +118,6 @@ PAGA <- function(seurat_obj,
     alpha <- convert_to_anndata(object = seurat_obj,
                                 assay = assay)
   }
-
 
   sc <- import("scanpy",
                delay_load = TRUE)
@@ -169,7 +174,9 @@ PAGA <- function(seurat_obj,
              init_pos=paga_init_pos,
              root=paga_root,
              single_component=paga_single_component,
-             random_state=as.integer(paga_random_state))
+             random_state=as.integer(paga_random_state,
+             plot=FALSE,
+             add_pos=TRUE))
 
   sc$tl$umap(adata = alpha,
              init_pos = "paga",
@@ -219,9 +226,9 @@ PAGA <- function(seurat_obj,
                                       `colnames<-`(paste0("UMAP_",
                                                           1:ncol(alpha$obsm['X_umap']))),
                                     assay = "RNA",
-                                    key = "umap_")
+                                    key = reduction_key)
 
-  seurat_obj[["paga_umap"]] <- paga_umap
+  seurat_obj[[reduction_name]] <- paga_umap
 
   seurat_obj@misc$paga <- paga
 
