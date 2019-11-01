@@ -122,6 +122,16 @@ PAGA <- function(seurat_obj,
   sc <- import("scanpy",
                delay_load = TRUE)
 
+  # To initialized the PAGA positions, we HAVE to run scanpy.pl.paga()
+  # This unfortunately invokes matplotlib, regardless of whether we tell
+  # it not to plot or even generate the plot.  Matplotlib, in turn, HAS to
+  # communicate with the XDISPLAY, which if you running this all on a cloud
+  # VM instance, may not exist.
+
+  # I hate matplotlib.
+  matplotlib <- import("matplotlib", delay_load = TRUE)
+  matplotlib$use("Agg", force = TRUE)
+
   if (glue("X_{neighbors_use_rep}") %in% alpha$obsm_keys()){
     sc$pp$neighbors(adata = alpha,
                     n_neighbors = as.integer(neighbors_n_neighbors),
