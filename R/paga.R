@@ -108,6 +108,7 @@ PAGA <- function(seurat_obj,
                  umap_init_pos='spectral'){
 
   if (isTRUE(slim)){
+    seurat_obj <- `DefaultAssay<-`(seurat_obj, assay)
     slimmed_obj <- DietSeurat(object = seurat_obj,
                               assay = assay,
                               dimreducs = neighbors_use_rep,
@@ -122,7 +123,7 @@ PAGA <- function(seurat_obj,
   sc <- import("scanpy",
                delay_load = TRUE)
 
-  # To initialized the PAGA positions, we HAVE to run scanpy.pl.paga()
+  # To initialize the PAGA positions, we HAVE to run scanpy.pl.paga()
   # This unfortunately invokes matplotlib, regardless of whether we tell
   # it not to plot or even generate the plot.  Matplotlib, in turn, HAS to
   # communicate with the XDISPLAY, which if you running this all on a cloud
@@ -168,6 +169,7 @@ PAGA <- function(seurat_obj,
                                   use_weights = clustering_use_weights,
                                   n_iterations = as.integer(clustering_n_iterations),
                                   partition_type = clustering_partition_type)
+    alpha$obs[[clustering_key_added]] <- as.factor(as.integer(alpha$obs[[clustering_key_added]]))
     sc$tl$paga(adata = alpha,
                groups = clustering_key_added)
     seurat_obj@meta.data[[grouping]] <- alpha$obs[[grouping]]
@@ -205,7 +207,7 @@ PAGA <- function(seurat_obj,
     group_name = alpha$uns$paga$groups,
     groups = levels(alpha$obs[[alpha$uns$paga$groups]]),
     group_colors = setNames(alpha$uns[[glue("{alpha$uns$paga$groups}_colors")]],
-                            0:(nrow(alpha$uns$paga$pos)-1)),
+                            0:(nrow(alpha$uns$paga$pos)-1) + 1),
     position = as_tibble(
       cbind(
         levels(alpha$obs[[alpha$uns$paga$groups]]),
@@ -272,7 +274,7 @@ PAGAplot <- function(seurat_obj){
           y = y1,
           xend = x2,
           yend = y2,
-          size = weight*3),
+          size = weight),
       colour = "black",
       show.legend = FALSE
     ) +
@@ -286,7 +288,6 @@ PAGAplot <- function(seurat_obj){
               color = "black",
               fontface = "bold") +
     labs(x = "UMAP_1",
-         y = "UMAP_2") +
-    theme_cowplot()
+         y = "UMAP_2")
 
 }
