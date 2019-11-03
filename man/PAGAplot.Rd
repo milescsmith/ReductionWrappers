@@ -4,10 +4,10 @@
 \alias{PAGAplot}
 \title{PAGAplot}
 \usage{
-PAGAplot(seurat_obj)
+PAGAplot(object)
 }
 \arguments{
-\item{seurat_obj}{}
+\item{object}{}
 }
 \description{
 Plot the results from PAGA

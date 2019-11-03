@@ -4,8 +4,9 @@
 \alias{PAGA}
 \title{PAGA}
 \usage{
-PAGA(seurat_obj, assay = "RNA", slim = FALSE, seurat_grouping = NULL,
+PAGA(object, assay = "RNA", slim = FALSE, seurat_grouping = NULL,
   set_ident = TRUE, clustering_algorithm = "leiden",
+  reduction_name = "umap", reduction_key = "umap_",
   edge_filter_weight = 0.1, neighbors_n_neighbors = 15,
   neighbors_n_pcs = NULL, neighbors_use_rep = "pca",
   neighbors_knn = TRUE, neighbors_random_state = 0,
@@ -15,8 +16,9 @@ PAGA(seurat_obj, assay = "RNA", slim = FALSE, seurat_grouping = NULL,
   clustering_adjacency = NULL, clustering_directed = TRUE,
   clustering_use_weights = TRUE, clustering_n_iterations = -1,
   clustering_partition_type = NULL, paga_show = FALSE,
-  paga_threshold = 0.01, paga_layout = NULL, paga_init_pos = NULL,
-  paga_root = 0, paga_single_component = NULL, paga_random_state = 0,
+  paga_plot = FALSE, paga_add_pos = TRUE, paga_threshold = 0.01,
+  paga_layout = NULL, paga_init_pos = NULL, paga_root = 0,
+  paga_single_component = NULL, paga_random_state = 0,
   umap_min_dist = 0.5, umap_spread = 1, umap_n_components = 2,
   umap_alpha = 1, umap_gamma = 1, umap_negative_sample_rate = 5,
   umap_init_pos = "spectral")
@@ -31,6 +33,10 @@ PAGA(seurat_obj, assay = "RNA", slim = FALSE, seurat_grouping = NULL,
 \item{set_ident}{Set the cluster identity for each cell when returning the object? (Default: TRUE)}
 
 \item{clustering_algorithm}{Whether to use the "louvain" or "leiden" algorithms (Default: "leiden")}
+
+\item{reduction_name}{dimensional reduction name, `umap` by default}
+
+\item{reduction_key}{dimensional reduction key, specifies the string before the number for the dimension names. `umap` by default}
 
 \item{edge_filter_weight}{Set edges with a weight below this threshold to NA (Default: 0.1)}
 

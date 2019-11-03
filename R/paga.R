@@ -12,7 +12,7 @@
 #'
 #' Heavily based on the fantastic walk through found at https://romanhaa.github.io/blog/paga_to_r/
 #'
-#' @param seurat_obj
+#' @param object
 #' @param assay Seurat object assay to use when converting to Scanpy object
 #' @param slim Temporarily discard all unnecessary data from the Seurat object (i.e. keep only the normalized data for the assay and reduction used for neighborhood calculation).  May help when performing PAGA on large objects. (Default: FALSE)
 #' @param seurat_grouping Force PAGA to use this metadata grouping variable. (Default: NULL)
@@ -61,7 +61,7 @@
 #' @importFrom Seurat DietSeurat Idents<-
 #'
 #' @examples
-PAGA <- function(seurat_obj,
+PAGA <- function(object,
                  assay = "RNA",
                  slim = FALSE,
                  seurat_grouping = NULL,
@@ -108,15 +108,15 @@ PAGA <- function(seurat_obj,
                  umap_init_pos='spectral'){
 
   if (isTRUE(slim)){
-    seurat_obj <- `DefaultAssay<-`(seurat_obj, assay)
-    slimmed_obj <- DietSeurat(object = seurat_obj,
+    DefaultAssay(object) <- assay
+    slimmed_obj <- DietSeurat(object = object,
                               assay = assay,
                               dimreducs = neighbors_use_rep,
                               counts = FALSE)
     alpha <- convert_to_anndata(object = slimmed_obj,
                                 assay = assay)
   } else {
-    alpha <- convert_to_anndata(object = seurat_obj,
+    alpha <- convert_to_anndata(object = object,
                                 assay = assay)
   }
 
@@ -172,7 +172,7 @@ PAGA <- function(seurat_obj,
     alpha$obs[[clustering_key_added]] <- as.factor(as.integer(alpha$obs[[clustering_key_added]]))
     sc$tl$paga(adata = alpha,
                groups = clustering_key_added)
-    seurat_obj@meta.data[[grouping]] <- alpha$obs[[grouping]]
+    object@meta.data[[grouping]] <- alpha$obs[[grouping]]
   } else {
     grouping <- seurat_grouping
     sc$tl$paga(adata = alpha,
@@ -234,21 +234,21 @@ PAGA <- function(seurat_obj,
     filter(weight >= edge_filter_weight)
 
   paga_umap <- CreateDimReducObject(embeddings = alpha$obsm[['X_umap']] %>%
-                                      `rownames<-`(colnames(seurat_obj[[assay]])) %>%
+                                      `rownames<-`(colnames(object[[assay]])) %>%
                                       `colnames<-`(paste0("UMAP_",
                                                           1:ncol(alpha$obsm['X_umap']))),
                                     assay = "RNA",
                                     key = reduction_key)
 
-  seurat_obj[[reduction_name]] <- paga_umap
+  object[[reduction_name]] <- paga_umap
 
-  seurat_obj@misc$paga <- paga
+  object@misc$paga <- paga
 
   if (isTRUE(set_ident)){
-    Idents(seurat_obj) <- seurat_obj@meta.data[[grouping]]
+    Idents(object) <- object@meta.data[[grouping]]
   }
 
-  return(seurat_obj)
+  return(object)
 }
 
 
@@ -256,7 +256,7 @@ PAGA <- function(seurat_obj,
 #'
 #' @description Plot the results from PAGA
 #'
-#' @param seurat_obj
+#' @param object
 #'
 #' @importFrom cowplot theme_cowplot
 #' @importFrom ggplot2 ggplot aes geom_point geom_segment scale_color_manual geom_text labs
@@ -265,11 +265,11 @@ PAGA <- function(seurat_obj,
 #' @export
 #'
 #' @examples
-PAGAplot <- function(seurat_obj){
-  seurat_obj@misc$paga$position %>%
+PAGAplot <- function(object){
+  object@misc$paga$position %>%
     ggplot(aes(x, y)) +
     geom_segment(
-      data = seurat_obj@misc$paga$edges,
+      data = object@misc$paga$edges,
       aes(x = x1,
           y = y1,
           xend = x2,
@@ -283,7 +283,7 @@ PAGAplot <- function(seurat_obj){
       size = 7,
       alpha = 1,
       show.legend = FALSE) +
-    scale_color_manual(values = seurat_obj@misc$paga$group_colors) +
+    scale_color_manual(values = object@misc$paga$group_colors) +
     geom_text(aes(label = group),
               color = "black",
               fontface = "bold") +
