@@ -4,10 +4,12 @@
 \alias{PAGAplot}
 \title{PAGAplot}
 \usage{
-PAGAplot(object)
+PAGAplot(object, edge_scale_weight = 0.2)
 }
 \arguments{
-\item{object}{}
+\item{object}{Seurat object with PAGA in misc slot to plot}
+
+\item{edge_scale_weight}{Factor to scale edge line segment weight by.  Default: 0.5}
 }
 \description{
 Plot the results from PAGA

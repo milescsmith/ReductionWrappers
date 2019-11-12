@@ -223,13 +223,13 @@ PAGA <- function(object,
   paga$edges <- tibble(
     group1 = paga$groups[row(paga$connectivities)[upper.tri(paga$connectivities)]],
     group2 = paga$groups[col(paga$connectivities)[upper.tri(paga$connectivities)]],
-    weight = paga$connectivities[upper.tri(paga$connectivities)]
+    weight = paga$connectivities[upper.tri(paga$connectivities)] %>% as.numeric()
   ) %>%
     mutate(
-      x1 = paga$position$x[match(.$group1, rownames(paga$position))],
-      y1 = paga$position$y[match(.$group1, rownames(paga$position))],
-      x2 = paga$position$x[match(.$group2, rownames(paga$position))],
-      y2 = paga$position$y[match(.$group2, rownames(paga$position))]
+      x1 = paga$position$x[match(.$group1, rownames(paga$position))] %>% as.numeric(),
+      y1 = paga$position$y[match(.$group1, rownames(paga$position))] %>% as.numeric(),
+      x2 = paga$position$x[match(.$group2, rownames(paga$position))] %>% as.numeric(),
+      y2 = paga$position$y[match(.$group2, rownames(paga$position))] %>% as.numeric()
     ) %>%
     filter(weight >= edge_filter_weight)
 
@@ -256,7 +256,8 @@ PAGA <- function(object,
 #'
 #' @description Plot the results from PAGA
 #'
-#' @param object
+#' @param object Seurat object with PAGA in misc slot to plot
+#' @param edge_scale_weight Factor to scale edge line segment weight by.  Default: 0.5
 #'
 #' @importFrom cowplot theme_cowplot
 #' @importFrom ggplot2 ggplot aes geom_point geom_segment scale_color_manual geom_text labs
@@ -265,7 +266,8 @@ PAGA <- function(object,
 #' @export
 #'
 #' @examples
-PAGAplot <- function(object){
+PAGAplot <- function(object,
+                     edge_scale_weight = 0.2){
   object@misc$paga$position %>%
     ggplot(aes(x, y)) +
     geom_segment(
@@ -274,10 +276,11 @@ PAGAplot <- function(object){
           y = y1,
           xend = x2,
           yend = y2,
-          size = weight),
+          size = weight*3),
       colour = "black",
       show.legend = FALSE
     ) +
+    scale_size_identity() +
     geom_point(
       aes(color = group),
       size = 7,
