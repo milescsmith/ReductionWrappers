@@ -235,7 +235,7 @@ PAGA <- function(seurat_obj,
                                       `rownames<-`(colnames(seurat_obj[[assay]])) %>%
                                       `colnames<-`(paste0("UMAP_",
                                                           1:ncol(alpha$obsm['X_umap']))),
-                                    assay = "RNA",
+                                    assay = assay,
                                     key = reduction_key)
 
   seurat_obj[[reduction_name]] <- paga_umap
