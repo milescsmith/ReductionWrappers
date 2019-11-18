@@ -101,7 +101,7 @@ PAGA <- function(object,
 
                  umap_min_dist=0.5,
                  umap_spread=1.0,
-                 umap_n_components=2,
+                 umap_n_components=3,
                  umap_alpha=1.0,
                  umap_gamma=1.0,
                  umap_negative_sample_rate=5,
