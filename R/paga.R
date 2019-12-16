@@ -179,6 +179,8 @@ PAGA <- function(object,
                groups = grouping)
   }
 
+  utils = import("scanpy.tools._utils", delay_load = TRUE)
+
   sc$pl$paga(adata = alpha,
              show = paga_show,
              threshold=as.numeric(paga_threshold),
@@ -191,7 +193,7 @@ PAGA <- function(object,
              add_pos=TRUE))
 
   sc$tl$umap(adata = alpha,
-             init_pos = "paga",
+             init_pos = utils$get_init_pos_from_paga(alpha),
              min_dist=as.numeric(umap_min_dist),
              spread=as.numeric(umap_spread),
              n_components=as.integer(umap_n_components),
