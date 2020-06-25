@@ -193,11 +193,12 @@ PAGA <- function(object,
              add_pos=TRUE))
 
   sc$tl$umap(adata = converted_object,
-             init_pos = utils$get_init_pos_from_paga(converted_object),
+             #init_pos = utils$get_init_pos_from_paga(converted_object),
+             init_pos = "paga",
              min_dist=as.numeric(umap_min_dist),
              spread=as.numeric(umap_spread),
              n_components=as.integer(umap_n_components),
-             converted_object=as.numeric(umap_alpha),
+             alpha=as.numeric(umap_alpha),
              gamma=as.numeric(umap_gamma),
              negative_sample_rate=as.integer(umap_negative_sample_rate))
 
