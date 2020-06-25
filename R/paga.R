@@ -56,7 +56,7 @@
 #' @export
 #'
 #' @importFrom s2a convert_to_anndata
-#' @importFrom glue glue
+#' @importFrom str_glue str_glue
 #' @importFrom reticulate import
 #' @importFrom Seurat DietSeurat Idents<-
 #'
@@ -113,10 +113,10 @@ PAGA <- function(object,
                               assay = assay,
                               dimreducs = neighbors_use_rep,
                               counts = FALSE)
-    alpha <- convert_to_anndata(object = slimmed_obj,
+    converted_object <- convert_to_anndata(object = slimmed_obj,
                                 assay = assay)
   } else {
-    alpha <- convert_to_anndata(object = object,
+    converted_object <- convert_to_anndata(object = object,
                                 assay = assay)
   }
 
@@ -133,22 +133,22 @@ PAGA <- function(object,
   matplotlib <- import("matplotlib", delay_load = TRUE)
   matplotlib$use("Agg", force = TRUE)
 
-  if (glue("X_{neighbors_use_rep}") %in% alpha$obsm_keys()){
-    sc$pp$neighbors(adata = alpha,
+  if (str_glue("X_{neighbors_use_rep}") %in% converted_object$obsm_keys()){
+    sc$pp$neighbors(adata = converted_object,
                     n_neighbors = as.integer(neighbors_n_neighbors),
                     n_pcs = neighbors_n_pcs,
-                    use_rep = glue("X_{neighbors_use_rep}"),
+                    use_rep = str_glue("X_{neighbors_use_rep}"),
                     knn = neighbors_knn,
                     random_state = as.integer(neighbors_random_state),
                     method = neighbors_method,
                     metric = neighbors_metric)
   } else {
-    if (length(alpha$obsm_keys()) > 0) {
-      message(glue("{neighbors_use_rep} was not found.  Performing PCA..."))
+    if (length(converted_object$obsm_keys()) > 0) {
+      message(str_glue("{neighbors_use_rep} was not found.  Performing PCA..."))
     } else {
       message("No reduced dimensional reductions found.  Performing PCA...")
     }
-    sc$tl$pca(alpha)
+    sc$tl$pca(converted_object)
   }
 
   clustering_key_added <- clustering_key_added %||% clustering_algorithm
@@ -159,7 +159,7 @@ PAGA <- function(object,
 
   if (is.null(seurat_grouping)){
     grouping <- clustering_algorithm
-    sc$tl[[grouping]](adata = alpha,
+    sc$tl[[grouping]](adata = converted_object,
                                   resolution = as.numeric(clustering_resolution),
                                   restrict_to = clustering_restrict_to,
                                   random_state = as.integer(clustering_random_state),
@@ -169,19 +169,19 @@ PAGA <- function(object,
                                   use_weights = clustering_use_weights,
                                   n_iterations = as.integer(clustering_n_iterations),
                                   partition_type = clustering_partition_type)
-    alpha$obs[[clustering_key_added]] <- as.factor(as.integer(alpha$obs[[clustering_key_added]]))
-    sc$tl$paga(adata = alpha,
+    converted_object$obs[[clustering_key_added]] <- as.factor(as.integer(converted_object$obs[[clustering_key_added]]))
+    sc$tl$paga(adata = converted_object,
                groups = clustering_key_added)
-    object@meta.data[[grouping]] <- alpha$obs[[grouping]]
+    object@meta.data[[grouping]] <- converted_object$obs[[grouping]]
   } else {
     grouping <- seurat_grouping
-    sc$tl$paga(adata = alpha,
+    sc$tl$paga(adata = converted_object,
                groups = grouping)
   }
 
   utils = import("scanpy.tools._utils", delay_load = TRUE)
 
-  sc$pl$paga(adata = alpha,
+  sc$pl$paga(adata = converted_object,
              show = paga_show,
              threshold=as.numeric(paga_threshold),
              layout=paga_layout,
@@ -192,34 +192,34 @@ PAGA <- function(object,
              plot=FALSE,
              add_pos=TRUE))
 
-  sc$tl$umap(adata = alpha,
-             init_pos = utils$get_init_pos_from_paga(alpha),
+  sc$tl$umap(adata = converted_object,
+             init_pos = utils$get_init_pos_from_paga(converted_object),
              min_dist=as.numeric(umap_min_dist),
              spread=as.numeric(umap_spread),
              n_components=as.integer(umap_n_components),
-             alpha=as.numeric(umap_alpha),
+             converted_object=as.numeric(umap_alpha),
              gamma=as.numeric(umap_gamma),
              negative_sample_rate=as.integer(umap_negative_sample_rate))
 
   paga <- list(
-    connectivities = alpha$uns$paga$connectivities$todense() %>%
-      `rownames<-`(levels(alpha$obs[[alpha$uns$paga$groups]])) %>%
-      `colnames<-`(levels(alpha$obs[[alpha$uns$paga$groups]])),
-    connectivities_tree = alpha$uns$paga$connectivities$todense(),
-    group_name = alpha$uns$paga$groups,
-    groups = levels(alpha$obs[[alpha$uns$paga$groups]]),
-    group_colors = setNames(alpha$uns[[glue("{alpha$uns$paga$groups}_colors")]],
-                            0:(nrow(alpha$uns$paga$pos)-1) + 1),
+    connectivities = converted_object$uns[["paga"]]$connectivities$todense() %>%
+      `rownames<-`(levels(converted_object$obs[[converted_object$uns[["paga"]]$groups]])) %>%
+      `colnames<-`(levels(converted_object$obs[[converted_object$uns[["paga"]]$groups]])),
+    connectivities_tree = converted_object$uns[["paga"]]$connectivities_tree$todense(),
+    group_name = converted_object$uns[["paga"]]$groups,
+    groups = levels(converted_object$obs[[converted_object$uns[["paga"]]$groups]]),
+    group_colors = setNames(converted_object$uns[[str_glue("{converted_object$uns[['paga']]$groups}_colors")]],
+                            0:(nrow(converted_object$uns[["paga"]]$pos)-1) + 1),
     position = as_tibble(
       cbind(
-        levels(alpha$obs[[alpha$uns$paga$groups]]),
-        alpha$uns$paga$pos),
+        levels(converted_object$obs[[converted_object$uns[["paga"]]$groups]]),
+        converted_object$uns[["paga"]]$pos),
       .name_repair = ~make.names(c("group","x", "y"))
     ) %>% mutate_at(.vars = vars(x, y),
                     .fun = as.numeric),
-    umap = as_tibble(alpha$obsm['X_umap'],
+    umap = as_tibble(converted_object$obsm['X_umap'],
                      .name_repair = ~make.names(names = paste0("UMAP_",
-                                                               1:ncol(alpha$obsm['X_umap'])),
+                                                               1:ncol(converted_object$obsm['X_umap'])),
                                                 unique = TRUE))
   )
 
@@ -236,10 +236,10 @@ PAGA <- function(object,
     ) %>%
     filter(weight >= edge_filter_weight)
 
-  paga_umap <- CreateDimReducObject(embeddings = alpha$obsm[['X_umap']] %>%
+  paga_umap <- CreateDimReducObject(embeddings = converted_object$obsm[['X_umap']] %>%
                                       `rownames<-`(colnames(object[[assay]])) %>%
                                       `colnames<-`(paste0("UMAP_",
-                                                          1:ncol(alpha$obsm['X_umap']))),
+                                                          1:ncol(converted_object$obsm['X_umap']))),
                                     assay = assay,
                                     key = reduction_key)
 
