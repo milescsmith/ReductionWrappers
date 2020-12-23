@@ -5,3 +5,4 @@ dim.reduction.wrappers.Rproj
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^data-raw$
+^\.github$
