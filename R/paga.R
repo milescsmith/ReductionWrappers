@@ -59,201 +59,259 @@
 #' @importFrom stringr str_glue
 #' @importFrom reticulate import
 #' @importFrom Seurat DietSeurat Idents<-
+#' @importFrom magrittr %>% set_rownames set_colnames
+#' @importFrom rlang %||%
 #'
 #' @examples
-PAGA <- function(object,
-                 assay = "RNA",
-                 slim = FALSE,
-                 seurat_grouping = NULL,
-                 set_ident = TRUE,
-                 clustering_algorithm = "leiden",
-                 reduction_name = "umap",
-                 reduction_key = "umap_",
-                 edge_filter_weight = 0.10,
+PAGA <-
+  function(
+    object,
+    assay                     = "RNA",
+    slim                      = FALSE,
+    seurat_grouping           = NULL,
+    set_ident                 = TRUE,
+    clustering_algorithm      = "leiden",
+    reduction_name            = "umap",
+    reduction_key             = "umap_",
+    edge_filter_weight        = 0.10,
 
-                 neighbors_n_neighbors = 15,
-                 neighbors_n_pcs = NULL,
-                 neighbors_use_rep = "pca",
-                 neighbors_knn = TRUE,
-                 neighbors_random_state = 0,
-                 neighbors_method = 'umap',
-                 neighbors_metric = 'euclidean',
+    neighbors_n_neighbors     = 15,
+    neighbors_n_pcs           = NULL,
+    neighbors_use_rep         = "pca",
+    neighbors_knn             = TRUE,
+    neighbors_random_state    = 0,
+    neighbors_method          = 'umap',
+    neighbors_metric          = 'euclidean',
 
-                 clustering_resolution = 1.0,
-                 clustering_restrict_to=NULL,
-                 clustering_random_state=0,
-                 clustering_key_added=NULL,
-                 clustering_adjacency=NULL,
-                 clustering_directed=TRUE,
-                 clustering_use_weights=TRUE,
-                 clustering_n_iterations=-1,
-                 clustering_partition_type=NULL,
+    clustering_resolution     = 1.0,
+    clustering_restrict_to    = NULL,
+    clustering_random_state   = 0,
+    clustering_key_added      = NULL,
+    clustering_adjacency      = NULL,
+    clustering_directed       = TRUE,
+    clustering_use_weights    = TRUE,
+    clustering_n_iterations   = -1,
+    clustering_partition_type = NULL,
 
-                 paga_show = FALSE,
-                 paga_plot = FALSE,
-                 paga_add_pos = TRUE,
-                 paga_threshold=0.01,
-                 paga_layout=NULL,
-                 paga_init_pos=NULL,
-                 paga_root=0.0,
-                 paga_single_component=NULL,
-                 paga_random_state=0.0,
+    paga_show                 = FALSE,
+    paga_plot                 = FALSE,
+    paga_add_pos              = TRUE,
+    paga_threshold            = 0.01,
+    paga_layout               = NULL,
+    paga_init_pos             = NULL,
+    paga_root                 = 0.0,
+    paga_single_component     = NULL,
+    paga_random_state         = 0.0,
 
-                 umap_min_dist=0.5,
-                 umap_spread=1.0,
-                 umap_n_components=3,
-                 umap_alpha=1.0,
-                 umap_gamma=1.0,
-                 umap_negative_sample_rate=5,
-                 umap_init_pos='spectral'){
+    umap_min_dist             = 0.5,
+    umap_spread               = 1.0,
+    umap_n_components         = 3,
+    umap_alpha                = 1.0,
+    umap_gamma                = 1.0,
+    umap_negative_sample_rate = 5,
+    umap_init_pos             ='spectral'
+  ){
 
-  if (isTRUE(slim)){
-    DefaultAssay(object) <- assay
-    slimmed_obj <- DietSeurat(object = object,
-                              assay = assay,
-                              dimreducs = neighbors_use_rep,
-                              counts = FALSE)
-    converted_object <- convert_to_anndata(object = slimmed_obj,
-                                assay = assay)
-  } else {
-    converted_object <- convert_to_anndata(object = object,
-                                assay = assay)
-  }
+    if (isTRUE(slim)){
+      DefaultAssay(object) <- assay
+      slimmed_obj <-
+        DietSeurat(
+          object    = object,
+          assay     = assay,
+          dimreducs = neighbors_use_rep,
+          counts    = FALSE
+        )
 
-  sc <- import("scanpy",
-               delay_load = TRUE)
-
-  # To initialize the PAGA positions, we HAVE to run scanpy.pl.paga()
-  # This unfortunately invokes matplotlib, regardless of whether we tell
-  # it not to plot or even generate the plot.  Matplotlib, in turn, HAS to
-  # communicate with the XDISPLAY, which if you running this all on a cloud
-  # VM instance, may not exist.
-
-  # I hate matplotlib.
-  matplotlib <- import("matplotlib", delay_load = TRUE)
-  matplotlib$use("Agg", force = TRUE)
-
-  if (str_glue("X_{neighbors_use_rep}") %in% converted_object$obsm_keys()){
-    sc$pp$neighbors(adata = converted_object,
-                    n_neighbors = as.integer(neighbors_n_neighbors),
-                    n_pcs = neighbors_n_pcs,
-                    use_rep = str_glue("X_{neighbors_use_rep}"),
-                    knn = neighbors_knn,
-                    random_state = as.integer(neighbors_random_state),
-                    method = neighbors_method,
-                    metric = neighbors_metric)
-  } else {
-    if (length(converted_object$obsm_keys()) > 0) {
-      message(str_glue("{neighbors_use_rep} was not found.  Performing PCA..."))
+      converted_object <-
+        convert_to_anndata(
+          object = slimmed_obj,
+          assay  = assay
+        )
     } else {
-      message("No reduced dimensional reductions found.  Performing PCA...")
+      converted_object <-
+        convert_to_anndata(
+          object = object,
+          assay  = assay
+        )
     }
-    sc$tl$pca(converted_object)
-  }
 
-  clustering_key_added <- clustering_key_added %||% clustering_algorithm
+    sc <- import(
+      module     = "scanpy",
+      delay_load = TRUE
+    )
 
-  if (!clustering_algorithm %in% c("leiden", "louvain")){
-    stop("Unknown clustering algorithm specified.")
-  }
+    # To initialize the PAGA positions, we HAVE to run scanpy.pl.paga()
+    # This unfortunately invokes matplotlib, regardless of whether we tell
+    # it not to plot or even generate the plot.  Matplotlib, in turn, HAS to
+    # communicate with the XDISPLAY, which if you running this all on a cloud
+    # VM instance, may not exist.
 
-  if (is.null(seurat_grouping)){
-    grouping <- clustering_algorithm
-    sc$tl[[grouping]](adata = converted_object,
-                                  resolution = as.numeric(clustering_resolution),
-                                  restrict_to = clustering_restrict_to,
-                                  random_state = as.integer(clustering_random_state),
-                                  key_added = clustering_key_added,
-                                  adjacency = clustering_adjacency,
-                                  directed = clustering_directed,
-                                  use_weights = clustering_use_weights,
-                                  n_iterations = as.integer(clustering_n_iterations),
-                                  partition_type = clustering_partition_type)
-    converted_object$obs[[clustering_key_added]] <- as.factor(as.integer(converted_object$obs[[clustering_key_added]]))
-    sc$tl$paga(adata = converted_object,
-               groups = clustering_key_added)
-    object@meta.data[[grouping]] <- converted_object$obs[[grouping]]
-  } else {
-    grouping <- seurat_grouping
-    sc$tl$paga(adata = converted_object,
-               groups = grouping)
-  }
+    # I hate matplotlib.
+    matplotlib <-
+      import(
+        module     = "matplotlib",
+        delay_load = TRUE
+      )
 
-  utils = import("scanpy.tools._utils", delay_load = TRUE)
+    matplotlib$use("Agg", force = TRUE)
 
-  sc$pl$paga(adata = converted_object,
-             show = paga_show,
-             threshold=as.numeric(paga_threshold),
-             layout=paga_layout,
-             init_pos=paga_init_pos,
-             root=paga_root,
-             single_component=paga_single_component,
-             random_state=as.integer(paga_random_state,
-             plot=FALSE,
-             add_pos=TRUE))
+    if (str_glue("X_{neighbors_use_rep}") %in% converted_object$obsm_keys()){
+      sc$pp$neighbors(
+        adata        = converted_object,
+        n_neighbors  = as.integer(neighbors_n_neighbors),
+        n_pcs        = neighbors_n_pcs,
+        use_rep      = str_glue("X_{neighbors_use_rep}"),
+        knn          = neighbors_knn,
+        random_state = as.integer(neighbors_random_state),
+        method       = neighbors_method,
+        metric       = neighbors_metric
+      )
+    } else {
+      if (length(converted_object$obsm_keys()) > 0) {
+        message(str_glue("{neighbors_use_rep} was not found.  Performing PCA..."))
+      } else {
+        message("No reduced dimensional reductions found.  Performing PCA...")
+      }
+      sc$tl$pca(converted_object)
+    }
 
-  sc$tl$umap(adata = converted_object,
-             #init_pos = utils$get_init_pos_from_paga(converted_object),
-             init_pos = "paga",
-             min_dist=as.numeric(umap_min_dist),
-             spread=as.numeric(umap_spread),
-             n_components=as.integer(umap_n_components),
-             alpha=as.numeric(umap_alpha),
-             gamma=as.numeric(umap_gamma),
-             negative_sample_rate=as.integer(umap_negative_sample_rate))
+    clustering_key_added <- clustering_key_added %||% clustering_algorithm
 
-  paga <- list(
-    connectivities = converted_object$uns[["paga"]]$connectivities$todense() %>%
-      `rownames<-`(levels(converted_object$obs[[converted_object$uns[["paga"]]$groups]])) %>%
-      `colnames<-`(levels(converted_object$obs[[converted_object$uns[["paga"]]$groups]])),
-    connectivities_tree = converted_object$uns[["paga"]]$connectivities_tree$todense(),
-    group_name = converted_object$uns[["paga"]]$groups,
-    groups = levels(converted_object$obs[[converted_object$uns[["paga"]]$groups]]),
-    group_colors = setNames(converted_object$uns[[str_glue("{converted_object$uns[['paga']]$groups}_colors")]],
-                            0:(nrow(converted_object$uns[["paga"]]$pos)-1) + 1),
-    position = as_tibble(
-      cbind(
-        levels(converted_object$obs[[converted_object$uns[["paga"]]$groups]]),
-        converted_object$uns[["paga"]]$pos),
-      .name_repair = ~make.names(c("group","x", "y"))
-    ) %>% mutate_at(.vars = vars(x, y),
-                    .fun = as.numeric),
-    umap = as_tibble(converted_object$obsm['X_umap'],
-                     .name_repair = ~make.names(names = paste0("UMAP_",
-                                                               1:ncol(converted_object$obsm['X_umap'])),
-                                                unique = TRUE))
-  )
+    if (!clustering_algorithm %in% c("leiden", "louvain")){
+      stop("Unknown clustering algorithm specified.")
+    }
 
-  paga$edges <- tibble(
-    group1 = paga$groups[row(paga$connectivities)[upper.tri(paga$connectivities)]],
-    group2 = paga$groups[col(paga$connectivities)[upper.tri(paga$connectivities)]],
-    weight = paga$connectivities[upper.tri(paga$connectivities)] %>% as.numeric()
-  ) %>%
-    mutate(
-      x1 = paga$position$x[match(.$group1, rownames(paga$position))] %>% as.numeric(),
-      y1 = paga$position$y[match(.$group1, rownames(paga$position))] %>% as.numeric(),
-      x2 = paga$position$x[match(.$group2, rownames(paga$position))] %>% as.numeric(),
-      y2 = paga$position$y[match(.$group2, rownames(paga$position))] %>% as.numeric()
+    if (is.null(seurat_grouping)){
+      grouping <- clustering_algorithm
+      sc$tl[[grouping]](
+        adata          = converted_object,
+        resolution     = as.numeric(clustering_resolution),
+        restrict_to    = clustering_restrict_to,
+        random_state   = as.integer(clustering_random_state),
+        key_added      = clustering_key_added,
+        adjacency      = clustering_adjacency,
+        directed       = clustering_directed,
+        use_weights    = clustering_use_weights,
+        n_iterations   = as.integer(clustering_n_iterations),
+        partition_type = clustering_partition_type
+      )
+
+      converted_object$obs[[clustering_key_added]] <- as.factor(as.integer(converted_object$obs[[clustering_key_added]]))
+
+      sc$tl$paga(
+        adata  = converted_object,
+        groups = clustering_key_added
+      )
+
+      object@meta.data[[grouping]] <- converted_object$obs[[grouping]]
+    } else {
+      grouping <- seurat_grouping
+      sc$tl$paga(
+        adata  = converted_object,
+        groups = grouping
+      )
+    }
+
+    utils <-
+      import(
+        module     = "scanpy.tools._utils",
+        delay_load = TRUE
+      )
+
+    sc$pl$paga(
+      adata            = converted_object,
+      show             = paga_show,
+      threshold        = as.numeric(paga_threshold),
+      layout           = paga_layout,
+      init_pos         = paga_init_pos,
+      root             = paga_root,
+      single_component = paga_single_component,
+      random_state     = as.integer(paga_random_state),
+      plot             = FALSE,
+      add_pos          = TRUE
+    )
+
+    sc$tl$umap(
+      adata                = converted_object,
+      #init_pos            = utils$get_init_pos_from_paga(converted_object),
+      init_pos             = "paga",
+      min_dist             = as.numeric(umap_min_dist),
+      spread               = as.numeric(umap_spread),
+      n_components         = as.integer(umap_n_components),
+      alpha                = as.numeric(umap_alpha),
+      gamma                = as.numeric(umap_gamma),
+      negative_sample_rate = as.integer(umap_negative_sample_rate)
+    )
+
+    paga <- list(
+      connectivities           = converted_object$uns[["paga"]]$connectivities$todense() %>%
+        set_rownames(levels(converted_object$obs[[converted_object$uns[["paga"]]$groups]])) %>%
+        set_colnames(levels(converted_object$obs[[converted_object$uns[["paga"]]$groups]])),
+      connectivities_tree      = converted_object$uns[["paga"]]$connectivities_tree$todense(),
+      group_name               = converted_object$uns[["paga"]]$groups,
+      groups                   = levels(converted_object$obs[[converted_object$uns[["paga"]]$groups]]),
+      # group_colors             = setNames(converted_object$uns[[str_glue("{converted_object$uns[['paga']]$groups}_colors")]],
+      #                                     0:(nrow(converted_object$uns[["paga"]]$pos)-1) + 1),
+      position                 = as_tibble(
+        cbind(
+          levels(converted_object$obs[[converted_object$uns[["paga"]]$groups]]),
+          converted_object$uns[["paga"]]$pos),
+        .name_repair = ~make.names(c("group","x", "y"))
+      ) %>%
+        mutate(
+          across(
+            x:y,
+            .fns = as.numeric),
+        ),
+      umap                     = as_tibble(
+        converted_object$obsm['X_umap'],
+        .name_repair =
+          ~make.names(
+            names =
+              paste0(
+                "UMAP_",
+                1:ncol(converted_object$obsm['X_umap'])),
+            unique = TRUE
+          )
+      )
+    )
+
+    paga$edges <- tibble(
+      group1 = paga$groups[row(paga$connectivities)[upper.tri(paga$connectivities)]],
+      group2 = paga$groups[col(paga$connectivities)[upper.tri(paga$connectivities)]],
+      weight = paga$connectivities[upper.tri(paga$connectivities)] %>% as.numeric()
     ) %>%
-    filter(weight >= edge_filter_weight)
+      mutate(
+        x1 = paga$position$x[match(.$group1, rownames(paga$position))] %>% as.numeric(),
+        y1 = paga$position$y[match(.$group1, rownames(paga$position))] %>% as.numeric(),
+        x2 = paga$position$x[match(.$group2, rownames(paga$position))] %>% as.numeric(),
+        y2 = paga$position$y[match(.$group2, rownames(paga$position))] %>% as.numeric()
+      ) %>%
+      filter(weight >= edge_filter_weight)
 
-  paga_umap <- CreateDimReducObject(embeddings = converted_object$obsm[['X_umap']] %>%
-                                      `rownames<-`(colnames(object[[assay]])) %>%
-                                      `colnames<-`(paste0("UMAP_",
-                                                          1:ncol(converted_object$obsm['X_umap']))),
-                                    assay = assay,
-                                    key = reduction_key)
+    paga_umap <- CreateDimReducObject(
+      embeddings = converted_object$obsm[['X_umap']] %>%
+        set_rownames(colnames(object[[assay]])) %>%
+        set_colnames(
+          paste0(
+            "UMAP_",
+            1:ncol(converted_object$obsm['X_umap'])
+          )
+        ),
+      assay      = assay,
+      key        = reduction_key
+    )
 
-  object[[reduction_name]] <- paga_umap
+    object[[reduction_name]] <- paga_umap
 
-  object@misc$paga <- paga
+    object@misc$paga <- paga
 
-  if (isTRUE(set_ident)){
-    Idents(object) <- object@meta.data[[grouping]]
+    if (isTRUE(set_ident)){
+      Idents(object) <- object@meta.data[[grouping]]
+    }
+
+    object
   }
-
-  return(object)
-}
 
 
 #' @title PAGAplot
@@ -270,31 +328,33 @@ PAGA <- function(object,
 #' @export
 #'
 #' @examples
-PAGAplot <- function(object,
-                     edge_scale_weight = 0.2){
-  object@misc$paga$position %>%
-    ggplot(aes(x, y)) +
-    geom_segment(
-      data = object@misc$paga$edges,
-      aes(x = x1,
-          y = y1,
-          xend = x2,
-          yend = y2,
-          size = weight*3),
-      colour = "black",
-      show.legend = FALSE
-    ) +
-    scale_size_identity() +
-    geom_point(
-      aes(color = group),
-      size = 7,
-      alpha = 1,
-      show.legend = FALSE) +
-    scale_color_manual(values = object@misc$paga$group_colors) +
-    geom_text(aes(label = group),
-              color = "black",
-              fontface = "bold") +
-    labs(x = "UMAP_1",
-         y = "UMAP_2")
-
-}
+PAGAplot <-
+  function(
+    object,
+    edge_scale_weight = 0.2
+  ){
+    object@misc$paga$position %>%
+      ggplot(aes(x, y)) +
+      geom_segment(
+        data = object@misc$paga$edges,
+        aes(x    = x1,
+            y    = y1,
+            xend = x2,
+            yend = y2,
+            size = weight*3),
+        colour = "black",
+        show.legend = FALSE
+      ) +
+      scale_size_identity() +
+      geom_point(
+        aes(color = group),
+        size        = 7,
+        alpha       = 1,
+        show.legend = FALSE) +
+      scale_color_brewer() +
+      geom_text(aes(label = group),
+                color = "black",
+                fontface = "bold") +
+      labs(x = "UMAP_1",
+           y = "UMAP_2")
+  }

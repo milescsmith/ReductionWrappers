@@ -11,7 +11,6 @@
 #' @param ... Arguments passed to specific downstream methods
 #'
 #' @importFrom glue glue
-#' @importFrom magrittr %<>%
 #'
 PushData <-
   function(
@@ -32,7 +31,7 @@ PushData.Seurat <-
     reduction_save,
     assay_used) {
 
-  python_df %<>% as.matrix()
+  python_df <- as.matrix(python_df)
 
   rownames(python_df) <- colnames(object)
 
