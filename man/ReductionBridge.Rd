@@ -8,12 +8,24 @@
 \usage{
 ReductionBridge(object, ...)
 
-\method{ReductionBridge}{Seurat}(object, reduction_use = "pca",
-  reduction_save, function_use, dims_use = NULL, ...)
+\method{ReductionBridge}{Seurat}(
+  object,
+  reduction_use = "pca",
+  reduction_save,
+  function_use,
+  dims_use = NULL,
+  assay_use = NULL,
+  ...
+)
 
-\method{ReductionBridge}{SingleCellExperiment}(object,
-  reduction_use = "PCA", reduction_save, function_use, dims_use = NULL,
-  ...)
+\method{ReductionBridge}{SingleCellExperiment}(
+  object,
+  reduction_use = "PCA",
+  reduction_save,
+  function_use,
+  dims_use = NULL,
+  ...
+)
 }
 \arguments{
 \item{object}{A Seurat or SingleCellExperiment object to be transformed.}

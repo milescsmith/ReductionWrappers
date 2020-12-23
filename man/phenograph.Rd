@@ -4,10 +4,19 @@
 \alias{phenograph}
 \title{Phenograph}
 \usage{
-phenograph(rdf, k = 30, directed = FALSE, prune = FALSE,
-  min_cluster_size = 10, jaccard = TRUE,
-  primary_metric = "euclidean", n_jobs = NULL, q_tol = 0.001,
-  louvain_time_limit = 2000, nn_method = "kdtree")
+phenograph(
+  rdf,
+  k = 30,
+  directed = FALSE,
+  prune = FALSE,
+  min_cluster_size = 10,
+  jaccard = TRUE,
+  primary_metric = "euclidean",
+  n_jobs = NULL,
+  q_tol = 0.001,
+  louvain_time_limit = 2000,
+  nn_method = "kdtree"
+)
 }
 \arguments{
 \item{rdf}{data to cluster, or sparse matrix of k-nearest neighbor

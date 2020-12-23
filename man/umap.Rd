@@ -4,15 +4,33 @@
 \alias{umap}
 \title{umap}
 \usage{
-umap(rdf, n_neighbors = 15, n_components = 3, metric = "euclidean",
-  n_epochs = NULL, learning_rate = 1, init = "spectral",
-  min_dist = 0.1, spread = 1, set_op_mix_ratio = 1,
-  local_connectivity = 1, repulsion_strength = 1,
-  negative_sample_rate = 5, transform_queue_size = 4, a = NULL,
-  b = NULL, random_state = NULL, metric_kwds = NULL,
-  angular_rp_forest = FALSE, target_n_neighbors = -1,
-  target_metric = "categorical", target_metric_kwds = NULL,
-  target_weight = 0.5, transform_seed = 42, verbose = FALSE)
+umap(
+  rdf,
+  n_neighbors = 15,
+  n_components = 3,
+  metric = "euclidean",
+  n_epochs = NULL,
+  learning_rate = 1,
+  init = "spectral",
+  min_dist = 0.1,
+  spread = 1,
+  set_op_mix_ratio = 1,
+  local_connectivity = 1,
+  repulsion_strength = 1,
+  negative_sample_rate = 5,
+  transform_queue_size = 4,
+  a = NULL,
+  b = NULL,
+  random_state = NULL,
+  metric_kwds = NULL,
+  angular_rp_forest = FALSE,
+  target_n_neighbors = -1,
+  target_metric = "categorical",
+  target_metric_kwds = NULL,
+  target_weight = 0.5,
+  transform_seed = 42,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{rdf}{A high dimensional variable-by-observation (i.e. gene-by-cell)

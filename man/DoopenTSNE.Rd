@@ -4,8 +4,13 @@
 \alias{DoopenTSNE}
 \title{DoopenTSNE}
 \usage{
-DoopenTSNE(object, reduction_use = "pca", reduction_save = "openTSNE",
-  dims_use = NULL, ...)
+DoopenTSNE(
+  object,
+  reduction_use = "pca",
+  reduction_save = "openTSNE",
+  dims_use = NULL,
+  ...
+)
 }
 \arguments{
 \item{object}{A Seurat or SingleCellExperiment object to be transformed.}

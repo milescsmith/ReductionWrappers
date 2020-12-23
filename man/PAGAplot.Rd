@@ -11,6 +11,9 @@ PAGAplot(object, edge_scale_weight = 0.2)
 
 \item{edge_scale_weight}{Factor to scale edge line segment weight by.  Default: 0.5}
 }
+\value{
+
+}
 \description{
 Plot the results from PAGA
 }

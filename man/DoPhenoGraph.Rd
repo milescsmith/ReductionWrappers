@@ -8,11 +8,9 @@
 \usage{
 DoPhenoGraph(object, ...)
 
-\method{DoPhenoGraph}{Seurat}(object, reduction_use = "pca", k = 30,
-  prefix = "community", ...)
+\method{DoPhenoGraph}{Seurat}(object, reduction_use = "pca", k = 30, prefix = "community", ...)
 
-\method{DoPhenoGraph}{SingleCellExperiment}(object,
-  reduction_use = "pca", k = 30, prefix = "community", ...)
+\method{DoPhenoGraph}{SingleCellExperiment}(object, reduction_use = "pca", k = 30, prefix = "community", ...)
 }
 \arguments{
 \item{object}{A Seurat or SingleCellExperiment object with data to be clustered.}

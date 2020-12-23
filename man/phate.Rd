@@ -4,10 +4,22 @@
 \alias{phate}
 \title{phate}
 \usage{
-phate(ce, n_components = 3, k = 5, a = 15, n_landmark = 2000,
-  t = "auto", gamma = 1, n_pca = NULL, knn_dist = "euclidean",
-  mds_dist = "euclidean", mds = "metric", n_jobs = NULL,
-  random_state = NULL, verbose = 1)
+phate(
+  ce,
+  n_components = 3,
+  k = 5,
+  a = 15,
+  n_landmark = 2000,
+  t = "auto",
+  gamma = 1,
+  n_pca = NULL,
+  knn_dist = "euclidean",
+  mds_dist = "euclidean",
+  mds = "metric",
+  n_jobs = NULL,
+  random_state = NULL,
+  verbose = 1
+)
 }
 \arguments{
 \item{ce}{cell embeddings}

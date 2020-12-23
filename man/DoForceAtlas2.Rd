@@ -4,8 +4,13 @@
 \alias{DoForceAtlas2}
 \title{DoForceAtlas2}
 \usage{
-DoForceAtlas2(object, reduction_use = "pca", reduction_save = "fa2",
-  dims_use = NULL, ...)
+DoForceAtlas2(
+  object,
+  reduction_use = "pca",
+  reduction_save = "fa2",
+  dims_use = NULL,
+  ...
+)
 }
 \arguments{
 \item{object}{A Seurat or SingleCellExperiment object to be transformed.}

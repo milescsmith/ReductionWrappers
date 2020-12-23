@@ -1,7 +1,15 @@
-#' @title opt-SNE
+#' @title pacmap
 #'
-#' @description An R wrapper for the opt-SNE Python module found at
-#' https://github.com/omiq-ai/Multicore-opt-SNE
+#' @description An R wrapper for the PaCMAP Python module found at
+#' https://github.com/YingfanWang/PaCMAP
+#'
+#' PaCMAP (Pairwise Controlled Manifold Approximation) is a
+#' dimensionality reduction method that can be used for
+#' visualization, preserving both local and global structure
+#' of the data in original space. PaCMAP optimizes the low
+#' dimensional embedding using three kinds of pairs of points:
+#' neighbor pairs (pair_neighbors), mid-near pair (pair_MN),
+#' and further pairs (pair_FP).
 #'
 #' @param rdf A variable by observation data frame
 #' @param n_components integer Dimensions of the embedded space. Default: 3
@@ -80,57 +88,46 @@
 #' @return data.frame with tSNE coordinates
 #' @export
 #'
-optSNE <- function(rdf,
-                   n_components = 3,
-                   perplexity = 30.0,
-                   early_exaggeration = 12.0,
-                   learning_rate = 200.0,
-                   n_iter = 1000,
-                   n_iter_without_progress = 300,
-                   min_grad_norm = 1e-07,
-                   metric = "euclidean",
-                   init = "random",
-                   verbose = 1,
-                   random_state = NULL,
-                   method = "barnes_hut",
-                   angle = 0.5,
-                   auto_iter = TRUE,
-                   auto_iter_end = 5000,
-                   n_jobs = NULL){
-  if (!py_module_available("MulticoreTSNE")){
-    stop("The Multicore-opt-SNE module is unavailable.  Please activate the appropriate environment or install the module.")
+pacmap <- function(rdf,
+                   n_dims         = 2,
+                   n_neighbors    = NULL,
+                   MN_ratio       = 0.5,
+                   FP_ratio       = 2.0,
+                   pair_neighbors = NULL,
+                   pair_MN        = NULL,
+                   pair_FP        = NULL,
+                   distance       = "euclidean",
+                   lr             = 1.0,
+                   num_iters      = 450,
+                   verbose        = FALSE,
+                   apply_pca      = TRUE,
+                   intermediate   = FALSE){
+  if (!py_module_available("pacmap")){
+    stop("The pacmap module is unavailable.  Please activate the appropriate environment or install the module.")
   }
 
-  optsne_module <-
+  pacmap_module <-
     import(
-      module = "MulticoreTSNE",
+      module = "pacmap",
       delay_load = TRUE
-      )
+    )
 
-  if (is.null(n_jobs)){
-    n_jobs <- detectCores()
-  }
+  pacmap <-
+    pacmap_module$PaCMAP(
+      n_dims         = as.integer(n_dims),
+      n_neighbors    = n_neighbors,
+      MN_ratio       = as.numeric(MN_ratio),
+      FP_ratio       = as.numeric(FP_ratio),
+      pair_neighbors = pair_neighbors,
+      pair_MN        = pair_MN,
+      pair_FP        = pair_FP,
+      distance       = distance,
+      lr             = as.numeric(lr),
+      num_iters      = as.integer(num_iters),
+      verbose        = verbose,
+      apply_pca      = apply_pca,
+      intermediate   = intermediate
+    )
 
-  optsne <-
-    optsne_module$MulticoreTSNE(
-      n_components = as.integer(n_components),
-      perplexity = as.numeric(perplexity),
-      early_exaggeration = as.numeric(early_exaggeration),
-      learning_rate = as.numeric(learning_rate),
-      n_iter = as.integer(n_iter),
-      n_iter_without_progress = as.integer(n_iter_without_progress),
-      min_grad_norm = as.numeric(min_grad_norm),
-      metric = metric,
-      init = init,
-      verbose = as.integer(verbose),
-      random_state = random_state,
-      method = method,
-      angle = as.numeric(angle),
-      auto_iter = auto_iter,
-      auto_iter_end = auto_iter_end,
-      n_jobs = n_jobs
-      )
-
-  optsne_df <- optsne$fit_transform(rdf)
-  return(optsne_df)
+  pacmap$fit_transform(rdf)
 }

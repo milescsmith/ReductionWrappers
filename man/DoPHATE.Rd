@@ -4,8 +4,13 @@
 \alias{DoPHATE}
 \title{DoPHATE}
 \usage{
-DoPHATE(object, reduction_use = "pca", reduction_save = "phate",
-  dims_use = NULL, ...)
+DoPHATE(
+  object,
+  reduction_use = "pca",
+  reduction_save = "phate",
+  dims_use = NULL,
+  ...
+)
 }
 \arguments{
 \item{object}{A Seurat or SingleCellExperiment object to be transformed.}

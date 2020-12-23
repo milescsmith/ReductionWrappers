@@ -4,24 +4,49 @@
 \alias{PAGA}
 \title{PAGA}
 \usage{
-PAGA(object, assay = "RNA", slim = FALSE, seurat_grouping = NULL,
-  set_ident = TRUE, clustering_algorithm = "leiden",
-  reduction_name = "umap", reduction_key = "umap_",
-  edge_filter_weight = 0.1, neighbors_n_neighbors = 15,
-  neighbors_n_pcs = NULL, neighbors_use_rep = "pca",
-  neighbors_knn = TRUE, neighbors_random_state = 0,
-  neighbors_method = "umap", neighbors_metric = "euclidean",
-  clustering_resolution = 1, clustering_restrict_to = NULL,
-  clustering_random_state = 0, clustering_key_added = NULL,
-  clustering_adjacency = NULL, clustering_directed = TRUE,
-  clustering_use_weights = TRUE, clustering_n_iterations = -1,
-  clustering_partition_type = NULL, paga_show = FALSE,
-  paga_plot = FALSE, paga_add_pos = TRUE, paga_threshold = 0.01,
-  paga_layout = NULL, paga_init_pos = NULL, paga_root = 0,
-  paga_single_component = NULL, paga_random_state = 0,
-  umap_min_dist = 0.5, umap_spread = 1, umap_n_components = 2,
-  umap_alpha = 1, umap_gamma = 1, umap_negative_sample_rate = 5,
-  umap_init_pos = "spectral")
+PAGA(
+  object,
+  assay = "RNA",
+  slim = FALSE,
+  seurat_grouping = NULL,
+  set_ident = TRUE,
+  clustering_algorithm = "leiden",
+  reduction_name = "umap",
+  reduction_key = "umap_",
+  edge_filter_weight = 0.1,
+  neighbors_n_neighbors = 15,
+  neighbors_n_pcs = NULL,
+  neighbors_use_rep = "pca",
+  neighbors_knn = TRUE,
+  neighbors_random_state = 0,
+  neighbors_method = "umap",
+  neighbors_metric = "euclidean",
+  clustering_resolution = 1,
+  clustering_restrict_to = NULL,
+  clustering_random_state = 0,
+  clustering_key_added = NULL,
+  clustering_adjacency = NULL,
+  clustering_directed = TRUE,
+  clustering_use_weights = TRUE,
+  clustering_n_iterations = -1,
+  clustering_partition_type = NULL,
+  paga_show = FALSE,
+  paga_plot = FALSE,
+  paga_add_pos = TRUE,
+  paga_threshold = 0.01,
+  paga_layout = NULL,
+  paga_init_pos = NULL,
+  paga_root = 0,
+  paga_single_component = NULL,
+  paga_random_state = 0,
+  umap_min_dist = 0.5,
+  umap_spread = 1,
+  umap_n_components = 3,
+  umap_alpha = 1,
+  umap_gamma = 1,
+  umap_negative_sample_rate = 5,
+  umap_init_pos = "spectral"
+)
 }
 \arguments{
 \item{assay}{Seurat object assay to use when converting to Scanpy object}
@@ -43,6 +68,9 @@ PAGA(object, assay = "RNA", slim = FALSE, seurat_grouping = NULL,
 \item{clustering_resolution}{Resolution to pass to the clustering algorith (Default: 1.0)}
 
 \item{umap_init_pos}{}
+}
+\value{
+
 }
 \description{
 Use scanpy.tl.paga() to produce a partition-based graph abstraction for a Seurat

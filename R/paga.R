@@ -56,7 +56,7 @@
 #' @export
 #'
 #' @importFrom s2a convert_to_anndata
-#' @importFrom str_glue str_glue
+#' @importFrom stringr str_glue
 #' @importFrom reticulate import
 #' @importFrom Seurat DietSeurat Idents<-
 #'
