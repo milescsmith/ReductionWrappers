@@ -29,7 +29,7 @@ Imports:
 Remotes:
     bioc::SummarizedExperiment,
     bioc::SingleCellExperiment,
-    gitlab::milothepsychic/s2a
+    github::milescsmith/s2a
 License: BSD_3_clause + file LICENSE
 Encoding: UTF-8
 LazyData: true
