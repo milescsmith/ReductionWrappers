@@ -1,4 +1,4 @@
-#' phate
+#' @title phate
 #'
 #' An R wrapper around the PHATE Python module found at
 #' https://github.com/KrishnaswamyLab/PHATE
@@ -73,32 +73,33 @@ phate <- function(ce,
                   n_jobs = NULL,
                   random_state = NULL,
                   verbose = 1){
-  if (!py_module_available("phate")){
+  if (!reticulate::py_module_available("phate")){
     stop("The phate module is unavailable.  Please activate the appropriate environment or install the module.")
   }
-  phate <- import(module = "phate", delay_load = TRUE)
+  phate <- reticulate::import(module = "phate", delay_load = TRUE)
   if (is.null(n_jobs)){
-    n_jobs <- detectCores()
+    n_jobs <- parallel::detectCores()
   }
 
 
   if (is.null(n_pca)){
     n_pca <- ncol(ce)
   }
-  phate_op <- phate$PHATE(n_components = as.integer(n_components),
-                          k = as.integer(k),
-                          a = as.integer(a),
-                          n_landmark = as.integer(n_landmark),
-                          t = as.character(t),
-                          gamma = as.numeric(gamma),
-                          n_pca = as.integer(n_pca),
-                          knn_dist = knn_dist,
-                          mds_dist = mds_dist,
-                          mds = mds,
-                          n_jobs = as.integer(n_jobs),
-                          random_state = random_state,
-                          verbose = as.integer(verbose)
+  phate_op <- phate$PHATE(
+    n_components = as.integer(n_components),
+    k            = as.integer(k),
+    a            = as.integer(a),
+    n_landmark   = as.integer(n_landmark),
+    t            = as.character(t),
+    gamma        = as.numeric(gamma),
+    n_pca        = as.integer(n_pca),
+    knn_dist     = knn_dist,
+    mds_dist     = mds_dist,
+    mds          = mds,
+    n_jobs       = as.integer(n_jobs),
+    random_state = random_state,
+    verbose      = as.integer(verbose)
   )
-  phate_df <- phate_op$fit_transform(ce)
-  return(phate_df)
+
+  phate_op$fit_transform(ce)
 }

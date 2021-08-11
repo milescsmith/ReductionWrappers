@@ -23,6 +23,7 @@ PushData <-
 #' @rdname PushData
 #' @method PushData Seurat
 #' @importFrom Seurat CreateDimReducObject
+#' @importFrom glue glue
 #' @return Seurat object
 PushData.Seurat <-
   function(
@@ -38,8 +39,8 @@ PushData.Seurat <-
   reduction_data <-
     CreateDimReducObject(
       embeddings = python_df,
-      assay = assay_used,
-      key = as.character(glue("{reduction_save}_"))
+      assay      = assay_used,
+      key        = as.character(glue::glue("{reduction_save}_"))
       )
   object[[reduction_save]] <- reduction_data
   object
@@ -60,7 +61,7 @@ PushData.SingleCellExperiment <-
       rownames(python_df) <- colnames(object)
 
       reducedDim(
-        x = object,
+        x    = object,
         type = toupper(reduction_save)
         ) <- python_df
 
@@ -99,6 +100,7 @@ ReductionBridge <-
 #' @rdname ReductionBridge
 #' @method ReductionBridge Seurat
 #' @importFrom Seurat Embeddings DefaultAssay
+#' @importFrom glue glue
 #' @return Seurat object
 ReductionBridge.Seurat <-
   function(
@@ -106,26 +108,26 @@ ReductionBridge.Seurat <-
     reduction_use = "pca",
     reduction_save,
     function_use,
-    dims_use = NULL,
-    assay_use = NULL,
+    dims_use      = NULL,
+    assay_use     = NULL,
     ...) {
 
-    if (match.call()[5] == "pacmap()"){
+    if (match.call()[5] == "pacmap()") {
       assay_use <- assay_use %||% "RNA"
       cell_embeddings <-
         GetAssayData(
           object = object,
           slot   = "scale.data",
-          assay  = assay_use) %>%
-        as.matrix
+          assay  = assay_use) |>
+        as.matrix()
     } else {
       if (reduction_use %in% names(object)) {
-        cell_embeddings <- Embeddings(object[[reduction_use]])
+        cell_embeddings <- Seurat::Embeddings(object[[reduction_use]])
         adjacencies     <- object@graphs
-        assay           <- DefaultAssay(object = object[[reduction_use]])
+        assay           <- Seurat::DefaultAssay(object = object[[reduction_use]])
       }
       else {
-        message(glue("{reduction_use} has not yet been performed"))
+        message(glue::glue("{reduction_use} has not yet been performed"))
         stop()
       }
     }
@@ -133,11 +135,11 @@ ReductionBridge.Seurat <-
     dims_use = dims_use %||% 1:ncol(cell_embeddings)
 
     if (!all(dims_use %in% 1:ncol(cell_embeddings))) {
-      stop(glue("You have selected dimensions that are outside the bounds of {reduction_use}"))
+      stop(glue::glue("You have selected dimensions that are outside the bounds of {reduction_use}"))
     }
 
     if (match.call()[5] == "fa2()") {
-      snn <- Matrix(object@graphs[[glue("{assay}_snn")]])
+      snn <- Matrix(object@graphs[[glue::glue("{assay}_snn")]])
       snn <- snn[rownames(cell_embeddings),rownames(cell_embeddings)]
       python_df <- function_use(cell_embeddings[,dims_use], snn, ...)
     } else {
@@ -145,10 +147,10 @@ ReductionBridge.Seurat <-
     }
 
     object <- PushData(
-      object = object,
-      python_df = python_df,
+      object         = object,
+      python_df      = python_df,
       reduction_save = reduction_save,
-      assay_used = assay
+      assay_used     = assay
     )
 
     object
@@ -157,8 +159,6 @@ ReductionBridge.Seurat <-
 #' @rdname ReductionBridge
 #' @method ReductionBridge SingleCellExperiment
 #' @importFrom SingleCellExperiment reducedDim reducedDimNames
-#' @importFrom RANN nn2
-#' @importFrom Matrix sparseMatrix
 #' @return SingleCellExperiment object
 ReductionBridge.SingleCellExperiment <-
   function(
@@ -166,18 +166,18 @@ ReductionBridge.SingleCellExperiment <-
     reduction_use = "PCA",
     reduction_save,
     function_use,
-    dims_use = NULL,
+    dims_use      = NULL,
     ...) {
 
-    if (toupper(reduction_use) %in% reducedDimNames(object)) {
+    if (toupper(reduction_use) %in% SingleCellExperiment::reducedDimNames(object)) {
       cell_embeddings <-
-        reducedDim(
-          x = object,
+        SingleCellExperiment::reducedDim(
+          x    = object,
           type = toupper(reduction_use)
           )
     }
     else {
-      stop(glue("{reduction_use} has not yet been performed"))
+      stop(glue::glue("{reduction_use} has not yet been performed"))
     }
 
     if (match.call()[5] == "fa2()") {
@@ -193,50 +193,16 @@ ReductionBridge.SingleCellExperiment <-
     dims_use = dims_use %||% 1:ncol(cell_embeddings)
 
     if (!all(dims_use %in% 1:ncol(cell_embeddings))) {
-      stop(glue("You have selected dimensions that are outside the bounds of {reduction_use}"))
+      stop(glue::glue("You have selected dimensions that are outside the bounds of {reduction_use}"))
     }
 
     python_df <- function_use(cell_embeddings[,dims_use], ...)
 
     PushData(
-      object = object,
-      python_df = python_df,
+      object         = object,
+      python_df      = python_df,
       reduction_save = toupper(reduction_save)
     )
-}
-
-
-#' @title DooptSNE
-#'
-#' @description Perform tSNE projection on a Seurat object using the
-#' Multicore-opt-SNE function
-#'
-#' @param object A Seurat or SingleCellExperiment object to be transformed.
-#' @param reduction_use Prior dimensional reduction to use for calculations
-#' (i.e. pca, ica, cca, etc...). Default: pca
-#' @param reduction_save Name to use for the reduction (i. e. tsne, umap,
-#' etc...). Default: tsne
-#' @param dims_use Dimensions from `reduction_use` to pass to PHATE
-#' @param ... Extra parameters to pass to the multicoreTSNE function.
-#'
-#' @export
-#'
-DooptSNE <-
-  function(
-    object,
-    reduction_use = "pca",
-    reduction_save = "optsne",
-    dims_use = NULL,
-    ...) {
-
-    ReductionBridge(
-      object = object,
-      reduction_use = reduction_use,
-      reduction_save = reduction_save,
-      function_use = optSNE,
-      dims_use = dims_use,
-      ...
-      )
 }
 
 
@@ -258,17 +224,17 @@ DooptSNE <-
 DoopenTSNE <-
   function(
     object,
-    reduction_use = "pca",
+    reduction_use  = "pca",
     reduction_save = "openTSNE",
-    dims_use = NULL,
+    dims_use       = NULL,
     ...) {
 
     ReductionBridge(
-      object = object,
-      reduction_use = reduction_use,
+      object         = object,
+      reduction_use  = reduction_use,
       reduction_save = reduction_save,
-      function_use = openTSNE,
-      dims_use = dims_use,
+      function_use   = openTSNE,
+      dims_use       = dims_use,
       ...
   )
 }
@@ -290,17 +256,17 @@ DoopenTSNE <-
 DoUMAP <-
   function(
     object,
-    reduction_use = "pca",
+    reduction_use  = "pca",
     reduction_save = "umap",
-    dims_use = NULL,
+    dims_use       = NULL,
     ...) {
 
     ReductionBridge(
-      object = object,
-      reduction_use = reduction_use,
+      object         = object,
+      reduction_use  = reduction_use,
       reduction_save = reduction_save,
-      function_use = umap,
-      dims_use = dims_use,
+      function_use   = umap,
+      dims_use       = dims_use,
       ...
   )
 }
@@ -323,17 +289,17 @@ DoUMAP <-
 DoForceAtlas2 <-
   function(
     object,
-    reduction_use = "pca",
+    reduction_use  = "pca",
     reduction_save = "fa2",
-    dims_use = NULL,
+    dims_use       = NULL,
     ...) {
 
     ReductionBridge(
-      object = object,
-      reduction_use = reduction_use,
+      object         = object,
+      reduction_use  = reduction_use,
       reduction_save = reduction_save,
-      function_use = fa2,
-      dims_use = dims_use,
+      function_use   = fa2,
+      dims_use       = dims_use,
       ...
   )
 }
@@ -356,17 +322,17 @@ DoForceAtlas2 <-
 DoPHATE <-
   function(
     object,
-    reduction_use = "pca",
+    reduction_use  = "pca",
     reduction_save = "phate",
-    dims_use = NULL,
+    dims_use       = NULL,
     ...) {
 
     ReductionBridge(
-      object = object,
-      reduction_use = reduction_use,
+      object         = object,
+      reduction_use  = reduction_use,
       reduction_save = reduction_save,
-      function_use = phate,
-      dims_use = dims_use,
+      function_use   = phate,
+      dims_use       = dims_use,
       ...
   )
 }
@@ -390,17 +356,17 @@ DoPHATE <-
 DooptSNE <-
   function(
     object,
-    reduction_use = "pca",
+    reduction_use  = "pca",
     reduction_save = "optsne",
-    dims_use = NULL,
+    dims_use       = NULL,
     ...) {
 
     ReductionBridge(
-      object = object,
-      reduction_use = reduction_use,
+      object         = object,
+      reduction_use  = reduction_use,
       reduction_save = reduction_save,
-      function_use = optSNE,
-      dims_use = dims_use,
+      function_use   = optSNE,
+      dims_use       = dims_use,
       ...
       )
 }
@@ -422,15 +388,15 @@ DooptSNE <-
 DoPaCMAP <-
   function(
     object,
-    assay_use = "RNA",
+    assay_use      = "RNA",
     reduction_save = "PAC",
     ...) {
 
     ReductionBridge(
-      object = object,
-      assay_use = assay_use,
+      object         = object,
+      assay_use      = assay_use,
       reduction_save = reduction_save,
-      function_use = pacmap,
+      function_use   = pacmap,
       ...
       )
 }
@@ -450,7 +416,6 @@ DoPaCMAP <-
 #'  meta.data slot
 #' @param ... Extra parameters to pass to the phenograph function.
 #'
-#' @importFrom glue glue
 #' @export
 #'
 DoPhenoGraph <-
@@ -470,23 +435,23 @@ DoPhenoGraph.Seurat <-
   function(
     object,
     reduction_use = "pca",
-    k = 30,
-    prefix = "community",
+    k             = 30,
+    prefix        = "community",
     ...) {
 
     if (reduction_use %in% names(object)) {
       cell_embeddings <- Embeddings(object[[reduction_use]])
     }
     else {
-      message(glue("{reduction_use} has not yet been performed"))
+      message(glue::glue("{reduction_use} has not yet been performed"))
       stop()
     }
 
     for (value in k) {
-      cluster_name <- glue("{prefix}{value}")
+      cluster_name <- glue::glue("{prefix}{value}")
       communities <- phenograph(cell_embeddings, k = value, ...)
-      object <- AddMetaData(
-        object = object,
+      object <- Seurat::AddMetaData(
+        object   = object,
         metadata = communities,
         col.name = cluster_name
       )
@@ -506,20 +471,20 @@ DoPhenoGraph.SingleCellExperiment <-
   function(
     object,
     reduction_use = "pca",
-    k = 30,
-    prefix = "community",
+    k             = 30,
+    prefix        = "community",
     ...) {
 
-    if (reduction_use %in% reducedDimNames(object)) {
-      cell_embeddings <- reducedDim(x = object, type = reduction_use)
+    if (reduction_use %in% SingleCellExperiment::reducedDimNames(object)) {
+      cell_embeddings <- SingleCellExperiment::reducedDim(x = object, type = reduction_use)
     }
     else {
-      message(glue("{reduction_use} has not yet been performed"))
+      message(glue::glue("{reduction_use} has not yet been performed"))
       stop()
     }
 
     for (value in k) {
-      cluster_name <- glue("{prefix}{value}")
+      cluster_name <- glue::glue("{prefix}{value}")
       communities <- phenograph(cell_embeddings, k = value, ...)
       colData(object)[[cluster_name]] <- communities
     }

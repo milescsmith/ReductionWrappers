@@ -2,7 +2,14 @@
 % Please edit documentation in R/phate.R
 \name{phate}
 \alias{phate}
-\title{phate}
+\title{phate
+
+An R wrapper around the PHATE Python module found at
+https://github.com/KrishnaswamyLab/PHATE
+
+Potential of Heat-diffusion for Affinity-based Trajectory Embedding (PHATE)
+embeds high dimensional single-cell data into two or three dimensions for
+visualization of biological progressions as described in Moon et al, 2017}
 \usage{
 phate(
   ce,
@@ -85,10 +92,11 @@ status messages}
 data.frame with PHATE coordinates
 }
 \description{
+phate
+
 An R wrapper around the PHATE Python module found at
 https://github.com/KrishnaswamyLab/PHATE
-}
-\details{
+
 Potential of Heat-diffusion for Affinity-based Trajectory Embedding (PHATE)
 embeds high dimensional single-cell data into two or three dimensions for
 visualization of biological progressions as described in Moon et al, 2017

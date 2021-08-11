@@ -1,4 +1,4 @@
-#' openTSNE
+#' @title openTSNE
 #'
 #' An R wrapper for the openTSNE Python module found at
 #' https://github.com/pavlin-policar/openTSNE/
@@ -124,41 +124,49 @@ openTSNE <- function(rdf,
                      callbacks = NULL,
                      callbacks_every_iters = 50,
                      random_state = NULL){
-  if (!py_module_available("openTSNE")){
+  if (!reticulate::py_module_available("openTSNE")){
     stop("The openTSNE module is unavailable.
          Please activate the appropriate environment or install the module.")
   }
 
-  openTSNE.module <- import(module = "openTSNE", delay_load = TRUE)
+  openTSNE.module <-
+    reticulate::import(
+      module = "openTSNE",
+      delay_load = TRUE
+      )
+  
   if (is.null(n_jobs)){
-    n_jobs <- detectCores()
+    n_jobs <- parallel::detectCores()
   }
 
-  tsne <- openTSNE.module$TSNE(n_components = as.integer(n_components),
-                                    perplexity = as.numeric(perplexity),
-                                    learning_rate = as.numeric(learning_rate),
-                                    early_exaggeration_iter = as.integer(early_exaggeration_iter),
-                                    early_exaggeration = as.numeric(early_exaggeration),
-                                    n_iter = as.integer(n_iter),
-                                    exaggeration = exaggeration,
-                                    theta = as.numeric(theta),
-                                    n_interpolation_points = as.integer(n_interpolation_points),
-                                    min_num_intervals = as.integer(min_num_intervals),
-                                    ints_in_interval = as.numeric(ints_in_interval),
-                                    initialization = initialization,
-                                    metric = as.character(metric),
-                                    metric_params = metric_params,
-                                    initial_momentum = as.numeric(initial_momentum),
-                                    final_momentum = as.numeric(final_momentum),
-                                    n_jobs = as.integer(n_jobs),
-                                    neighbors = as.character(neighbors),
-                                    negative_gradient_method = as.character(negative_gradient_method),
-                                    callbacks = callbacks,
-                                    callbacks_every_iters = as.integer(callbacks_every_iters),
-                                    random_state = random_state)
+  tsne <- openTSNE.module$TSNE(
+    n_components             = as.integer(n_components),
+    perplexity               = as.numeric(perplexity),
+    learning_rate            = as.numeric(learning_rate),
+    early_exaggeration_iter  = as.integer(early_exaggeration_iter),
+    early_exaggeration       = as.numeric(early_exaggeration),
+    n_iter                   = as.integer(n_iter),
+    exaggeration             = exaggeration,
+    theta                    = as.numeric(theta),
+    n_interpolation_points   = as.integer(n_interpolation_points),
+    min_num_intervals        = as.integer(min_num_intervals),
+    ints_in_interval         = as.numeric(ints_in_interval),
+    initialization           = initialization,
+    metric                   = as.character(metric),
+    metric_params            = metric_params,
+    initial_momentum         = as.numeric(initial_momentum),
+    final_momentum           = as.numeric(final_momentum),
+    n_jobs                   = as.integer(n_jobs),
+    neighbors                = as.character(neighbors),
+    negative_gradient_method = as.character(negative_gradient_method),
+    callbacks                = callbacks,
+    callbacks_every_iters    = as.integer(callbacks_every_iters),
+    random_state             = random_state
+    )
 
   opentsne_df <- tsne$fit(X = rdf)
   rownames(opentsne_df) <- rownames(rdf)
-  colnames(opentsne_df) <- glue("tsne_{1:n_components}")
-  return(opentsne_df)
+  colnames(opentsne_df) <- glue::glue("tsne_{1:n_components}")
+
+  opentsne_df
 }

@@ -1,4 +1,4 @@
-#' Phenograph
+#' @title Phenograph
 #'
 #' Used to cluster high dimensional data. An R wrapper around the Python
 #' Phenograph module found at https://github.com/jacoblevine/PhenoGraph
@@ -48,24 +48,31 @@ phenograph <- function(rdf,
                        n_jobs = NULL,
                        q_tol = 0.001,
                        louvain_time_limit = 2000,
-                       nn_method = "kdtree"){
-  if (!py_module_available("phenograph")){
+                       nn_method = "kdtree"
+                       ){                  
+  
+  if (!reticulate::py_module_available("phenograph")){
     stop("The PhenoGraph module is unavailable.  Please activate the appropriate environment or install the module.")
   }
+  
   if (is.null(n_jobs)){
-    n_jobs <- detectCores()
+    n_jobs <- parallel::detectCores()
   }
-  phenograph_module <- import(module = "phenograph", delay_load = TRUE)
-  phenograph_tuple <- phenograph_module$cluster(rdf,
-                                                k = as.integer(k),
-                                                directed = directed,
-                                                prune = prune,
-                                                min_cluster_size = as.integer(min_cluster_size),
-                                                jaccard = jaccard,
-                                                primary_metric = primary_metric,
-                                                n_jobs = as.integer(n_jobs),
-                                                q_tol = as.numeric(q_tol),
-                                                louvain_time_limit = as.integer(louvain_time_limit),
-                                                nn_method = "kdtree")
-  return(phenograph_tuple[[1]])
+  phenograph_module <- reticulate::import(module = "phenograph", delay_load = TRUE)
+  phenograph_tuple <-
+    phenograph_module$cluster(
+      rdf,
+      k                  = as.integer(k),
+      directed           = directed,
+      prune              = prune,
+      min_cluster_size   = as.integer(min_cluster_size),
+      jaccard            = jaccard,
+      primary_metric     = primary_metric,
+      n_jobs             = as.integer(n_jobs),
+      q_tol              = as.numeric(q_tol),
+      louvain_time_limit = as.integer(louvain_time_limit),
+      nn_method          = "kdtree"
+    )
+  
+  phenograph_tuple[[1]]
 }

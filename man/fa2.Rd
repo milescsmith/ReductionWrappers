@@ -2,7 +2,12 @@
 % Please edit documentation in R/forceatlas2.R
 \name{fa2}
 \alias{fa2}
-\title{ForceAtlas2}
+\title{ForceAtlas2
+
+An R wrapper around the Python implementation of ForceAtlas2 found at
+https://github.com/bhargavchippada/forceatlas2
+
+Currently a very restricted version}
 \usage{
 fa2(init_pos, adjacencies, iterations = 500, ...)
 }
@@ -16,9 +21,10 @@ fa2(init_pos, adjacencies, iterations = 500, ...)
 \item{...}{Additional arguments to pass to the forceatlas2 object instantiation}
 }
 \description{
+ForceAtlas2
+
 An R wrapper around the Python implementation of ForceAtlas2 found at
 https://github.com/bhargavchippada/forceatlas2
-}
-\details{
+
 Currently a very restricted version
 }

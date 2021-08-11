@@ -56,10 +56,10 @@
 #' @export
 #'
 #' @importFrom s2a convert_to_anndata
-#' @importFrom stringr str_glue
+#' @importFrom glue glue
 #' @importFrom reticulate import
 #' @importFrom Seurat DietSeurat Idents<-
-#' @importFrom magrittr %>% set_rownames set_colnames
+#' @importFrom magrittr set_rownames set_colnames
 #' @importFrom rlang %||%
 #'
 #' @examples
@@ -113,9 +113,9 @@ PAGA <-
   ){
 
     if (isTRUE(slim)){
-      DefaultAssay(object) <- assay
+      Seurat::DefaultAssay(object) <- assay
       slimmed_obj <-
-        DietSeurat(
+        Seurat::DietSeurat(
           object    = object,
           assay     = assay,
           dimreducs = neighbors_use_rep,
@@ -123,19 +123,19 @@ PAGA <-
         )
 
       converted_object <-
-        convert_to_anndata(
+        s2a::convert_to_anndata(
           object = slimmed_obj,
           assay  = assay
         )
     } else {
       converted_object <-
-        convert_to_anndata(
+        s2a::convert_to_anndata(
           object = object,
           assay  = assay
         )
     }
 
-    sc <- import(
+    sc <- reticulate::import(
       module     = "scanpy",
       delay_load = TRUE
     )
@@ -148,19 +148,19 @@ PAGA <-
 
     # I hate matplotlib.
     matplotlib <-
-      import(
+      reticulate::import(
         module     = "matplotlib",
         delay_load = TRUE
       )
 
     matplotlib$use("Agg", force = TRUE)
 
-    if (str_glue("X_{neighbors_use_rep}") %in% converted_object$obsm_keys()){
+    if (glue::glue("X_{neighbors_use_rep}") %in% converted_object$obsm_keys()){
       sc$pp$neighbors(
         adata        = converted_object,
         n_neighbors  = as.integer(neighbors_n_neighbors),
         n_pcs        = neighbors_n_pcs,
-        use_rep      = str_glue("X_{neighbors_use_rep}"),
+        use_rep      = glue::glue("X_{neighbors_use_rep}"),
         knn          = neighbors_knn,
         random_state = as.integer(neighbors_random_state),
         method       = neighbors_method,
@@ -168,7 +168,7 @@ PAGA <-
       )
     } else {
       if (length(converted_object$obsm_keys()) > 0) {
-        message(str_glue("{neighbors_use_rep} was not found.  Performing PCA..."))
+        message(glue::glue("{neighbors_use_rep} was not found.  Performing PCA..."))
       } else {
         message("No reduced dimensional reductions found.  Performing PCA...")
       }
@@ -196,7 +196,8 @@ PAGA <-
         partition_type = clustering_partition_type
       )
 
-      converted_object$obs[[clustering_key_added]] <- as.factor(as.integer(converted_object$obs[[clustering_key_added]]))
+      converted_object$obs[[clustering_key_added]] <-
+        as.factor(as.integer(converted_object$obs[[clustering_key_added]]))
 
       sc$tl$paga(
         adata  = converted_object,
@@ -213,7 +214,7 @@ PAGA <-
     }
 
     utils <-
-      import(
+      reticulate::import(
         module     = "scanpy.tools._utils",
         delay_load = TRUE
       )
@@ -244,26 +245,27 @@ PAGA <-
     )
 
     paga <- list(
-      connectivities           = converted_object$uns[["paga"]]$connectivities$todense() %>%
-        set_rownames(levels(converted_object$obs[[converted_object$uns[["paga"]]$groups]])) %>%
-        set_colnames(levels(converted_object$obs[[converted_object$uns[["paga"]]$groups]])),
+      connectivities           = converted_object$uns[["paga"]]$connectivities$todense() |>
+        magrittr::set_rownames(levels(converted_object$obs[[converted_object$uns[["paga"]]$groups]])) |>
+        magrittr::set_colnames(levels(converted_object$obs[[converted_object$uns[["paga"]]$groups]])),
       connectivities_tree      = converted_object$uns[["paga"]]$connectivities_tree$todense(),
       group_name               = converted_object$uns[["paga"]]$groups,
       groups                   = levels(converted_object$obs[[converted_object$uns[["paga"]]$groups]]),
-      # group_colors             = setNames(converted_object$uns[[str_glue("{converted_object$uns[['paga']]$groups}_colors")]],
+      # group_colors             = setNames(converted_object$uns[[glue::glue("{converted_object$uns[['paga']]$groups}_colors")]],
       #                                     0:(nrow(converted_object$uns[["paga"]]$pos)-1) + 1),
-      position                 = as_tibble(
+      position                 = tibble::as_tibble(
         cbind(
           levels(converted_object$obs[[converted_object$uns[["paga"]]$groups]]),
-          converted_object$uns[["paga"]]$pos),
+          converted_object$uns[["paga"]]$pos
+          ),
         .name_repair = ~make.names(c("group","x", "y"))
-      ) %>%
-        mutate(
-          across(
-            x:y,
-            .fns = as.numeric),
-        ),
-      umap                     = as_tibble(
+      ) |>
+      dplyr::mutate(
+        splyr::across(
+          x:y,
+          .fns = as.numeric),
+      ),
+      umap = tibble::as_tibble(
         converted_object$obsm['X_umap'],
         .name_repair =
           ~make.names(
@@ -276,23 +278,23 @@ PAGA <-
       )
     )
 
-    paga$edges <- tibble(
+    paga$edges <- tibble::tibble(
       group1 = paga$groups[row(paga$connectivities)[upper.tri(paga$connectivities)]],
       group2 = paga$groups[col(paga$connectivities)[upper.tri(paga$connectivities)]],
-      weight = paga$connectivities[upper.tri(paga$connectivities)] %>% as.numeric()
-    ) %>%
+      weight = paga$connectivities[upper.tri(paga$connectivities)] |> as.numeric()
+    ) |>
       mutate(
-        x1 = paga$position$x[match(.$group1, rownames(paga$position))] %>% as.numeric(),
-        y1 = paga$position$y[match(.$group1, rownames(paga$position))] %>% as.numeric(),
-        x2 = paga$position$x[match(.$group2, rownames(paga$position))] %>% as.numeric(),
-        y2 = paga$position$y[match(.$group2, rownames(paga$position))] %>% as.numeric()
-      ) %>%
+        x1 = paga$position$x[match(.$group1, rownames(paga$position))] |> as.numeric(),
+        y1 = paga$position$y[match(.$group1, rownames(paga$position))] |> as.numeric(),
+        x2 = paga$position$x[match(.$group2, rownames(paga$position))] |> as.numeric(),
+        y2 = paga$position$y[match(.$group2, rownames(paga$position))] |> as.numeric()
+      ) |>
       filter(weight >= edge_filter_weight)
 
     paga_umap <- CreateDimReducObject(
-      embeddings = converted_object$obsm[['X_umap']] %>%
-        set_rownames(colnames(object[[assay]])) %>%
-        set_colnames(
+      embeddings = converted_object$obsm[['X_umap']] |>
+        magrittr::set_rownames(colnames(object[[assay]])) |>
+        magrittr::set_colnames(
           paste0(
             "UMAP_",
             1:ncol(converted_object$obsm['X_umap'])
@@ -307,7 +309,7 @@ PAGA <-
     object@misc$paga <- paga
 
     if (isTRUE(set_ident)){
-      Idents(object) <- object@meta.data[[grouping]]
+      Seurat::Idents(object) <- object@meta.data[[grouping]]
     }
 
     object
@@ -321,7 +323,7 @@ PAGA <-
 #' @param object Seurat object with PAGA in misc slot to plot
 #' @param edge_scale_weight Factor to scale edge line segment weight by.  Default: 0.5
 #'
-#' @importFrom cowplot theme_cowplot
+#' @importFrom ggpubr theme_pubr
 #' @importFrom ggplot2 ggplot aes geom_point geom_segment scale_color_manual geom_text labs
 #'
 #' @return
@@ -333,11 +335,12 @@ PAGAplot <-
     object,
     edge_scale_weight = 0.2
   ){
-    object@misc$paga$position %>%
-      ggplot(aes(x, y)) +
-      geom_segment(
+    object@misc$paga$position |>
+      ggplot2::ggplot(aes(x, y)) +
+      ggplot2::geom_segment(
         data = object@misc$paga$edges,
-        aes(x    = x1,
+        ggplot2::aes(
+            x    = x1,
             y    = y1,
             xend = x2,
             yend = y2,
@@ -345,16 +348,17 @@ PAGAplot <-
         colour = "black",
         show.legend = FALSE
       ) +
-      scale_size_identity() +
-      geom_point(
-        aes(color = group),
+      ggplot2::scale_size_identity() +
+      ggplot2::geom_point(
+        ggplot2::aes(color = group),
         size        = 7,
         alpha       = 1,
         show.legend = FALSE) +
-      scale_color_brewer() +
-      geom_text(aes(label = group),
+      ggplot2::scale_color_brewer() +
+      ggplot2::geom_text(ggplot2::aes(label = group),
                 color = "black",
                 fontface = "bold") +
-      labs(x = "UMAP_1",
-           y = "UMAP_2")
+      ggplot2::labs(x = "UMAP_1",
+           y = "UMAP_2") +
+      ggpubr::theme_pubr()
   }

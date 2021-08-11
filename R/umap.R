@@ -1,4 +1,4 @@
-#' umap
+#' @title umap
 #'
 #' An R wrapper around the UMAP Python module found at
 #' https://github.com/lmcinnes/umap
@@ -155,62 +155,67 @@
 #' @rdname umap
 #'
 umap <- function(rdf,
-                 n_neighbors = 15,
-                 n_components = 3,
-                 metric = "euclidean",
-                 n_epochs = NULL,
-                 learning_rate = 1.0,
-                 init = "spectral",
-                 min_dist = 0.1,
-                 spread = 1.0,
-                 set_op_mix_ratio = 1.0,
-                 local_connectivity = 1,
-                 repulsion_strength = 1.0,
+                 n_neighbors          = 15,
+                 n_components         = 3,
+                 metric               = "euclidean",
+                 n_epochs             = NULL,
+                 learning_rate        = 1.0,
+                 init                 = "spectral",
+                 min_dist             = 0.1,
+                 spread               = 1.0,
+                 set_op_mix_ratio     = 1.0,
+                 local_connectivity   = 1,
+                 repulsion_strength   = 1.0,
                  negative_sample_rate = 5,
                  transform_queue_size = 4.0,
-                 a = NULL,
-                 b = NULL,
-                 random_state = NULL,
-                 metric_kwds = NULL,
-                 angular_rp_forest = FALSE,
-                 target_n_neighbors = -1,
-                 target_metric = "categorical",
-                 target_metric_kwds = NULL,
-                 target_weight = 0.5,
-                 transform_seed = 42,
-                 verbose = FALSE){
-  if (!py_module_available("umap")){
+                 a                    = NULL,
+                 b                    = NULL,
+                 random_state         = NULL,
+                 metric_kwds          = NULL,
+                 angular_rp_forest    = FALSE,
+                 target_n_neighbors   = -1,
+                 target_metric        = "categorical",
+                 target_metric_kwds   = NULL,
+                 target_weight        = 0.5,
+                 transform_seed       = 42,
+                 verbose = FALSE
+                 ){
+  if (!reticulate::py_module_available("umap")){
     stop("The umap module is unavailable.  Please activate the appropriate environment or install the module.")
   }
-  umap.module <- import(module = "umap", delay_load = TRUE)
-  if (!is.null(n_epochs)){
+  umap.module <-
+    reticulate::import(
+      module = "umap",
+      delay_load = TRUE
+    )
+  if (!is.null(n_epochs)) {
     n_epochs <- as.integer(n_epochs)
   }
-  umap.embed <- umap.module$UMAP(n_neighbors = as.integer(n_neighbors),
-                                 min_dist = as.numeric(min_dist),
-                                 n_components = as.integer(n_components),
-                                 metric = metric,
-                                 init = init,
-                                 spread = as.numeric(spread),
-                                 random_state = random_state,
-                                 angular_rp_forest = angular_rp_forest,
-                                 set_op_mix_ratio = as.numeric(set_op_mix_ratio),
-                                 n_epochs = n_epochs,
-                                 learning_rate = as.numeric(learning_rate),
-                                 local_connectivity = as.integer(local_connectivity),
-                                 repulsion_strength = as.numeric(repulsion_strength),
-                                 negative_sample_rate = as.integer(negative_sample_rate),
-                                 transform_queue_size = as.numeric(transform_queue_size),
-                                 a = as.numeric(a),
-                                 metric_kwds = metric_kwds,
-                                 target_n_neighbors = as.integer(target_n_neighbors),
-                                 target_metric = target_metric,
-                                 target_metric_kwds = target_metric_kwds,
-                                 target_weight = as.numeric(target_weight),
-                                 transform_seed = as.integer(transform_seed),
-                                 verbose = TRUE
-                                 )
+  umap.embed <- umap.module$UMAP(
+    n_neighbors          = as.integer(n_neighbors),
+    min_dist             = as.numeric(min_dist),
+    n_components         = as.integer(n_components),
+    metric               = metric,
+    init                 = init,
+    spread               = as.numeric(spread),
+    random_state         = random_state,
+    angular_rp_forest    = angular_rp_forest,
+    set_op_mix_ratio     = as.numeric(set_op_mix_ratio),
+    n_epochs             = n_epochs,
+    learning_rate        = as.numeric(learning_rate),
+    local_connectivity   = as.integer(local_connectivity),
+    repulsion_strength   = as.numeric(repulsion_strength),
+    negative_sample_rate = as.integer(negative_sample_rate),
+    transform_queue_size = as.numeric(transform_queue_size),
+    a                    = as.numeric(a),
+    metric_kwds          = metric_kwds,
+    target_n_neighbors   = as.integer(target_n_neighbors),
+    target_metric        = target_metric,
+    target_metric_kwds   = target_metric_kwds,
+    target_weight        = as.numeric(target_weight),
+    transform_seed       = as.integer(transform_seed),
+    verbose              = TRUE
+  )
 
-  umap.df <- umap.embed$fit_transform(rdf)
-  return(umap.df)
+  umap.embed$fit_transform(rdf)
 }

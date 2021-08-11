@@ -2,7 +2,15 @@
 % Please edit documentation in R/umap.R
 \name{umap}
 \alias{umap}
-\title{umap}
+\title{umap
+
+An R wrapper around the UMAP Python module found at
+https://github.com/lmcinnes/umap
+
+Uniform Manifold Approximation and Projection
+
+Finds a low dimensional embedding of the data that approximates an underlying
+manifold.}
 \usage{
 umap(
   rdf,
@@ -200,10 +208,11 @@ Controls verbosity of logging.}
 data.frame with UMAP coordinates
 }
 \description{
+umap
+
 An R wrapper around the UMAP Python module found at
 https://github.com/lmcinnes/umap
-}
-\details{
+
 Uniform Manifold Approximation and Projection
 
 Finds a low dimensional embedding of the data that approximates an underlying

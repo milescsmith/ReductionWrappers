@@ -102,12 +102,13 @@ pacmap <- function(rdf,
                    verbose        = FALSE,
                    apply_pca      = TRUE,
                    intermediate   = FALSE){
-  if (!py_module_available("pacmap")){
+                     
+  if (!reticulate::py_module_available("pacmap")){
     stop("The pacmap module is unavailable.  Please activate the appropriate environment or install the module.")
   }
 
   pacmap_module <-
-    import(
+    reticulate::import(
       module = "pacmap",
       delay_load = TRUE
     )

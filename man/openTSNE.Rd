@@ -2,7 +2,10 @@
 % Please edit documentation in R/opentsne.R
 \name{openTSNE}
 \alias{openTSNE}
-\title{openTSNE}
+\title{openTSNE
+
+An R wrapper for the openTSNE Python module found at
+https://github.com/pavlin-policar/openTSNE/}
 \usage{
 openTSNE(
   rdf,
@@ -148,6 +151,8 @@ number generator is the RandomState instance used by "np.random". Default: NULL}
 data.frame with tSNE coordinates
 }
 \description{
+openTSNE
+
 An R wrapper for the openTSNE Python module found at
 https://github.com/pavlin-policar/openTSNE/
 }

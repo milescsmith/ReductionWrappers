@@ -11,14 +11,6 @@ DooptSNE(
   dims_use = NULL,
   ...
 )
-
-DooptSNE(
-  object,
-  reduction_use = "pca",
-  reduction_save = "optsne",
-  dims_use = NULL,
-  ...
-)
 }
 \arguments{
 \item{object}{A Seurat or SingleCellExperiment object to be transformed.}
@@ -34,9 +26,6 @@ etc...). Default: tsne}
 \item{...}{Extra parameters to pass to the multicoreTSNE function.}
 }
 \description{
-Perform tSNE projection on a Seurat object using the
-Multicore-opt-SNE function
-
 Perform tSNE projection on a Seurat object using the
 Multicore-opt-SNE function
 }

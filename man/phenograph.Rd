@@ -2,7 +2,10 @@
 % Please edit documentation in R/phenograph.R
 \name{phenograph}
 \alias{phenograph}
-\title{Phenograph}
+\title{Phenograph
+
+Used to cluster high dimensional data. An R wrapper around the Python
+Phenograph module found at https://github.com/jacoblevine/PhenoGraph}
 \usage{
 phenograph(
   rdf,
@@ -62,6 +65,8 @@ parallel computation) performs faster than kdtree.}
 data.frame with community membership infomation
 }
 \description{
+Phenograph
+
 Used to cluster high dimensional data. An R wrapper around the Python
 Phenograph module found at https://github.com/jacoblevine/PhenoGraph
 }

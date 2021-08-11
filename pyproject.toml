@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "reductionwrappers"
+version = "2.5.0"
+description = "companion Python installer for R package {ReductionWrappers}"
+authors = ["Miles Smith <miles-smith@omrf.org>"]
+license = "BSD-3"
+
+[tool.poetry.dependencies]
+python = "^3.8,<3.10"
+anndata = "^0.7.6"
+umap-learn = "^0.5.1"
+numba = "^0.53.1"
+ForceAtlas2 = "^1.0"
+opentsne = {git = "https://github.com/pavlin-policar/openTSNE"}
+pacmap = "^0.5.0"
+PhenoGraph = "^1.5.7"
+scanpy = "^1.8.1"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

@@ -1,6 +1,6 @@
 Package: ReductionWrappers
 Title: Wrapper exposing several Python dimensional reduction tools
-Version: 2.4.0.0000
+Version: 2.5.0
 Authors@R: 
     person(given = "Miles",
            family = "Smith",
@@ -13,14 +13,13 @@ Url: https://github.com/milescsmith/ReductionWrappers
 BugReports: https://github.com/milescsmith/ReductionWrappers/issues
 Depends: R (>= 3.5.0)
 Imports:
-  cowplot,
   rlang,
   reticulate,
   parallel,
   ggplot2,
+  ggpubr,
   glue,
   magrittr,
-  RANN,
   Matrix,
   Seurat,
   SingleCellExperiment,
