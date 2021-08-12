@@ -61,7 +61,7 @@
 #' @importFrom Seurat DietSeurat Idents<- DefaultAssay CreateDimReducObject
 #' @importFrom magrittr set_rownames set_colnames
 #' @importFrom rlang %||%
-#' @importFrom dplyr mutate across
+#' @importFrom dplyr mutate across filter
 #' @importFrom tibble as_tibble tibble
 #'
 #' @examples
@@ -247,8 +247,8 @@ PAGA <-
     )
 
     paga <- list(
-      connectivities           = converted_object$uns[["paga"]]$connectivities$todense() |>
-        magrittr::set_rownames(levels(converted_object$obs[[converted_object$uns[["paga"]]$groups]])) |>
+      connectivities           = converted_object$uns[["paga"]]$connectivities$todense() %>%
+        magrittr::set_rownames(levels(converted_object$obs[[converted_object$uns[["paga"]]$groups]])) %>%
         magrittr::set_colnames(levels(converted_object$obs[[converted_object$uns[["paga"]]$groups]])),
       connectivities_tree      = converted_object$uns[["paga"]]$connectivities_tree$todense(),
       group_name               = converted_object$uns[["paga"]]$groups,
@@ -261,7 +261,7 @@ PAGA <-
           converted_object$uns[["paga"]]$pos
           ),
         .name_repair = ~make.names(c("group","x", "y"))
-      ) |>
+      ) %>%
       dplyr::mutate(
         dplyr::across(
           x:y,
@@ -283,19 +283,19 @@ PAGA <-
     paga$edges <- tibble::tibble(
       group1 = paga$groups[row(paga$connectivities)[upper.tri(paga$connectivities)]],
       group2 = paga$groups[col(paga$connectivities)[upper.tri(paga$connectivities)]],
-      weight = paga$connectivities[upper.tri(paga$connectivities)] |> as.numeric()
-    ) |>
-      dplyr::mutate(
-        x1 = paga$position$x[match(.$group1, rownames(paga$position))] |> as.numeric(),
-        y1 = paga$position$y[match(.$group1, rownames(paga$position))] |> as.numeric(),
-        x2 = paga$position$x[match(.$group2, rownames(paga$position))] |> as.numeric(),
-        y2 = paga$position$y[match(.$group2, rownames(paga$position))] |> as.numeric()
-      ) |>
-      filter(weight >= edge_filter_weight)
+      weight = paga$connectivities[upper.tri(paga$connectivities)] %>% as.numeric()
+      ) %>%
+    dplyr::mutate(
+      x1 = paga$position$x[match(.$group1, rownames(paga$position))] %>% as.numeric(),
+      y1 = paga$position$y[match(.$group1, rownames(paga$position))] %>% as.numeric(),
+      x2 = paga$position$x[match(.$group2, rownames(paga$position))] %>% as.numeric(),
+      y2 = paga$position$y[match(.$group2, rownames(paga$position))] %>% as.numeric()
+      ) %>%
+    dplyr::filter(weight >= edge_filter_weight)
 
     paga_umap <- Seurat::CreateDimReducObject(
-      embeddings = converted_object$obsm[['X_umap']] |>
-        magrittr::set_rownames(colnames(object[[assay]])) |>
+      embeddings = converted_object$obsm[['X_umap']] %>%
+        magrittr::set_rownames(colnames(object[[assay]])) %>%
         magrittr::set_colnames(
           paste0(
             "UMAP_",
@@ -337,7 +337,7 @@ PAGAplot <-
     object,
     edge_scale_weight = 0.2
   ){
-    object@misc$paga$position |>
+    object@misc$paga$position %>%
       ggplot2::ggplot(aes(x, y)) +
       ggplot2::geom_segment(
         data = object@misc$paga$edges,
@@ -357,10 +357,14 @@ PAGAplot <-
         alpha       = 1,
         show.legend = FALSE) +
       ggplot2::scale_color_brewer() +
-      ggplot2::geom_text(ggplot2::aes(label = group),
-                color = "black",
-                fontface = "bold") +
-      ggplot2::labs(x = "UMAP_1",
-           y = "UMAP_2") +
+      ggplot2::geom_text(
+        ggplot2::aes(label = group),
+        color = "black",
+        fontface = "bold"
+        ) +
+      ggplot2::labs(
+        x = "UMAP_1",
+        y = "UMAP_2"
+        ) +
       ggpubr::theme_pubr()
   }

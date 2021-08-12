@@ -1,6 +1,6 @@
 Package: ReductionWrappers
 Title: Wrapper exposing several Python dimensional reduction tools
-Version: 2.5.2
+Version: 2.5.3
 Authors@R: 
     person(given = "Miles",
            family = "Smith",
