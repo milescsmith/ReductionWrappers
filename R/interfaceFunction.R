@@ -132,9 +132,9 @@ ReductionBridge.Seurat <-
       }
     }
 
-    dims_use = dims_use %||% 1:ncol(cell_embeddings)
+    dims_use = dims_use %||% seq(ncol(cell_embeddings))
 
-    if (!all(dims_use %in% 1:ncol(cell_embeddings))) {
+    if (!all(dims_use %in% seq(ncol(cell_embeddings)))) {
       stop(glue::glue("You have selected dimensions that are outside the bounds of {reduction_use}"))
     }
 
@@ -190,9 +190,9 @@ ReductionBridge.SingleCellExperiment <-
            )
     }
 
-    dims_use = dims_use %||% 1:ncol(cell_embeddings)
+    dims_use = dims_use %||% seq(ncol(cell_embeddings))
 
-    if (!all(dims_use %in% 1:ncol(cell_embeddings))) {
+    if (!all(dims_use %in% seq(ncol(cell_embeddings)))) {
       stop(glue::glue("You have selected dimensions that are outside the bounds of {reduction_use}"))
     }
 

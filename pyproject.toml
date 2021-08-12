@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "reductionwrappers"
-version = "2.5.1"
+version = "2.5.2"
 description = "companion Python installer for R package {ReductionWrappers}"
 authors = ["Miles Smith <miles-smith@omrf.org>"]
 license = "BSD-3"

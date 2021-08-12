@@ -58,9 +58,11 @@
 #' @importFrom s2a convert_to_anndata
 #' @importFrom glue glue
 #' @importFrom reticulate import
-#' @importFrom Seurat DietSeurat Idents<-
+#' @importFrom Seurat DietSeurat Idents<- DefaultAssay CreateDimReducObject
 #' @importFrom magrittr set_rownames set_colnames
 #' @importFrom rlang %||%
+#' @importFrom dplyr mutate across
+#' @importFrom tibble as_tibble tibble
 #'
 #' @examples
 PAGA <-
@@ -272,7 +274,7 @@ PAGA <-
             names =
               paste0(
                 "UMAP_",
-                1:ncol(converted_object$obsm['X_umap'])),
+                seq(ncol(converted_object$obsm['X_umap']))),
             unique = TRUE
           )
       )
@@ -283,7 +285,7 @@ PAGA <-
       group2 = paga$groups[col(paga$connectivities)[upper.tri(paga$connectivities)]],
       weight = paga$connectivities[upper.tri(paga$connectivities)] |> as.numeric()
     ) |>
-      mutate(
+      dplyr::mutate(
         x1 = paga$position$x[match(.$group1, rownames(paga$position))] |> as.numeric(),
         y1 = paga$position$y[match(.$group1, rownames(paga$position))] |> as.numeric(),
         x2 = paga$position$x[match(.$group2, rownames(paga$position))] |> as.numeric(),
@@ -291,13 +293,13 @@ PAGA <-
       ) |>
       filter(weight >= edge_filter_weight)
 
-    paga_umap <- CreateDimReducObject(
+    paga_umap <- Seurat::CreateDimReducObject(
       embeddings = converted_object$obsm[['X_umap']] |>
         magrittr::set_rownames(colnames(object[[assay]])) |>
         magrittr::set_colnames(
           paste0(
             "UMAP_",
-            1:ncol(converted_object$obsm['X_umap'])
+            seq(ncol(converted_object$obsm['X_umap']))
           )
         ),
       assay      = assay,

@@ -60,7 +60,7 @@ fa2 <- function(init_pos,
     )
   fa_embeddings <- np$array(fa_results)
   rownames(fa_embeddings) <- rownames(init_pos)
-  colnames(fa_embeddings) <- as.character(glue::glue("fa_{1:ncol(fa_embeddings)}"))
+  colnames(fa_embeddings) <- as.character(glue::glue("fa_{seq(ncol(fa_embeddings))}"))
   
   fa_embeddings
 }

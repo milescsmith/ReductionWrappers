@@ -166,7 +166,7 @@ openTSNE <- function(rdf,
 
   opentsne_df <- tsne$fit(X = rdf)
   rownames(opentsne_df) <- rownames(rdf)
-  colnames(opentsne_df) <- glue::glue("tsne_{1:n_components}")
+  colnames(opentsne_df) <- glue::glue("tsne_{seq(n_components)}")
 
   opentsne_df
 }
