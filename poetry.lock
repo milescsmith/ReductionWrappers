@@ -346,6 +346,27 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "s2a"
+version = "0.3.2"
+description = "glue to link Seurat to anndata objects"
+category = "main"
+optional = false
+python-versions = "^3.8,<3.10"
+develop = false
+
+[package.dependencies]
+anndata = "^0.7.6"
+numpy = "^1.21.1"
+pandas = "^1.3.1"
+scipy = "^1.7.1"
+
+[package.source]
+type = "git"
+url = "https://github.com/milescsmith/s2a"
+reference = "0.3.2"
+resolved_reference = "0c729f4e42cbd30edd70a89f2e1f9def8baea040"
+
+[[package]]
 name = "scanpy"
 version = "1.8.1"
 description = "Single-Cell Analysis in Python."
@@ -556,7 +577,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.10"
-content-hash = "6a9adda916412193c81fa18ff8c4a9b5e2d7185977fd30a9607ea66665cf23c0"
+content-hash = "b76ffa711d4a9a56431ff8ec1b3ada15339146ec5c885f5b366591f1d1f4e8ab"
 
 [metadata.files]
 anndata = [
@@ -956,6 +977,7 @@ pytz = [
     {file = "pytz-2021.1-py2.py3-none-any.whl", hash = "sha256:eb10ce3e7736052ed3623d49975ce333bcd712c7bb19a58b9e2089d4057d0798"},
     {file = "pytz-2021.1.tar.gz", hash = "sha256:83a4a90894bf38e243cf052c8b58f381bfe9a7a483f6a9cab140bc7f702ac4da"},
 ]
+s2a = []
 scanpy = [
     {file = "scanpy-1.8.1-py3-none-any.whl", hash = "sha256:b1f221158f934197977772a2d2ff25a11152f75a8efd461b141684973a113bff"},
     {file = "scanpy-1.8.1.tar.gz", hash = "sha256:1b8603a868d783bd6c18c8db763a450153feefc8daed862c440749790d47c654"},

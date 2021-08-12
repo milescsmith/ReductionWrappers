@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "reductionwrappers"
-version = "2.5.3"
+version = "2.5.4"
 description = "companion Python installer for R package {ReductionWrappers}"
 authors = ["Miles Smith <miles-smith@omrf.org>"]
 license = "BSD-3"
@@ -15,6 +15,7 @@ opentsne = {git = "https://github.com/pavlin-policar/openTSNE"}
 pacmap = "^0.5.0"
 PhenoGraph = "^1.5.7"
 scanpy = "^1.8.1"
+s2a = {git = "https://github.com/milescsmith/s2a", rev = "0.3.2"}
 
 [tool.poetry.dev-dependencies]
 
