@@ -261,7 +261,7 @@ PAGA <-
         .name_repair = ~make.names(c("group","x", "y"))
       ) |>
       dplyr::mutate(
-        splyr::across(
+        dplyr::across(
           x:y,
           .fns = as.numeric),
       ),
