@@ -21,6 +21,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -33,25 +35,19 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">ReductionWrappers</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.5.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.5.4</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="reference/index.html">Reference</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/milescsmith/ReductionWrappers/">
+  <a href="https://github.com/milescsmith/ReductionWrappers/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -70,67 +66,67 @@
   <div class="contents col-md-9">
 
 
-<div id="reductionwrappers" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#reductionwrappers" class="anchor"></a>ReductionWrappers</h1></div>
-<p>R wrappers around dimensionality reduction methods found in Python modules. Uses the <a href="https://github.com/rstudio/reticulate">reticulate</a> package to expose functionality. Additionally provides bridging functions that let these work as drop-in replacements when working with Seurat (verions 3) and SingleCellExperiment objects. Currently wraps:</p>
-<ul>
-<li>
-<a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0098679">ForceAtlas2</a>, using the Python implementation found <a href="https://github.com/bhargavchippada/forceatlas2">here</a>. Currently works for Seurat objects only (and will remain so until I can find a fast algorithm for computing simultaneous nearest neighbors for SingleCellExperiment objects).</li>
-<li><a href="https://github.com/pavlin-policar/openTSNE">openTSNE</a></li>
-<li><a href="https://github.com/lmcinnes/umap">UMAP (Uniform Manifold Approximation and Projection)</a></li>
-<li><a href="https://github.com/YingfanWang/PaCMAP">PaCMAP (Pairwise Controlled Manifold Approximation)</a></li>
-<li>
-<a href="https://github.com/theislab/paga">PAGA (Partition-Based Graph Abstraction)</a> through Scanpy.</li>
-<li><a href="https://www.biorxiv.org/content/early/2017/03/24/120378">PHATE (Potential of Heat-diffusion for Affinity-based Trajectory Embedding)</a></li>
-<li><a href="https://github.com/jacoblevine/PhenoGraph">PhenoGraph</a></li>
-</ul>
+<div class="section level1">
+<div class="page-header"><h1 id="reductionwrappers">ReductionWrappers<a class="anchor" aria-label="anchor" href="#reductionwrappers"></a>
+</h1></div>
+<p>R wrappers around dimensionality reduction methods found in Python modules. Uses the <a href="https://github.com/rstudio/reticulate" class="external-link">reticulate</a> package to expose functionality. Additionally provides bridging functions that let these work as drop-in replacements when working with Seurat (verions 3) and SingleCellExperiment objects. Currently wraps: * <a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0098679" class="external-link">ForceAtlas2</a>, using the Python implementation found <a href="https://github.com/bhargavchippada/forceatlas2" class="external-link">here</a>. Currently works for Seurat objects only (and will remain so until I can find a fast algorithm for computing simultaneous nearest neighbors for SingleCellExperiment objects). * <a href="https://github.com/pavlin-policar/openTSNE" class="external-link">openTSNE</a> * <a href="https://github.com/lmcinnes/umap" class="external-link">UMAP (Uniform Manifold Approximation and Projection)</a> * <a href="https://github.com/YingfanWang/PaCMAP" class="external-link">PaCMAP (Pairwise Controlled Manifold Approximation)</a> * <a href="https://github.com/theislab/paga" class="external-link">PAGA (Partition-Based Graph Abstraction)</a> through Scanpy. * <a href="https://www.biorxiv.org/content/early/2017/03/24/120378" class="external-link">PHATE (Potential of Heat-diffusion for Affinity-based Trajectory Embedding)</a> * <a href="https://github.com/jacoblevine/PhenoGraph" class="external-link">PhenoGraph</a></p>
 </div>
 
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/milescsmith/ReductionWrappers/">https://​github.com/​milescsmith/​ReductionWrappers/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/milescsmith/ReductionWrappers/issues">https://​github.com/​milescsmith/​ReductionWrappers/​issues</a>
-</li>
+<li><a href="https://github.com/milescsmith/ReductionWrappers/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/milescsmith/ReductionWrappers/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li>
-<a href="https://opensource.org/licenses/BSD-3-Clause">BSD_3_clause</a> + file <a href="LICENSE-text.html">LICENSE</a>
+<a href="https://opensource.org/licenses/BSD-3-Clause" class="external-link">BSD_3_clause</a> + file <a href="LICENSE-text.html">LICENSE</a>
 </li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing ReductionWrappers</a></li>
+</ul>
+</div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Miles Smith <br><small class="roles"> Author, maintainer </small>  </li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/milescsmith/ReductionWrappers/actions"><img src="https://github.com/milescsmith/ReductionWrappers/workflows/pkgdown/badge.svg" alt="R build status"></a></li>
-<li><a href="https://travis-ci.com/milescsmith/ReductionWrappers"><img src="https://travis-ci.com/milescsmith/ReductionWrappers.svg?branch=master" alt="Build Status"></a></li>
+<li><a href="https://github.com/milescsmith/ReductionWrappers/actions" class="external-link"><img src="https://github.com/milescsmith/ReductionWrappers/workflows/pkgdown/badge.svg" alt="R build status"></a></li>
+<li><a href="https://travis-ci.com/milescsmith/ReductionWrappers" class="external-link"><img src="https://travis-ci.com/milescsmith/ReductionWrappers.svg?branch=master" alt="Build Status"></a></li>
 </ul>
 </div>
-</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Miles Smith.</p>
+  <p></p>
+<p>Developed by Miles Smith.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -138,6 +134,8 @@
 
   
 
+
+  
 
   </body>
 </html>
