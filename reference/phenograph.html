@@ -63,19 +63,19 @@ Phenograph module found at https://github.com/jacoblevine/PhenoGraph</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">phenograph</span><span class="op">(</span>
-  <span class="va">rdf</span>,
-  k <span class="op">=</span> <span class="fl">30</span>,
-  directed <span class="op">=</span> <span class="cn">FALSE</span>,
-  prune <span class="op">=</span> <span class="cn">FALSE</span>,
-  min_cluster_size <span class="op">=</span> <span class="fl">10</span>,
-  jaccard <span class="op">=</span> <span class="cn">TRUE</span>,
-  primary_metric <span class="op">=</span> <span class="st">"euclidean"</span>,
-  n_jobs <span class="op">=</span> <span class="cn">NULL</span>,
-  q_tol <span class="op">=</span> <span class="fl">0.001</span>,
-  louvain_time_limit <span class="op">=</span> <span class="fl">2000</span>,
-  nn_method <span class="op">=</span> <span class="st">"kdtree"</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">phenograph</span><span class="op">(</span></span>
+<span>  <span class="va">rdf</span>,</span>
+<span>  k <span class="op">=</span> <span class="fl">30</span>,</span>
+<span>  directed <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  prune <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  min_cluster_size <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  jaccard <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  primary_metric <span class="op">=</span> <span class="st">"euclidean"</span>,</span>
+<span>  n_jobs <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  q_tol <span class="op">=</span> <span class="fl">0.001</span>,</span>
+<span>  louvain_time_limit <span class="op">=</span> <span class="fl">2000</span>,</span>
+<span>  nn_method <span class="op">=</span> <span class="st">"kdtree"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -84,45 +84,68 @@ Phenograph module found at https://github.com/jacoblevine/PhenoGraph</p>
 <dd><p>data to cluster, or sparse matrix of k-nearest neighbor
 graph If ndarray, n-by-d array of n cells in d dimensions If sparse matrix,
 n-by-n adjacency matrix</p></dd>
+
+
 <dt>k</dt>
 <dd><p>Number of nearest neighbors to use in first step of graph
 construction (default = 30)</p></dd>
+
+
 <dt>directed</dt>
 <dd><p>Whether to use a symmetric (default) or asymmetric
 ("directed") graph. The graph construction process produces a directed
 graph, which is symmetrized by one of two methods (see below)</p></dd>
+
+
 <dt>prune</dt>
 <dd><p>Whether to symmetrize by taking the average (prune=FALSE) or
 product (prune=TRUE) between the graph and its transpose</p></dd>
+
+
 <dt>min_cluster_size</dt>
 <dd><p>Cells that end up in a cluster smaller than
 min_cluster_size are considered outliers and are assigned to -1 in the
 cluster labels</p></dd>
+
+
 <dt>jaccard</dt>
 <dd><p>If TRUE, use Jaccard metric between k-neighborhoods to build
 graph. If FALSE, use a Gaussian kernel.</p></dd>
+
+
 <dt>primary_metric</dt>
 <dd><p>Distance metric to define nearest neighbors. Options
 include: 'euclidean', 'manhattan', 'correlation', 'cosine' Note that
 performance will be slower for correlation and cosine.</p></dd>
+
+
 <dt>n_jobs</dt>
 <dd><p>Nearest Neighbors and Jaccard coefficients will be computed in
 parallel using n_jobs. If n_jobs=NULL, the number of jobs is determined
 automatically</p></dd>
+
+
 <dt>q_tol</dt>
 <dd><p>Tolerance (i.e., precision) for monitoring modularity
 optimization</p></dd>
+
+
 <dt>louvain_time_limit</dt>
 <dd><p>Maximum number of seconds to run modularity
 optimization. If exceeded the best result so far is returned</p></dd>
+
+
 <dt>nn_method</dt>
 <dd><p>Whether to use brute force or kdtree for nearest neighbor
 search. For very large high-dimensional data sets, brute force (with
 parallel computation) performs faster than kdtree.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>data.frame with community membership infomation</p>
+    
+
+<p>data.frame with community membership infomation</p>
     </div>
 
   </div>
@@ -137,7 +160,7 @@ parallel computation) performs faster than kdtree.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

@@ -63,68 +63,86 @@ https://github.com/pavlin-policar/openTSNE/</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">openTSNE</span><span class="op">(</span>
-  <span class="va">rdf</span>,
-  n_components <span class="op">=</span> <span class="fl">2</span>,
-  perplexity <span class="op">=</span> <span class="fl">30</span>,
-  learning_rate <span class="op">=</span> <span class="fl">100</span>,
-  early_exaggeration_iter <span class="op">=</span> <span class="fl">250</span>,
-  early_exaggeration <span class="op">=</span> <span class="fl">12</span>,
-  n_iter <span class="op">=</span> <span class="fl">750</span>,
-  exaggeration <span class="op">=</span> <span class="cn">NULL</span>,
-  theta <span class="op">=</span> <span class="fl">0.5</span>,
-  n_interpolation_points <span class="op">=</span> <span class="fl">3</span>,
-  min_num_intervals <span class="op">=</span> <span class="fl">10</span>,
-  ints_in_interval <span class="op">=</span> <span class="fl">2</span>,
-  initialization <span class="op">=</span> <span class="st">"pca"</span>,
-  metric <span class="op">=</span> <span class="st">"euclidean"</span>,
-  metric_params <span class="op">=</span> <span class="cn">NULL</span>,
-  initial_momentum <span class="op">=</span> <span class="fl">0.5</span>,
-  final_momentum <span class="op">=</span> <span class="fl">0.8</span>,
-  n_jobs <span class="op">=</span> <span class="cn">NULL</span>,
-  neighbors <span class="op">=</span> <span class="st">"exact"</span>,
-  negative_gradient_method <span class="op">=</span> <span class="st">"fft"</span>,
-  callbacks <span class="op">=</span> <span class="cn">NULL</span>,
-  callbacks_every_iters <span class="op">=</span> <span class="fl">50</span>,
-  random_state <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">openTSNE</span><span class="op">(</span></span>
+<span>  <span class="va">rdf</span>,</span>
+<span>  n_components <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  perplexity <span class="op">=</span> <span class="fl">30</span>,</span>
+<span>  learning_rate <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  early_exaggeration_iter <span class="op">=</span> <span class="fl">250</span>,</span>
+<span>  early_exaggeration <span class="op">=</span> <span class="fl">12</span>,</span>
+<span>  n_iter <span class="op">=</span> <span class="fl">750</span>,</span>
+<span>  exaggeration <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  theta <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  n_interpolation_points <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  min_num_intervals <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  ints_in_interval <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  initialization <span class="op">=</span> <span class="st">"pca"</span>,</span>
+<span>  metric <span class="op">=</span> <span class="st">"euclidean"</span>,</span>
+<span>  metric_params <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  initial_momentum <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  final_momentum <span class="op">=</span> <span class="fl">0.8</span>,</span>
+<span>  n_jobs <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  neighbors <span class="op">=</span> <span class="st">"exact"</span>,</span>
+<span>  negative_gradient_method <span class="op">=</span> <span class="st">"fft"</span>,</span>
+<span>  callbacks <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  callbacks_every_iters <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>  random_state <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>rdf</dt>
 <dd><p>A variable by observation data frame</p></dd>
+
+
 <dt>n_components</dt>
 <dd><p>The dimension of the embedding space. Default: 2</p></dd>
+
+
 <dt>perplexity</dt>
 <dd><p>Perplexity can be thought of as the continuous :math:"k" number of
 neighbors to consider for each data point. To avoid confusion, note that
 perplexity linearly impacts runtime. Default: 30</p></dd>
+
+
 <dt>learning_rate</dt>
 <dd><p>The learning rate for the t-SNE optimization steps. Typical values range
 from 1 to 1000. Setting the learning rate too low or too high may result
 in the points forming a "ball". This is also known as the crowding
 problem. Default: 100</p></dd>
+
+
 <dt>early_exaggeration_iter</dt>
 <dd><p>The number of iterations to run in the *early exaggeration* phase. Default: 250</p></dd>
+
+
 <dt>early_exaggeration</dt>
 <dd><p>The early exaggeration factor. Typical values range from 12 to 32,
 however larger values have also been found to work well with specific
 values of learning rate. Default: 12</p></dd>
+
+
 <dt>n_iter</dt>
 <dd><p>The number of iterations to run in the normal optimization regime. Default: 750</p></dd>
+
+
 <dt>exaggeration</dt>
 <dd><p>The exaggeration factor to be used during the normal optmimization
 phase. Standard implementation don't use this exaggeration and it
 typically isn't necessary for smaller data sets, but it has been shown
 that for larger data sets, using some exaggeration is necessary in order
 to obtain good embeddings. Default: NULL</p></dd>
+
+
 <dt>theta</dt>
 <dd><p>Only used when "negative_gradient_method='bh'" or its other aliases.
 This is the trade-off parameter between speed and accuracy of the tree
 approximation method. Typical values range from 0.2 to 0.8. The value 0
 indicates that no approximation is to be made and produces exact results
 also producing longer runtime. Default: 0.5</p></dd>
+
+
 <dt>n_interpolation_points</dt>
 <dd><p>Only used when "negative_gradient_method='fft'" or its other aliases.
 The number of interpolation points to use within each grid cell for
@@ -134,6 +152,8 @@ Runge phenomenon. Theoretically, increasing this number will result in
 higher approximation accuracy, but practically, this can also be done
 with the "ints_in_interval" parameter, which does not suffer from the
 Runge phenomenon and should always be preferred. Default: 3</p></dd>
+
+
 <dt>min_num_intervals</dt>
 <dd><p>Only used when "negative_gradient_method='fft'" or its other aliases.
 The interpolation approximation method splits the embedding space into a
@@ -143,6 +163,8 @@ optimization, that number may be too small, and we may want better
 accuracy. The number of intervals used will thus always be at least the
 number specified here. Note that larger values will produce more precise
 approximations but will have longer runtime. Default: 10</p></dd>
+
+
 <dt>ints_in_interval</dt>
 <dd><p>Only used when "negative_gradient_method='fft'" or its other aliases.
 Since the coordinate range of the embedding changes during optimization,
@@ -153,33 +175,49 @@ space, e.g. 1.5 will produce 4 intervals [0, 1.5), [1.5, 3), ...
 Therefore lower values will produce more intervals, producing more
 interpolation points which in turn produce better approximation at the
 cost of longer runtime. Default: 2</p></dd>
+
+
 <dt>initialization</dt>
 <dd><p>The initial point positions to be used in the embedding space. Can be a
 precomputed numpy array, "pca" or "random". Please note that when
 passing in a precomputed positions, it is highly recommended that the
 point positions have small variance (var(Y) &lt; 0.0001), otherwise you may
 get poor embeddings. Default: 'pca'</p></dd>
+
+
 <dt>metric</dt>
 <dd><p>The metric to be used to compute affinities between points in the
 original space. Default: 'euclidean'</p></dd>
+
+
 <dt>metric_params</dt>
 <dd><p>Additional keyword arguments for the metric function. Default: NULL</p></dd>
+
+
 <dt>initial_momentum</dt>
 <dd><p>t-SNE optimization uses momentum for faster convergence. This value
 controls the momentum used during the *early optimization* phase. Default: 0.5</p></dd>
+
+
 <dt>final_momentum</dt>
 <dd><p>t-SNE optimization uses momentum for faster convergence. This value
 controls the momentum used during the normal regime and *late exaggeration* phase. Default: 0.5</p></dd>
+
+
 <dt>n_jobs</dt>
 <dd><p>The number of jobs to run in parallel. This follows the scikit-learn
 convention, "-1" meaning all processors, "-2" meaning all but one
 processor and so on. Default: all cores.</p></dd>
+
+
 <dt>neighbors</dt>
 <dd><p>Specifies the nearest neighbor method to use. Can be either "exact" or
 "approx". "exact" uses space partitioning binary trees from
 scikit-learn while "approx" makes use of nearest neighbor descent.
 Note that "approx" has a bit of overhead and will be slower on smaller
 data sets than exact search. Default: 'exact'</p></dd>
+
+
 <dt>negative_gradient_method</dt>
 <dd><p>Specifies the negative gradient approximation method to use. For smaller
 data sets, the Barnes-Hut approximation is appropriate and can be
@@ -191,24 +229,33 @@ following aliases: "fft", "FFT" or "ìnterpolation". Note that
 this method scales linearly in the number of points
 \(O(N)\) and its complexity is governed by the number of
 interpolation points. Default: 'fft'</p></dd>
+
+
 <dt>callbacks</dt>
 <dd><p>We can pass callbacks, that will be run every "callbacks_every_iters"
 iterations. Each callback should accept three parameters, the first is
 the current iteration number, the second is the current KL divergence
 error and the last is the current embedding. The callback may return
 "True" in order to stop the optimization. Default: NULL</p></dd>
+
+
 <dt>callbacks_every_iters</dt>
 <dd><p>How many iterations should run between each time a callback is invoked. Default: 50</p></dd>
+
+
 <dt>random_state</dt>
 <dd><p>The random state parameter follows the convention used in scikit-learn.
 If the value is an int, random_state is the seed used by the random
 number generator. If the value is a RandomState instance, then it will
 be used as the random number generator. If the value is None, the random
 number generator is the RandomState instance used by "np.random". Default: NULL</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>data.frame with tSNE coordinates</p>
+    
+
+<p>data.frame with tSNE coordinates</p>
     </div>
 
   </div>
@@ -223,7 +270,7 @@ number generator is the RandomState instance used by "np.random". Default: NULL<
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

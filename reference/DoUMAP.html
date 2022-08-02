@@ -50,29 +50,38 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">DoUMAP</span><span class="op">(</span>
-  <span class="va">object</span>,
-  reduction_use <span class="op">=</span> <span class="st">"pca"</span>,
-  reduction_save <span class="op">=</span> <span class="st">"umap"</span>,
-  dims_use <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">DoUMAP</span><span class="op">(</span></span>
+<span>  <span class="va">object</span>,</span>
+<span>  reduction_use <span class="op">=</span> <span class="st">"pca"</span>,</span>
+<span>  reduction_save <span class="op">=</span> <span class="st">"umap"</span>,</span>
+<span>  dims_use <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>object</dt>
 <dd><p>A Seurat or SingleCellExperiment object to be transformed.</p></dd>
+
+
 <dt>reduction_use</dt>
 <dd><p>Prior dimensional reduction to use for calculations
 (i.e. pca, ica, cca, etc...). Default: pca</p></dd>
+
+
 <dt>reduction_save</dt>
 <dd><p>Name to use for the reduction (i. e. tsne, umap,
 etc...). Default: umap</p></dd>
+
+
 <dt>dims_use</dt>
 <dd><p>Dimensions from `reduction_use` to pass to PHATE</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Extra parameters to pass to the umap function.</p></dd>
+
 </dl></div>
 
   </div>
@@ -87,7 +96,7 @@ etc...). Default: umap</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

@@ -84,33 +84,33 @@ manifold.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">umap</span><span class="op">(</span>
-  <span class="va">rdf</span>,
-  n_neighbors <span class="op">=</span> <span class="fl">15</span>,
-  n_components <span class="op">=</span> <span class="fl">3</span>,
-  metric <span class="op">=</span> <span class="st">"euclidean"</span>,
-  n_epochs <span class="op">=</span> <span class="cn">NULL</span>,
-  learning_rate <span class="op">=</span> <span class="fl">1</span>,
-  init <span class="op">=</span> <span class="st">"spectral"</span>,
-  min_dist <span class="op">=</span> <span class="fl">0.1</span>,
-  spread <span class="op">=</span> <span class="fl">1</span>,
-  set_op_mix_ratio <span class="op">=</span> <span class="fl">1</span>,
-  local_connectivity <span class="op">=</span> <span class="fl">1</span>,
-  repulsion_strength <span class="op">=</span> <span class="fl">1</span>,
-  negative_sample_rate <span class="op">=</span> <span class="fl">5</span>,
-  transform_queue_size <span class="op">=</span> <span class="fl">4</span>,
-  a <span class="op">=</span> <span class="cn">NULL</span>,
-  b <span class="op">=</span> <span class="cn">NULL</span>,
-  random_state <span class="op">=</span> <span class="cn">NULL</span>,
-  metric_kwds <span class="op">=</span> <span class="cn">NULL</span>,
-  angular_rp_forest <span class="op">=</span> <span class="cn">FALSE</span>,
-  target_n_neighbors <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>,
-  target_metric <span class="op">=</span> <span class="st">"categorical"</span>,
-  target_metric_kwds <span class="op">=</span> <span class="cn">NULL</span>,
-  target_weight <span class="op">=</span> <span class="fl">0.5</span>,
-  transform_seed <span class="op">=</span> <span class="fl">42</span>,
-  verbose <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">umap</span><span class="op">(</span></span>
+<span>  <span class="va">rdf</span>,</span>
+<span>  n_neighbors <span class="op">=</span> <span class="fl">15</span>,</span>
+<span>  n_components <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  metric <span class="op">=</span> <span class="st">"euclidean"</span>,</span>
+<span>  n_epochs <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  learning_rate <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  init <span class="op">=</span> <span class="st">"spectral"</span>,</span>
+<span>  min_dist <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span>  spread <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  set_op_mix_ratio <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  local_connectivity <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  repulsion_strength <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  negative_sample_rate <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  transform_queue_size <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  a <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  b <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  random_state <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  metric_kwds <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  angular_rp_forest <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  target_n_neighbors <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>,</span>
+<span>  target_metric <span class="op">=</span> <span class="st">"categorical"</span>,</span>
+<span>  target_metric_kwds <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  target_weight <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  transform_seed <span class="op">=</span> <span class="fl">42</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -118,6 +118,8 @@ manifold.</p>
     <dl><dt>rdf</dt>
 <dd><p>A high dimensional variable-by-observation (i.e. gene-by-cell)
 matrix of values to be transformed.#'</p></dd>
+
+
 <dt>n_neighbors</dt>
 <dd><p>float (optional, default 15)
 The size of local neighborhood (in terms of number of neighboring
@@ -125,11 +127,15 @@ sample points) used for manifold approximation. Larger values
 result in more global views of the manifold, while smaller
 values result in more local data being preserved. In general
 values should be in the range 2 to 100.</p></dd>
+
+
 <dt>n_components</dt>
 <dd><p>int (optional, default 3)
 The dimension of the space to embed into. This defaults to 2 to
 provide easy visualization, but can reasonably be set to any
 integer value in the range 2 to 100.</p></dd>
+
+
 <dt>metric</dt>
 <dd><p>string or function (optional, default 'euclidean')
 The metric to use to compute distances in high dimensional space.
@@ -163,21 +169,29 @@ Metrics that take arguments (such as minkowski, mahalanobis etc.)
 can have arguments passed via the metric_kwds dictionary. At this
 time care must be taken and dictionary elements must be ordered
 appropriately; this will hopefully be fixed in the future.</p></dd>
+
+
 <dt>n_epochs</dt>
 <dd><p>int (optional, default None)
 The number of training epochs to be used in optimizing the
 low dimensional embedding. Larger values result in more accurate
 embeddings. If None is specified a value will be selected based on
 the size of the input dataset (200 for large datasets, 500 for small).</p></dd>
+
+
 <dt>learning_rate</dt>
 <dd><p>float (optional, default 1.0)
 The initial learning rate for the embedding optimization.</p></dd>
+
+
 <dt>init</dt>
 <dd><p>string (optional, default 'spectral')
 How to initialize the low dimensional embedding. Options are:
     * 'spectral': use a spectral embedding of the fuzzy 1-skeleton
     * 'random': assign initial embedding positions at random.
     * A numpy array of initial embedding positions.</p></dd>
+
+
 <dt>min_dist</dt>
 <dd><p>float (optional, default 0.1)
 The effective minimum distance between embedded points. Smaller values
@@ -186,10 +200,14 @@ on the manifold are drawn closer together, while larger values will
 result on a more even dispersal of points. The value should be set
 relative to the "spread" value, which determines the scale at which
 embedded points will be spread out.</p></dd>
+
+
 <dt>spread</dt>
 <dd><p>float (optional, default 1.0)
 The effective scale of embedded points. In combination with "min_dist"
 this determines how clustered/clumped the embedded points are.</p></dd>
+
+
 <dt>set_op_mix_ratio</dt>
 <dd><p>float (optional, default 1.0)
 Interpolate between (fuzzy) union and intersection as the set operation
@@ -198,6 +216,8 @@ simplicial sets. Both fuzzy set operations use the product t-norm.
 The value of this parameter should be between 0.0 and 1.0; a value of
 1.0 will use a pure fuzzy union, while 0.0 will use a pure fuzzy
 intersection.</p></dd>
+
+
 <dt>local_connectivity</dt>
 <dd><p>int (optional, default 1)
 The local connectivity required -- i.e. the number of nearest
@@ -205,43 +225,59 @@ neighbors that should be assumed to be connected at a local level.
 The higher this value the more connected the manifold becomes
 locally. In practice this should be not more than the local intrinsic
 dimension of the manifold.</p></dd>
+
+
 <dt>repulsion_strength</dt>
 <dd><p>float (optional, default 1.0)
 Weighting applied to negative samples in low dimensional embedding
 optimization. Values higher than one will result in greater weight
 being given to negative samples.</p></dd>
+
+
 <dt>negative_sample_rate</dt>
 <dd><p>int (optional, default 5)
 The number of negative samples to select per positive sample
 in the optimization process. Increasing this value will result
 in greater repulsive force being applied, greater optimization
 cost, but slightly more accuracy.</p></dd>
+
+
 <dt>transform_queue_size</dt>
 <dd><p>float (optional, default 4.0)
 For transform operations (embedding new points using a trained model_
 this will control how aggressively to search for nearest neighbors.
 Larger values will result in slower performance but more accurate
 nearest neighbor evaluation.</p></dd>
+
+
 <dt>a</dt>
 <dd><p>float (optional, default None)
 More specific parameters controlling the embedding. If None these
 values are set automatically as determined by "min_dist" and
 "spread".</p></dd>
+
+
 <dt>b</dt>
 <dd><p>float (optional, default None)
 More specific parameters controlling the embedding. If None these
 values are set automatically as determined by "in_dist" and
 "spread". NOTE: disabled.  There are problems with this parameter and R.</p></dd>
+
+
 <dt>random_state</dt>
 <dd><p>int, RandomState instance or None, optional (default: None)
 If int, random_state is the seed used by the random number generator;
 If RandomState instance, random_state is the random number generator;
 If None, the random number generator is the RandomState instance used
 by "np.random".</p></dd>
+
+
 <dt>metric_kwds</dt>
 <dd><p>dict (optional, default None)
 Arguments to pass on to the metric, such as the "p" value for
 Minkowski distance. If None then no arguments are passed on.</p></dd>
+
+
 <dt>angular_rp_forest</dt>
 <dd><p>bool (optional, default False)
 Whether to use an angular random projection forest to initialise
@@ -249,10 +285,14 @@ the approximate nearest neighbor search. This can be faster, but is
 mostly on useful for metric that use an angular style distance such
 as cosine, correlation etc. In the case of those metrics angular forests
 will be chosen automatically.</p></dd>
+
+
 <dt>target_n_neighbors</dt>
 <dd><p>int (optional, default -1)
 The number of nearest neighbors to use to construct the target simplcial
 set. If set to -1 use the "n_neighbors" value.</p></dd>
+
+
 <dt>target_metric</dt>
 <dd><p>string or callable (optional, default 'categorical')
 The metric used to measure distance for a target array is using supervised
@@ -262,26 +302,37 @@ if semi-supervised is required target values of -1 will be trated as
 unlabelled under the 'categorical' metric. If the target array takes
 continuous values (e.g. for a regression problem) then metric of 'l1'
 or 'l2' is probably more appropriate.</p></dd>
+
+
 <dt>target_metric_kwds</dt>
 <dd><p>dict (optional, default None)
 Keyword argument to pass to the target metric when performing
 supervised dimension reduction. If None then no arguments are passed on.</p></dd>
+
+
 <dt>target_weight</dt>
 <dd><p>float (optional, default 0.5)
 weighting factor between data topology and target topology. A value of
 0.0 weights entirely on data, a value of 1.0 weights entirely on target.
 The default of 0.5 balances the weighting equally between data and target.</p></dd>
+
+
 <dt>transform_seed</dt>
 <dd><p>int (optional, default 42)
 Random seed used for the stochastic aspects of the transform operation.
 This ensures consistency in transform operations.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>bool (optional, default False)
 Controls verbosity of logging.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>data.frame with UMAP coordinates</p>
+    
+
+<p>data.frame with UMAP coordinates</p>
     </div>
 
   </div>
@@ -296,7 +347,7 @@ Controls verbosity of logging.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

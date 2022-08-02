@@ -54,51 +54,66 @@ appropriate slot</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">ReductionBridge</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for Seurat</span>
-<span class="fu">ReductionBridge</span><span class="op">(</span>
-  <span class="va">object</span>,
-  reduction_use <span class="op">=</span> <span class="st">"pca"</span>,
-  <span class="va">reduction_save</span>,
-  <span class="va">function_use</span>,
-  dims_use <span class="op">=</span> <span class="cn">NULL</span>,
-  assay_use <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="co"># S3 method for SingleCellExperiment</span>
-<span class="fu">ReductionBridge</span><span class="op">(</span>
-  <span class="va">object</span>,
-  reduction_use <span class="op">=</span> <span class="st">"PCA"</span>,
-  <span class="va">reduction_save</span>,
-  <span class="va">function_use</span>,
-  dims_use <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ReductionBridge</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for Seurat</span></span>
+<span><span class="fu">ReductionBridge</span><span class="op">(</span></span>
+<span>  <span class="va">object</span>,</span>
+<span>  reduction_use <span class="op">=</span> <span class="st">"pca"</span>,</span>
+<span>  <span class="va">reduction_save</span>,</span>
+<span>  <span class="va">function_use</span>,</span>
+<span>  dims_use <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  assay_use <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for SingleCellExperiment</span></span>
+<span><span class="fu">ReductionBridge</span><span class="op">(</span></span>
+<span>  <span class="va">object</span>,</span>
+<span>  reduction_use <span class="op">=</span> <span class="st">"PCA"</span>,</span>
+<span>  <span class="va">reduction_save</span>,</span>
+<span>  <span class="va">function_use</span>,</span>
+<span>  dims_use <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>object</dt>
 <dd><p>A Seurat or SingleCellExperiment object to be transformed.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Extra parameters to pass to the dimensional reduction function.</p></dd>
+
+
 <dt>reduction_use</dt>
 <dd><p>Prior dimensional reduction to use for calculations
 (i.e. pca, ica, cca, etc...)</p></dd>
+
+
 <dt>reduction_save</dt>
 <dd><p>Name to use for the reduction (i. e. tsne, umap,
 etc...)</p></dd>
+
+
 <dt>function_use</dt>
 <dd><p>Dimensional reduction function to call.</p></dd>
+
+
 <dt>dims_use</dt>
 <dd><p>Dimensions of `reduction_use` to pass to `function_use`</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Seurat object
-SingleCellExperiment object</p>
+    
+
+<p>Seurat object</p>
+
+
+<p>SingleCellExperiment object</p>
     </div>
 
   </div>
@@ -113,7 +128,7 @@ SingleCellExperiment object</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

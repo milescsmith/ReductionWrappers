@@ -64,77 +64,98 @@ passed to scanpy.pp.neighbors())</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">PAGA</span><span class="op">(</span>
-  <span class="va">object</span>,
-  assay <span class="op">=</span> <span class="st">"RNA"</span>,
-  slim <span class="op">=</span> <span class="cn">FALSE</span>,
-  seurat_grouping <span class="op">=</span> <span class="cn">NULL</span>,
-  set_ident <span class="op">=</span> <span class="cn">TRUE</span>,
-  clustering_algorithm <span class="op">=</span> <span class="st">"leiden"</span>,
-  reduction_name <span class="op">=</span> <span class="st">"umap"</span>,
-  reduction_key <span class="op">=</span> <span class="st">"umap_"</span>,
-  edge_filter_weight <span class="op">=</span> <span class="fl">0.1</span>,
-  neighbors_n_neighbors <span class="op">=</span> <span class="fl">15</span>,
-  neighbors_n_pcs <span class="op">=</span> <span class="cn">NULL</span>,
-  neighbors_use_rep <span class="op">=</span> <span class="st">"pca"</span>,
-  neighbors_knn <span class="op">=</span> <span class="cn">TRUE</span>,
-  neighbors_random_state <span class="op">=</span> <span class="fl">0</span>,
-  neighbors_method <span class="op">=</span> <span class="st">"umap"</span>,
-  neighbors_metric <span class="op">=</span> <span class="st">"euclidean"</span>,
-  clustering_resolution <span class="op">=</span> <span class="fl">1</span>,
-  clustering_restrict_to <span class="op">=</span> <span class="cn">NULL</span>,
-  clustering_random_state <span class="op">=</span> <span class="fl">0</span>,
-  clustering_key_added <span class="op">=</span> <span class="cn">NULL</span>,
-  clustering_adjacency <span class="op">=</span> <span class="cn">NULL</span>,
-  clustering_directed <span class="op">=</span> <span class="cn">TRUE</span>,
-  clustering_use_weights <span class="op">=</span> <span class="cn">TRUE</span>,
-  clustering_n_iterations <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>,
-  clustering_partition_type <span class="op">=</span> <span class="cn">NULL</span>,
-  paga_show <span class="op">=</span> <span class="cn">FALSE</span>,
-  paga_plot <span class="op">=</span> <span class="cn">FALSE</span>,
-  paga_add_pos <span class="op">=</span> <span class="cn">TRUE</span>,
-  paga_threshold <span class="op">=</span> <span class="fl">0.01</span>,
-  paga_layout <span class="op">=</span> <span class="cn">NULL</span>,
-  paga_init_pos <span class="op">=</span> <span class="cn">NULL</span>,
-  paga_root <span class="op">=</span> <span class="fl">0</span>,
-  paga_single_component <span class="op">=</span> <span class="cn">NULL</span>,
-  paga_random_state <span class="op">=</span> <span class="fl">0</span>,
-  umap_min_dist <span class="op">=</span> <span class="fl">0.5</span>,
-  umap_spread <span class="op">=</span> <span class="fl">1</span>,
-  umap_n_components <span class="op">=</span> <span class="fl">3</span>,
-  umap_alpha <span class="op">=</span> <span class="fl">1</span>,
-  umap_gamma <span class="op">=</span> <span class="fl">1</span>,
-  umap_negative_sample_rate <span class="op">=</span> <span class="fl">5</span>,
-  umap_init_pos <span class="op">=</span> <span class="st">"spectral"</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">PAGA</span><span class="op">(</span></span>
+<span>  <span class="va">object</span>,</span>
+<span>  assay <span class="op">=</span> <span class="st">"RNA"</span>,</span>
+<span>  slim <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  seurat_grouping <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  set_ident <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  clustering_algorithm <span class="op">=</span> <span class="st">"leiden"</span>,</span>
+<span>  reduction_name <span class="op">=</span> <span class="st">"umap"</span>,</span>
+<span>  reduction_key <span class="op">=</span> <span class="st">"umap_"</span>,</span>
+<span>  edge_filter_weight <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span>  neighbors_n_neighbors <span class="op">=</span> <span class="fl">15</span>,</span>
+<span>  neighbors_n_pcs <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  neighbors_use_rep <span class="op">=</span> <span class="st">"pca"</span>,</span>
+<span>  neighbors_knn <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  neighbors_random_state <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  neighbors_method <span class="op">=</span> <span class="st">"umap"</span>,</span>
+<span>  neighbors_metric <span class="op">=</span> <span class="st">"euclidean"</span>,</span>
+<span>  clustering_resolution <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  clustering_restrict_to <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  clustering_random_state <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  clustering_key_added <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  clustering_adjacency <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  clustering_directed <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  clustering_use_weights <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  clustering_n_iterations <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>,</span>
+<span>  clustering_partition_type <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  paga_show <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  paga_plot <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  paga_add_pos <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  paga_threshold <span class="op">=</span> <span class="fl">0.01</span>,</span>
+<span>  paga_layout <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  paga_init_pos <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  paga_root <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  paga_single_component <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  paga_random_state <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  umap_min_dist <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  umap_spread <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  umap_n_components <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  umap_alpha <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  umap_gamma <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  umap_negative_sample_rate <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  umap_init_pos <span class="op">=</span> <span class="st">"spectral"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>assay</dt>
 <dd><p>Seurat object assay to use when converting to Scanpy object</p></dd>
+
+
 <dt>slim</dt>
 <dd><p>Temporarily discard all unnecessary data from the Seurat object (i.e. keep only the normalized data for the assay and reduction used for neighborhood calculation).  May help when performing PAGA on large objects. (Default: FALSE)</p></dd>
+
+
 <dt>seurat_grouping</dt>
 <dd><p>Force PAGA to use this metadata grouping variable. (Default: NULL)</p></dd>
+
+
 <dt>set_ident</dt>
 <dd><p>Set the cluster identity for each cell when returning the object? (Default: TRUE)</p></dd>
+
+
 <dt>clustering_algorithm</dt>
 <dd><p>Whether to use the "louvain" or "leiden" algorithms (Default: "leiden")</p></dd>
+
+
 <dt>reduction_name</dt>
 <dd><p>dimensional reduction name, `umap` by default</p></dd>
+
+
 <dt>reduction_key</dt>
 <dd><p>dimensional reduction key, specifies the string before the number for the dimension names. `umap` by default</p></dd>
+
+
 <dt>edge_filter_weight</dt>
 <dd><p>Set edges with a weight below this threshold to NA (Default: 0.1)</p></dd>
+
+
 <dt>clustering_resolution</dt>
 <dd><p>Resolution to pass to the clustering algorith (Default: 1.0)</p></dd>
+
+
 <dt>umap_init_pos</dt>
 <dd></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     
+
+
     </div>
 
   </div>
@@ -149,7 +170,7 @@ passed to scanpy.pp.neighbors())</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

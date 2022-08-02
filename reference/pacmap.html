@@ -66,38 +66,46 @@ and further pairs (pair_FP).</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">pacmap</span><span class="op">(</span>
-  <span class="va">rdf</span>,
-  n_dims <span class="op">=</span> <span class="fl">2</span>,
-  n_neighbors <span class="op">=</span> <span class="cn">NULL</span>,
-  MN_ratio <span class="op">=</span> <span class="fl">0.5</span>,
-  FP_ratio <span class="op">=</span> <span class="fl">2</span>,
-  pair_neighbors <span class="op">=</span> <span class="cn">NULL</span>,
-  pair_MN <span class="op">=</span> <span class="cn">NULL</span>,
-  pair_FP <span class="op">=</span> <span class="cn">NULL</span>,
-  distance <span class="op">=</span> <span class="st">"euclidean"</span>,
-  lr <span class="op">=</span> <span class="fl">1</span>,
-  num_iters <span class="op">=</span> <span class="fl">450</span>,
-  verbose <span class="op">=</span> <span class="cn">FALSE</span>,
-  apply_pca <span class="op">=</span> <span class="cn">TRUE</span>,
-  intermediate <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">pacmap</span><span class="op">(</span></span>
+<span>  <span class="va">rdf</span>,</span>
+<span>  n_dims <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  n_neighbors <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  MN_ratio <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  FP_ratio <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  pair_neighbors <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pair_MN <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pair_FP <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  distance <span class="op">=</span> <span class="st">"euclidean"</span>,</span>
+<span>  lr <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  num_iters <span class="op">=</span> <span class="fl">450</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  apply_pca <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  intermediate <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>rdf</dt>
 <dd><p>A variable by observation data frame</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>integer Verbosity level. Default: 0</p></dd>
+
+
 <dt>n_components</dt>
 <dd><p>integer Dimensions of the embedded space. Default: 3</p></dd>
+
+
 <dt>perplexity</dt>
 <dd><p>numeric The perplexity is related to the
 number of nearest neighbors that is used in other manifold learning
 algorithms. Larger datasets usually require a larger perplexity. Consider
 selecting a value between 5 and 50. The choice is not extremely critical
 since t-SNE is quite insensitive to this parameter. Default: 30</p></dd>
+
+
 <dt>early_exaggeration</dt>
 <dd><p>numeric Controls how tight natural
 clusters in the original space are in the embedded space and how much space
@@ -106,6 +114,8 @@ will be larger in the embedded space. Again, the choice of this parameter
 is not very critical. If the cost function increases during initial
 optimization, the early exaggeration factor or the learning rate might be
 too high. Default: 12.0</p></dd>
+
+
 <dt>learning_rate</dt>
 <dd><p>numeric The learning rate for t-SNE is
 usually in the range [10.0, 1000.0]. If the learning rate is too high, the
@@ -113,18 +123,26 @@ data may look like a ‘ball’ with any point approximately equidistant from
 its nearest neighbours. If the learning rate is too low, most points may
 look compressed in a dense cloud with few outliers. If the cost function
 gets stuck in a bad local minimum increasing the learning rate may help. Default: 200.0</p></dd>
+
+
 <dt>n_iter</dt>
 <dd><p>integer Maximum number of iterations for the
 optimization. Should be at least 250. Default: 1000</p></dd>
+
+
 <dt>n_iter_without_progress</dt>
 <dd><p>integer Maximum number of
 iterations without progress before we abort the optimization, used after
 250 initial iterations with early exaggeration. Note that progress is only
 checked every 50 iterations so this value is rounded to the next multiple
 of 50. Default: 300</p></dd>
+
+
 <dt>min_grad_norm</dt>
 <dd><p>numeric If the gradient norm is below
 this threshold, the optimization will be stopped. Default: 1e-7</p></dd>
+
+
 <dt>metric</dt>
 <dd><p>character or callable The metric to use when calculating distance
 between instances in a feature array. If metric is a character, it must be one
@@ -136,12 +154,16 @@ of instances (rows) and the resulting value recorded. The callable should
 take two arrays from X as input and return a value indicating the distance
 between them. The default is “euclidean” which is interpreted as squared
 euclidean distance.</p></dd>
+
+
 <dt>init</dt>
 <dd><p>character or numpy array Initialization of
 embedding. Possible options are ‘random’, ‘pca’, and a numpy array of shape
 (n.samples, n.components). PCA initialization cannot be used with
 precomputed distances and is usually more globally stable than random
 initialization. Default: “random”</p></dd>
+
+
 <dt>random_state</dt>
 <dd><p>int, RandomState instance or NULL If int,
 random.state is the seed used by the random number generator; If
@@ -149,6 +171,8 @@ RandomState instance, random.state is the random number generator; If NULL,
 the random number generator is the RandomState instance used by np.random.
 Note that different initializations might result in different local minima
 of the cost function. Default: NULL</p></dd>
+
+
 <dt>method</dt>
 <dd><p>character By default the gradient
 calculation algorithm uses Barnes-Hut approximation running in \(O(N log N)\)
@@ -156,6 +180,8 @@ time. method=’exact’ will run on the slower, but exact, algorithm in \(O(N^2
 time. The exact algorithm should be used when nearest-neighbor errors need
 to be better than 3<!-- %. However, the exact method cannot scale to millions of -->
 examples. Default: ‘barnes.hut’</p></dd>
+
+
 <dt>angle</dt>
 <dd><p>numeric Only used if method=’barnes.hut’ This is
 the trade-off between speed and accuracy for Barnes-Hut T-SNE. ‘angle’ is
@@ -165,18 +191,27 @@ summary node of all points contained within it. This method is not very
 sensitive to changes in this parameter in the range of 0.2 - 0.8. Angle
 less than 0.2 has quickly increasing computation time and angle greater 0.8
 has quickly increasing error.#' Default: 0.5</p></dd>
+
+
 <dt>auto_iter</dt>
 <dd><p>boolean Should optimal parameters be determined?
 If false, behaves like stock MulticoreTSNE Default: TRUE</p></dd>
+
+
 <dt>auto_iter_end</dt>
 <dd><p>intNumber of iterations for parameter
 optimization. Default: 5000</p></dd>
+
+
 <dt>n_jobs</dt>
 <dd><p>Number of processors to use.  Default: all.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>data.frame with tSNE coordinates</p>
+    
+
+<p>data.frame with tSNE coordinates</p>
     </div>
 
   </div>
@@ -191,7 +226,7 @@ optimization. Default: 5000</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>
