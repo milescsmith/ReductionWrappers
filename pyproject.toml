@@ -6,7 +6,7 @@ authors = ["Miles Smith <miles-smith@omrf.org>"]
 license = "BSD-3"
 
 [tool.poetry.dependencies]
-python = ">3.8.3,<3.10"
+python = ">3.11,<3.12"
 anndata = ">=0.8.0rc1"
 umap-learn = "^0.5.2"
 ForceAtlas2 = "^1.0"
