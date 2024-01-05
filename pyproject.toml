@@ -14,7 +14,7 @@ opentsne = {git = "https://github.com/pavlin-policar/openTSNE"}
 pacmap = "^0.5.0"
 PhenoGraph = {git = "https://github.com/milescsmith/PhenoGraph", rev = "1.6.1"}
 scanpy = "^1.8"
-s2a = {git = "https://github.com/milescsmith/s2a", rev = "0.3.4"}
+s2a = {git = "https://github.com/milescsmith/s2a", rev = "eb38ae3aba23bdebffd1f13d1282bfed5d2f64af"}
 
 [tool.poetry.dev-dependencies]
 
