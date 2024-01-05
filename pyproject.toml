@@ -12,7 +12,7 @@ umap-learn = "^0.5.2"
 ForceAtlas2 = "^1.0"
 opentsne = {git = "https://github.com/pavlin-policar/openTSNE"}
 pacmap = "^0.5.0"
-PhenoGraph = {git = "https://github.com/milescsmith/PhenoGraph", rev = "1.6.1"}
+PhenoGraph = {git = "https://github.com/milescsmith/PhenoGraph", rev = "5de5c2b0cefc427f162507692b08d477b64ba0f0"}
 scanpy = "^1.8"
 s2a = {git = "https://github.com/milescsmith/s2a", rev = "0.3.4"}
 
